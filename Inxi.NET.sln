@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Inxi.NET", "Inxi.NET\Inxi.NET.vbproj", "{134B792E-09B7-4D05-A54B-A39EBECCBAA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {432B461A-E720-46BD-83B1-BF438FA35B0C}
+	EndGlobalSection
+EndGlobal
