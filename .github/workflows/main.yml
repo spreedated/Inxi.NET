@@ -11,8 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: servicing
     - name: NuGet Installation
       uses: nuget/setup-nuget@v1
       with: 
