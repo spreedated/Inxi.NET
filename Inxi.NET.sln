@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Inxi.NET", "Inxi.NET\Inxi.NET.vbproj", "{134B792E-09B7-4D05-A54B-A39EBECCBAA2}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Inxi.NET", "Inxi.NET\Inxi.NET.vbproj", "{134B792E-09B7-4D05-A54B-A39EBECCBAA2}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Inxi.NET.Tests", "Inxi.NET.Tests\Inxi.NET.Tests.vbproj", "{711438C5-EEF0-43D1-BB51-73AADEC51326}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{134B792E-09B7-4D05-A54B-A39EBECCBAA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711438C5-EEF0-43D1-BB51-73AADEC51326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711438C5-EEF0-43D1-BB51-73AADEC51326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711438C5-EEF0-43D1-BB51-73AADEC51326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711438C5-EEF0-43D1-BB51-73AADEC51326}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
