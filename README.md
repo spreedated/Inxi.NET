@@ -10,8 +10,7 @@ To run any project that use this library, we recommend that you have:
 
 ### Windows systems
 
-1. Windows 7 or later (Windows 10 recommended)
-2. .NET Framework 4.5 or later, or .NET Core 2.1 or 3.1, or .NET 5.0
+We currently don't support Windows systems, but will in the future under a different way of getting system information.
 
 ### Linux systems
 
