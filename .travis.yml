@@ -1,3 +1,3 @@
 language: csharp
 mono: latest
-solution: "Extensification.sln"
+solution: "Inxi.NET.sln"
