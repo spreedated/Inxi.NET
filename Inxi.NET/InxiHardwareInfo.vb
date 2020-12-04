@@ -34,7 +34,7 @@ Public Class HardwareInfo
     Sub New(ByVal InxiPath As String)
         'Start the Inxi process
         Dim InxiProcess As New Process
-        Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-F --output json --output-file print",
+        Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fx --output json --output-file print",
                                                           .CreateNoWindow = True,
                                                           .UseShellExecute = False,
                                                           .WindowStyle = ProcessWindowStyle.Hidden,

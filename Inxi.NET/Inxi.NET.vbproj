@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2020.1:
-- 
+- Added few more CPU info
 
 2020.0:
 - Initial release</PackageReleaseNotes>
