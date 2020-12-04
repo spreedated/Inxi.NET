@@ -7,7 +7,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2020.0</Version>
+    <Version>2020.1</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020 EoflaOE and its companies</Copyright>
@@ -16,7 +16,10 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2020.0:
+    <PackageReleaseNotes>2020.1:
+- 
+
+2020.0:
 - Initial release</PackageReleaseNotes>
     <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
   </PropertyGroup>
