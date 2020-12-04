@@ -12,16 +12,18 @@ Module SoundParser
 
         'SPU information fields
         Dim SPUName As String
+        Dim SPUVendor As String
         Dim SPUDriver As String
 
         For Each InxiSPU In InxiToken.SelectToken("005#Audio")
             If InxiSPU("001#Device") IsNot Nothing Then
                 'Get information of a sound card
                 SPUName = InxiSPU("001#Device")
-                SPUDriver = InxiSPU("002#driver")
+                SPUVendor = InxiSPU("002#vendor")
+                SPUDriver = InxiSPU("003#driver")
 
                 'Create an instance of sound class
-                SPU = New Sound(SPUName, SPUDriver)
+                SPU = New Sound(SPUName, SPUVendor, SPUDriver)
                 SPUParsed.Add(SPUName, SPU)
             End If
         Next
