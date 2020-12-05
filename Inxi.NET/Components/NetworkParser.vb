@@ -27,6 +27,7 @@ Module NetworkParser
     Function ParseNetwork(InxiToken As JToken) As Dictionary(Of String, Network)
         Dim NetworkParsed As New Dictionary(Of String, Network)
         Dim Network As Network
+        Dim NetworkCycled As Boolean
 
         'Network information fields
         Dim NetName As String = ""
@@ -40,22 +41,42 @@ Module NetworkParser
 
         For Each InxiNetwork In InxiToken.SelectToken("006#Network")
             If InxiNetwork("001#Device") IsNot Nothing Then
-                'Get information of a graphics card
+                'Get information of a network card
                 NetName = InxiNetwork("001#Device")
-                NetDriver = InxiNetwork("002#driver")
-                NetDriverVersion = InxiNetwork("003#v")
+                If InxiNetwork("002#type") IsNot Nothing And InxiNetwork("002#type") = "network bridge" Then
+                    NetDriver = InxiNetwork("003#driver")
+                    NetDriverVersion = InxiNetwork("004#v")
+                    NetworkCycled = True
+                Else
+                    NetDriver = InxiNetwork("002#driver")
+                    NetDriverVersion = InxiNetwork("003#v")
+                End If
             ElseIf InxiNetwork("000#IF") IsNot Nothing Then
                 NetDuplex = InxiNetwork("003#duplex")
                 NetSpeed = InxiNetwork("002#speed")
                 NetState = InxiNetwork("001#state")
                 NetMacAddress = InxiNetwork("004#mac")
                 NetDeviceID = InxiNetwork("000#IF")
+                NetworkCycled = True 'Ensures that all info is filled.
+            End If
+
+            'Create instance of network class
+            If NetworkCycled Then
+                Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                NetworkParsed.Add(NetName, Network)
+                NetName = ""
+                NetDriver = ""
+                NetDriverVersion = ""
+                NetDuplex = ""
+                NetSpeed = ""
+                NetState = ""
+                NetMacAddress = ""
+                NetDeviceID = ""
+                NetworkCycled = False
             End If
         Next
 
-        'Create an instance of graphics class
-        Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
-        NetworkParsed.Add(NetName, Network)
+        'Return list of network devices
         Return NetworkParsed
     End Function
 
