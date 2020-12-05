@@ -18,10 +18,12 @@
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2020.1:
 - Added few more CPU info
+- Added network information
 
 2020.0:
 - Initial release</PackageReleaseNotes>
     <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">

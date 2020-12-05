@@ -16,53 +16,54 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Processor
+Public Class Network
 
     ''' <summary>
-    ''' Name of processor
+    ''' Name of network card
     ''' </summary>
     Public ReadOnly Name As String
     ''' <summary>
-    ''' Core Topology
+    ''' Driver software used for network card
     ''' </summary>
-    Public ReadOnly Topology As String
+    Public ReadOnly Driver As String
     ''' <summary>
-    ''' Processor type
+    ''' Driver version
     ''' </summary>
-    Public ReadOnly Type As String
+    Public ReadOnly DriverVersion As String
     ''' <summary>
-    ''' Processor milestone (Kaby Lake, Coffee Lake, ...)
+    ''' Duplex type (usually full)
     ''' </summary>
-    Public ReadOnly Milestone As String
+    Public ReadOnly Duplex As String
     ''' <summary>
-    ''' Processor features
-    ''' </summary>
-    Public ReadOnly Flags() As String
-    ''' <summary>
-    ''' Processor bits
-    ''' </summary>
-    Public ReadOnly Bits As Integer
-    ''' <summary>
-    ''' L2 Cache
-    ''' </summary>
-    Public ReadOnly L2 As String
-    ''' <summary>
-    ''' Processor speed
+    ''' Maximum speed that the device can handle
     ''' </summary>
     Public ReadOnly Speed As String
+    ''' <summary>
+    ''' State of network card
+    ''' </summary>
+    Public ReadOnly State As String
+    ''' <summary>
+    ''' MAC Address
+    ''' </summary>
+    Public ReadOnly MacAddress As String
+    ''' <summary>
+    ''' Device identifier
+    ''' </summary>
+    Public ReadOnly DeviceID As String
+
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Topology As String, Type As String, Bits As Integer, Milestone As String, Flags() As String, L2 As String, Speed As String)
+    Friend Sub New(Name As String, Driver As String, DriverVersion As String, Duplex As String, Speed As String, State As String, MacAddress As String, DeviceID As String)
         Me.Name = Name
-        Me.Topology = Topology
-        Me.Type = Type
-        Me.Bits = Bits
-        Me.Milestone = Milestone
-        Me.Flags = Flags
-        Me.L2 = L2
+        Me.Driver = Driver
+        Me.DriverVersion = DriverVersion
+        Me.Duplex = Duplex
         Me.Speed = Speed
+        Me.State = State
+        Me.MacAddress = MacAddress
+        Me.DeviceID = DeviceID
     End Sub
 
 End Class

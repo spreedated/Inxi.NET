@@ -1,4 +1,22 @@
-﻿Imports Newtonsoft.Json.Linq
+﻿
+'    Inxi.NET  Copyright (C) 2020  EoflaOE
+'
+'    This file is part of Inxi.NET
+'
+'    Inxi.NET is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    Inxi.NET is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU General Public License for more details.
+'
+'    You should have received a copy of the GNU General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Imports Newtonsoft.Json.Linq
 
 Public Class HardwareInfo
 
@@ -18,6 +36,10 @@ Public Class HardwareInfo
     ''' List of sound cards detected
     ''' </summary>
     Public ReadOnly Sound As New Dictionary(Of String, Sound)
+    ''' <summary>
+    ''' List of network cards detected
+    ''' </summary>
+    Public ReadOnly Network As New Dictionary(Of String, Network)
     ''' <summary>
     ''' RAM information
     ''' </summary>
@@ -49,6 +71,7 @@ Public Class HardwareInfo
         Dim CPUParsed As Dictionary(Of String, Processor)
         Dim GPUParsed As Dictionary(Of String, Graphics)
         Dim SoundParsed As Dictionary(Of String, Sound)
+        Dim NetParsed As Dictionary(Of String, Network)
         Dim RAMParsed As PCMemory
 
         'Parse hardware
@@ -56,6 +79,7 @@ Public Class HardwareInfo
         CPUParsed = ParseProcessors(InxiToken)
         GPUParsed = ParseGraphics(InxiToken)
         SoundParsed = ParseSound(InxiToken)
+        NetParsed = ParseNetwork(InxiToken)
         RAMParsed = ParsePCMemory(InxiToken)
 
         'Install parsed information to current instance
@@ -63,6 +87,7 @@ Public Class HardwareInfo
         CPU = CPUParsed
         GPU = GPUParsed
         Sound = SoundParsed
+        Network = NetParsed
         RAM = RAMParsed
     End Sub
 
