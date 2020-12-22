@@ -26,13 +26,18 @@ Public Class PCMemory
     ''' Used memory
     ''' </summary>
     Public ReadOnly UsedMemory As String
+    ''' <summary>
+    ''' Free memory
+    ''' </summary>
+    Public ReadOnly FreeMemory As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(TotalMemory As String, UsedMemory As String)
+    Friend Sub New(TotalMemory As String, UsedMemory As String, FreeMemory As String)
         Me.TotalMemory = TotalMemory
         Me.UsedMemory = UsedMemory
+        Me.FreeMemory = FreeMemory
     End Sub
 
 End Class

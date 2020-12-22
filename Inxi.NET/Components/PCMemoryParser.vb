@@ -30,25 +30,28 @@ Module PCMemoryParser
         If IsUnix() Then
             For Each InxiMem In InxiToken.SelectToken("011#Info")
                 'Get information of memory
+                'TODO: Free memory is not implemented in Inxi.
                 Dim TotalMem As String = InxiMem("002#Memory")
                 Dim UsedMem As String = InxiMem("003#used")
 
                 'Create an instance of memory class
-                Mem = New PCMemory(TotalMem, UsedMem)
+                Mem = New PCMemory(TotalMem, UsedMem, "")
             Next
         Else
             Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
             Dim TotalMem As Long
             Dim UsedMem As Long
+            Dim FreeMem As Long
 
             'Get memory
             For Each OS As ManagementBaseObject In System.Get
                 TotalMem = OS("TotalVisibleMemorySize")
                 UsedMem = TotalMem - OS("FreePhysicalMemory")
+                FreeMem = OS("FreePhysicalMemory")
             Next
 
             'Create an instance of memory class
-            Mem = New PCMemory(TotalMem, UsedMem)
+            Mem = New PCMemory(TotalMem, UsedMem, FreeMem)
         End If
 
         Return Mem
