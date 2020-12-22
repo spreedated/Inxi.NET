@@ -46,3 +46,34 @@ Public Class Partition
     End Sub
 
 End Class
+
+Public Class WindowsLogicalPartition
+
+    ''' <summary>
+    ''' The drive letter of drive partition
+    ''' </summary>
+    Public ReadOnly Letter As String
+    ''' <summary>
+    ''' The filesystem of partition
+    ''' </summary>
+    Public ReadOnly FileSystem As String
+    ''' <summary>
+    ''' The size of partition
+    ''' </summary>
+    Public ReadOnly Size As String
+    ''' <summary>
+    ''' The used size of partition
+    ''' </summary>
+    Public ReadOnly Used As String
+
+    ''' <summary>
+    ''' Installs specified values parsed to the class
+    ''' </summary>
+    Friend Sub New(Letter As String, FileSystem As String, Size As String, Used As String)
+        Me.Letter = Letter
+        Me.FileSystem = FileSystem
+        Me.Size = Size
+        Me.Used = Used
+    End Sub
+
+End Class

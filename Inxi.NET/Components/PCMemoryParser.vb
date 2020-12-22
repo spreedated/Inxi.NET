@@ -16,6 +16,7 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+Imports System.Management
 Imports Newtonsoft.Json.Linq
 
 Module PCMemoryParser
@@ -23,17 +24,32 @@ Module PCMemoryParser
     ''' <summary>
     ''' Parses processors
     ''' </summary>
-    ''' <param name="InxiToken">Inxi JSON token</param>
+    ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
     Function ParsePCMemory(InxiToken As JToken) As PCMemory
         Dim Mem As PCMemory
-        For Each InxiMem In InxiToken.SelectToken("011#Info")
-            'Get information of memory
-            Dim TotalMem As String = InxiMem("002#Memory")
-            Dim UsedMem As String = InxiMem("003#used")
+        If IsUnix() Then
+            For Each InxiMem In InxiToken.SelectToken("011#Info")
+                'Get information of memory
+                Dim TotalMem As String = InxiMem("002#Memory")
+                Dim UsedMem As String = InxiMem("003#used")
+
+                'Create an instance of memory class
+                Mem = New PCMemory(TotalMem, UsedMem)
+            Next
+        Else
+            Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
+            Dim TotalMem As Long
+            Dim UsedMem As Long
+
+            'Get memory
+            For Each OS As ManagementBaseObject In System.Get
+                TotalMem = OS("TotalVisibleMemorySize")
+                UsedMem = TotalMem - OS("FreePhysicalMemory")
+            Next
 
             'Create an instance of memory class
             Mem = New PCMemory(TotalMem, UsedMem)
-        Next
+        End If
 
         Return Mem
     End Function

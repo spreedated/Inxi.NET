@@ -16,6 +16,7 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+Imports System.Management
 Imports Newtonsoft.Json.Linq
 
 Public Class HardwareInfo
@@ -24,6 +25,10 @@ Public Class HardwareInfo
     ''' List of hard drives detected
     ''' </summary>
     Public ReadOnly HDD As New Dictionary(Of String, HardDrive)
+    ''' <summary>
+    ''' List of logical hard drive partitions detected
+    ''' </summary>
+    Public ReadOnly LogicalParts As New Dictionary(Of String, WindowsLogicalPartition)
     ''' <summary>
     ''' List of processors detected
     ''' </summary>
@@ -54,20 +59,23 @@ Public Class HardwareInfo
     ''' Initializes a new instance of hardware info
     ''' </summary>
     Sub New(ByVal InxiPath As String)
-        'Start the Inxi process
-        Dim InxiProcess As New Process
-        Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fx --output json --output-file print",
-                                                          .CreateNoWindow = True,
-                                                          .UseShellExecute = False,
-                                                          .WindowStyle = ProcessWindowStyle.Hidden,
-                                                          .RedirectStandardOutput = True}
-        InxiProcess.StartInfo = InxiProcessInfo
-        InxiProcess.Start()
-        InxiProcess.WaitForExit()
-        InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd)
+        If IsUnix() Then
+            'Start the Inxi process
+            Dim InxiProcess As New Process
+            Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fx --output json --output-file print",
+                                                              .CreateNoWindow = True,
+                                                              .UseShellExecute = False,
+                                                              .WindowStyle = ProcessWindowStyle.Hidden,
+                                                              .RedirectStandardOutput = True}
+            InxiProcess.StartInfo = InxiProcessInfo
+            InxiProcess.Start()
+            InxiProcess.WaitForExit()
+            InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd)
+        End If
 
         'Ready variables
         Dim HDDParsed As Dictionary(Of String, HardDrive)
+        Dim Logicals As Dictionary(Of String, WindowsLogicalPartition)
         Dim CPUParsed As Dictionary(Of String, Processor)
         Dim GPUParsed As Dictionary(Of String, Graphics)
         Dim SoundParsed As Dictionary(Of String, Sound)
@@ -75,7 +83,9 @@ Public Class HardwareInfo
         Dim RAMParsed As PCMemory
 
         'Parse hardware
+        'TODO: macOS support
         HDDParsed = ParseHardDrives(InxiToken)
+        If Not IsUnix() Then Logicals = ParsePartitions(New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
         CPUParsed = ParseProcessors(InxiToken)
         GPUParsed = ParseGraphics(InxiToken)
         SoundParsed = ParseSound(InxiToken)
@@ -84,6 +94,7 @@ Public Class HardwareInfo
 
         'Install parsed information to current instance
         HDD = HDDParsed
+        If Not IsUnix() Then LogicalParts = Logicals
         CPU = CPUParsed
         GPU = GPUParsed
         Sound = SoundParsed

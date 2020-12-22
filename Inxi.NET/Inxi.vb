@@ -32,18 +32,29 @@ Public Class Inxi
     ''' <summary>
     ''' Initializes the new instance of Inxi class with specified path and parses hardware
     ''' </summary>
-    ''' <param name="InxiPath">Path to Inxi executable. It's usually /usr/bin/inxi.</param>
-    ''' <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs.</param>
+    ''' <param name="InxiPath">Path to Inxi executable. It's usually /usr/bin/inxi. Ignored in Windows.</param>
+    ''' <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs. Ignored in Windows.</param>
     Public Sub New(InxiPath As String, CpanelJsonXsPath As String)
-        If Environment.OSVersion.Platform = PlatformID.Unix Then
+        If IsUnix() Then
             If File.Exists(InxiPath) And File.Exists(CpanelJsonXsPath) Then
                 Hardware = New HardwareInfo(InxiPath)
             Else
                 Throw New InvalidOperationException("You must have Inxi and libcpanel-json-xs-perl installed. (Could not find """ + InxiPath + """ and """ + CpanelJsonXsPath + """.)")
             End If
         Else
-            Throw New PlatformNotSupportedException("You must be running Linux.")
+            Hardware = New HardwareInfo(InxiPath)
         End If
     End Sub
 
 End Class
+
+Module InxiInternalUtils
+
+    ''' <summary>
+    ''' Is the platform Unix?
+    ''' </summary>
+    Friend Function IsUnix()
+        Return Environment.OSVersion.Platform = PlatformID.Unix
+    End Function
+
+End Module

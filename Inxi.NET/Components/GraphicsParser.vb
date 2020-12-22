@@ -16,6 +16,8 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+Imports Extensification.DictionaryExts
+Imports System.Management
 Imports Newtonsoft.Json.Linq
 
 Module GraphicsParser
@@ -23,7 +25,7 @@ Module GraphicsParser
     ''' <summary>
     ''' Parses graphics cards
     ''' </summary>
-    ''' <param name="InxiToken">Inxi JSON token</param>
+    ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
     Function ParseGraphics(InxiToken As JToken) As Dictionary(Of String, Graphics)
         Dim GPUParsed As New Dictionary(Of String, Graphics)
         Dim GPU As Graphics
@@ -33,18 +35,30 @@ Module GraphicsParser
         Dim GPUDriver As String
         Dim GPUDriverVersion As String
 
-        For Each InxiGPU In InxiToken.SelectToken("004#Graphics")
-            If InxiGPU("001#Device") IsNot Nothing Then
-                'Get information of a graphics card
-                GPUName = InxiGPU("001#Device")
-                GPUDriver = InxiGPU("002#driver")
-                GPUDriverVersion = InxiGPU("003#v")
+        If IsUnix() Then
+            For Each InxiGPU In InxiToken.SelectToken("004#Graphics")
+                If InxiGPU("001#Device") IsNot Nothing Then
+                    'Get information of a graphics card
+                    GPUName = InxiGPU("001#Device")
+                    GPUDriver = InxiGPU("002#driver")
+                    GPUDriverVersion = InxiGPU("003#v")
 
-                'Create an instance of graphics class
-                GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
-                GPUParsed.Add(GPUName, GPU)
-            End If
-        Next
+                    'Create an instance of graphics class
+                    GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
+                    GPUParsed.Add(GPUName, GPU)
+                End If
+            Next
+        Else
+            Dim GraphicsCards As New ManagementObjectSearcher("SELECT * FROM Win32_VideoController")
+            For Each Graphics As ManagementBaseObject In GraphicsCards.Get
+                Try
+                    GPU = New Graphics(Graphics("Caption"), Graphics("InstalledDisplayDrivers"), Graphics("DriverVersion"))
+                    GPUParsed.AddIfNotFound(Graphics("Caption"), GPU)
+                Catch ex As Exception
+                    Continue For
+                End Try
+            Next
+        End If
 
         Return GPUParsed
     End Function
