@@ -126,7 +126,7 @@ Module WindowsLogicalPartitionParser
         Dim DrivePart As WindowsLogicalPartition
         For Each Part As ManagementBaseObject In WMIObject.Get
             Try
-                DrivePart = New WindowsLogicalPartition(Part("DeviceID"), Part("FileSystem"), Part("Size"), CInt(Part("Size") - Part("FreeSpace")))
+                DrivePart = New WindowsLogicalPartition(Part("DeviceID"), Part("FileSystem"), Part("Size"), CULng(Part("Size") - Part("FreeSpace")))
                 DriveParts.Add("Logical partition " & Part("DeviceID"), DrivePart)
             Catch ex As Exception
                 Continue For
