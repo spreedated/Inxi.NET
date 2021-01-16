@@ -77,7 +77,7 @@ Module ProcessorParser
                 CPUSpeed = CPUManagement("CurrentClockSpeed")
                 For Each CPUFeature As SSEnum In [Enum].GetValues(GetType(SSEnum))
                     If IsProcessorFeaturePresent(CPUFeature) Then
-                        CPUFlags = CPUFlags.Add(CPUFeature.ToString)
+                        CPUFlags.Add(CPUFeature.ToString.ToLower)
                     End If
                 Next
             Next
