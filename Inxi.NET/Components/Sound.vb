@@ -1,5 +1,5 @@
 ﻿
-'    Inxi.NET  Copyright (C) 2020  EoflaOE
+'    Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 '
 '    This file is part of Inxi.NET
 '

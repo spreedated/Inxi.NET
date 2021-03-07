@@ -7,16 +7,19 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2020.2.0.2</Version>
+    <Version>2021.0</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
-    <Copyright>Copyright © 2020 EoflaOE and its companies</Copyright>
+    <Copyright>Copyright © 2020-2021 EoflaOE and its companies</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/EoflaOE/Inxi.NET</PackageProjectUrl>
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2020.2.0.2:
+    <PackageReleaseNotes>2021.0:
+- 
+
+2020.2.0.2:
 - To comply with breaking changes Extensification did. If you still use old Extensification, use 2020.2.0.1 or below.
 - Made flags lowercase on Windows
 
@@ -34,8 +37,8 @@
 - Initial release</PackageReleaseNotes>
     <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2020.2.0.2</AssemblyVersion>
-    <FileVersion>2020.2.0.2</FileVersion>
+    <AssemblyVersion>2021.0.0.0</AssemblyVersion>
+    <FileVersion>2021.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
