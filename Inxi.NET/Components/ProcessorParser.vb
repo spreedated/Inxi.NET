@@ -45,21 +45,27 @@ Module ProcessorParser
         Dim CPUFlags As String() = {}
 #End If
         Dim CPUL2Size As String = ""
+        Dim CPUL3Size As Integer = 0
         Dim CPUSpeed As String = ""
+        Dim CPURev As String = ""
+        Dim CPUBogoMips As Integer = 0
 
         If IsUnix() Then
             For Each InxiCPU In InxiToken.SelectToken("003#CPU")
                 If Not CPUSpeedReady Then
                     'Get information of a processor
+                    'TODO: L3 cache is not implemented in Linux
                     CPUName = InxiCPU("001#model")
                     CPUTopology = InxiCPU("000#Topology")
                     CPUType = InxiCPU("003#type")
                     CPUBits = InxiCPU("002#bits")
                     CPUMilestone = InxiCPU("004#arch")
                     CPUL2Size = InxiCPU("006#L2 cache")
+                    CPURev = InxiCPU("005#rev")
                     CPUSpeedReady = True
                 ElseIf InxiCPU("007#flags") IsNot Nothing Then
                     CPUFlags = CStr(InxiCPU("007#flags")).Split(" "c)
+                    CPUBogoMips = InxiCPU("008#bogomips")
                 Else
                     CPUSpeed = InxiCPU("009#Speed")
                 End If
@@ -69,11 +75,12 @@ Module ProcessorParser
             Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
 
             For Each CPUManagement As ManagementBaseObject In CPUClass.Get
-                'TODO: Topology and milestone not implemented in Windows
+                'TODO: Topology, Rev, BogoMips, and Milestone not implemented in Windows
                 CPUName = CPUManagement("Name")
                 CPUType = CPUManagement("ProcessorType")
                 CPUBits = CPUManagement("DataWidth")
                 CPUL2Size = CPUManagement("L2CacheSize")
+                CPUL3Size = CPUManagement("L3CacheSize")
                 CPUSpeed = CPUManagement("CurrentClockSpeed")
                 For Each CPUFeature As SSEnum In [Enum].GetValues(GetType(SSEnum))
                     If IsProcessorFeaturePresent(CPUFeature) Then
@@ -84,7 +91,7 @@ Module ProcessorParser
         End If
 
         'Create an instance of processor class
-        CPU = New Processor(CPUName, CPUTopology, CPUType, CPUBits, CPUMilestone, CPUFlags, CPUL2Size, CPUSpeed)
+        CPU = New Processor(CPUName, CPUTopology, CPUType, CPUBits, CPUMilestone, CPUFlags, CPUL2Size, CPUL3Size, CPURev, CPUBogoMips, CPUSpeed)
         CPUParsed.AddIfNotFound(CPUName, CPU)
 
         Return CPUParsed

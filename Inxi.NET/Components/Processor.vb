@@ -47,6 +47,18 @@ Public Class Processor
     ''' </summary>
     Public ReadOnly L2 As String
     ''' <summary>
+    ''' L3 Cache
+    ''' </summary>
+    Public ReadOnly L3 As Integer
+    ''' <summary>
+    ''' CPU Rev
+    ''' </summary>
+    Public ReadOnly CPURev As String
+    ''' <summary>
+    ''' CPU BogoMips
+    ''' </summary>
+    Public ReadOnly CPUBogoMips As Integer
+    ''' <summary>
     ''' Processor speed
     ''' </summary>
     Public ReadOnly Speed As String
@@ -54,7 +66,7 @@ Public Class Processor
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Topology As String, Type As String, Bits As Integer, Milestone As String, Flags() As String, L2 As String, Speed As String)
+    Friend Sub New(Name As String, Topology As String, Type As String, Bits As Integer, Milestone As String, Flags() As String, L2 As String, L3 As Integer, CPURev As String, CPUBogoMips As Integer, Speed As String)
         Me.Name = Name
         Me.Topology = Topology
         Me.Type = Type
@@ -62,6 +74,9 @@ Public Class Processor
         Me.Milestone = Milestone
         Me.Flags = Flags
         Me.L2 = L2
+        Me.L3 = L3
+        Me.CPURev = CPURev
+        Me.CPUBogoMips = CPUBogoMips
         Me.Speed = Speed
     End Sub
 
