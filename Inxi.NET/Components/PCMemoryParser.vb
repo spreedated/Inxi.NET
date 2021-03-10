@@ -54,7 +54,9 @@ Module PCMemoryParser
             Mem = New PCMemory(TotalMem, UsedMem, FreeMem)
         End If
 
+#Disable Warning BC42104
         Return Mem
+#Enable Warning BC42104
     End Function
 
 End Module

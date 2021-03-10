@@ -19,6 +19,7 @@
     <PackageReleaseNotes>2021.0:
 - Added BogoMips, L3, and Rev for CPU
 - Added speed and serial number of hard drive
+- Added System module
 
 2020.2.0.2:
 - To comply with breaking changes Extensification did. If you still use old Extensification, use 2020.2.0.1 or below.

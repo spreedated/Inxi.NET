@@ -53,7 +53,7 @@ Module HardDriveParser
 
                     'Get partitions
                     Dim DrivePartToken As JToken = InxiToken.SelectToken("009#Partition")
-                    If Not DrivePartToken Is Nothing Then
+                    If DrivePartToken IsNot Nothing Then
                         For Each DrivePartition In DrivePartToken
                             If DrivePartition("006#dev") Is Nothing Then
                                 Dim DrvDevPath As String = DrivePartition("005#dev").ToString

@@ -46,6 +46,10 @@ Public Class HardwareInfo
     ''' </summary>
     Public ReadOnly Network As New Dictionary(Of String, Network)
     ''' <summary>
+    ''' System information
+    ''' </summary>
+    Public ReadOnly System As SystemInfo
+    ''' <summary>
     ''' RAM information
     ''' </summary>
     Public ReadOnly RAM As PCMemory
@@ -81,6 +85,7 @@ Public Class HardwareInfo
         Dim SoundParsed As Dictionary(Of String, Sound)
         Dim NetParsed As Dictionary(Of String, Network)
         Dim RAMParsed As PCMemory
+        Dim SystemParsed As SystemInfo
 
         'Parse hardware
         'TODO: macOS support
@@ -91,8 +96,10 @@ Public Class HardwareInfo
         SoundParsed = ParseSound(InxiToken)
         NetParsed = ParseNetwork(InxiToken)
         RAMParsed = ParsePCMemory(InxiToken)
+        SystemParsed = ParseSystem(InxiToken)
 
         'Install parsed information to current instance
+#Disable Warning BC42104
         HDD = HDDParsed
         If Not IsUnix() Then LogicalParts = Logicals
         CPU = CPUParsed
@@ -100,6 +107,8 @@ Public Class HardwareInfo
         Sound = SoundParsed
         Network = NetParsed
         RAM = RAMParsed
+        System = SystemParsed
+#Enable Warning BC42104
     End Sub
 
 End Class

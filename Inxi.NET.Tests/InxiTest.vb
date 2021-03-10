@@ -35,6 +35,7 @@ Public Class InxiTest
         Assert.IsNotNull(HardwareInfo.RAM)
         Assert.IsNotNull(HardwareInfo.HDD)
         Assert.IsNotNull(HardwareInfo.Sound)
+        Assert.IsNotNull(HardwareInfo.System)
     End Sub
 
 End Class
