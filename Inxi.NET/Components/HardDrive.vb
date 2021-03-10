@@ -35,6 +35,14 @@ Public Class HardDrive
     ''' </summary>
     Public ReadOnly Vendor As String
     ''' <summary>
+    ''' The speed of the drive
+    ''' </summary>
+    Public ReadOnly Speed As String
+    ''' <summary>
+    ''' The serial number
+    ''' </summary>
+    Public ReadOnly Serial As String
+    ''' <summary>
     ''' List of partitions
     ''' </summary>
     Public ReadOnly Partitions As New Dictionary(Of String, Partition)
@@ -42,11 +50,13 @@ Public Class HardDrive
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(ID As String, Size As String, Model As String, Vendor As String, Partitions As Dictionary(Of String, Partition))
+    Friend Sub New(ID As String, Size As String, Model As String, Vendor As String, Speed As String, Serial As String, Partitions As Dictionary(Of String, Partition))
         Me.ID = ID
         Me.Size = Size
         Me.Model = Model
         Me.Vendor = Vendor
+        Me.Speed = Speed
+        Me.Serial = Serial
         Me.Partitions = Partitions
     End Sub
 

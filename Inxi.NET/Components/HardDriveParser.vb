@@ -44,6 +44,8 @@ Module HardDriveParser
                     Dim DriveSize As String = InxiDrive("004#size")
                     Dim DriveModel As String = InxiDrive("003#model")
                     Dim DriveVendor As String = InxiDrive("002#vendor")
+                    Dim DriveSerial As String = InxiDrive("006#serial")
+                    Dim DriveSpeed As String = InxiDrive("005#speed")
                     If DriveVendor = "" Then
                         DriveSize = InxiDrive("003#size")
                         DriveModel = InxiDrive("002#model")
@@ -79,7 +81,7 @@ Module HardDriveParser
                     End If
 
                     'Create an instance of hard drive class
-                    Drive = New HardDrive(InxiDrive("001#ID"), DriveSize, DriveModel, DriveVendor, DriveParts)
+                    Drive = New HardDrive(InxiDrive("001#ID"), DriveSize, DriveModel, DriveVendor, DriveSpeed, DriveSerial, DriveParts)
                     HDDParsed.Add(InxiDrive("001#ID"), Drive)
                 Else
                     InxiDriveReady = True
@@ -106,7 +108,8 @@ Module HardDriveParser
                             Continue For
                         End Try
                     Next
-                    Drive = New HardDrive(Hdd("DeviceID"), Hdd("Size"), Hdd("Model"), Hdd("Manufacturer"), DriveParts)
+                    'TODO: Speed not implemented in Windows
+                    Drive = New HardDrive(Hdd("DeviceID"), Hdd("Size"), Hdd("Model"), Hdd("Manufacturer"), "", Hdd("SerialNumber"), DriveParts)
                     HDDParsed.Add(Hdd("Model") & " (" & DiskIndexHdd & ")", Drive)
                 Catch ex As Exception
                     Continue For

@@ -62,7 +62,7 @@ Public Class HardwareInfo
         If IsUnix() Then
             'Start the Inxi process
             Dim InxiProcess As New Process
-            Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fx --output json --output-file print",
+            Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fxx --output json --output-file print",
                                                               .CreateNoWindow = True,
                                                               .UseShellExecute = False,
                                                               .WindowStyle = ProcessWindowStyle.Hidden,
