@@ -7,7 +7,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2021.0</Version>
+    <Version>2021.1</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2021 EoflaOE and its companies</Copyright>
@@ -16,7 +16,10 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2021.0:
+    <PackageReleaseNotes>2021.1:
+- 
+
+2021.0:
 - Added BogoMips, L3, and Rev for CPU
 - Added speed and serial number of hard drive
 - Added System module
@@ -39,8 +42,8 @@
 - Initial release</PackageReleaseNotes>
     <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2021.0.0.0</AssemblyVersion>
-    <FileVersion>2021.0.0.0</FileVersion>
+    <AssemblyVersion>2021.1.0.0</AssemblyVersion>
+    <FileVersion>2021.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
