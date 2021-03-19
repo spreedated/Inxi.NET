@@ -4,13 +4,18 @@
 
 Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.
 
+Please note that macOS support is very experimental, and a lot of features are not available.
+
 ## System Requirements
 
 To run any project that use this library, we recommend that you have:
 
 ### Windows systems
 
-We currently don't support Windows systems, but will in the future under a different way of getting system information.
+1. Windows 7 or later (Windows 10 recommended)
+2. .NET Framework 4.5 or later, or .NET Core 2.1 or 3.1, or .NET 5.0
+
+* If your app uses Inxi.NET, uses x86, and uses one of .NET Core 2.1, 3.1, or .NET 5.0, at least a 2.00 GHz processor with SSE2 is required.
 
 ### Linux systems
 
