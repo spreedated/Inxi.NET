@@ -18,6 +18,7 @@
 
 Imports System.Management
 Imports Newtonsoft.Json.Linq
+Imports Claunia.PropertyList
 
 Module PCMemoryParser
 
@@ -25,18 +26,36 @@ Module PCMemoryParser
     ''' Parses processors
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParsePCMemory(InxiToken As JToken) As PCMemory
+    Function ParsePCMemory(InxiToken As JToken, SystemProfilerToken As NSArray) As PCMemory
         Dim Mem As PCMemory
         If IsUnix() Then
-            For Each InxiMem In InxiToken.SelectToken("011#Info")
-                'Get information of memory
-                'TODO: Free memory is not implemented in Inxi.
-                Dim TotalMem As String = InxiMem("002#Memory")
-                Dim UsedMem As String = InxiMem("003#used")
+            If IsMacOS() Then
+                'Check for data type
+                For Each DataType As NSDictionary In SystemProfilerToken
+                    If DataType("_dataType").ToObject = "SPHardwareDataType" Then
+                        'Get information of a drive
+                        'TODO: Used memory and free memory not implemented in macOS.
+                        Dim HardwareEnum As NSArray = DataType("_items")
+                        For Each HardwareDict As NSDictionary In HardwareEnum
+                            'Get information of memory
+                            Dim TotalMem As String = HardwareDict("physical_memory").ToObject
 
-                'Create an instance of memory class
-                Mem = New PCMemory(TotalMem, UsedMem, "")
-            Next
+                            'Create an instance of memory class
+                            Mem = New PCMemory(TotalMem, "", "")
+                        Next
+                    End If
+                Next
+            Else
+                For Each InxiMem In InxiToken.SelectToken("011#Info")
+                    'Get information of memory
+                    'TODO: Free memory is not implemented in Inxi.
+                    Dim TotalMem As String = InxiMem("002#Memory")
+                    Dim UsedMem As String = InxiMem("003#used")
+
+                    'Create an instance of memory class
+                    Mem = New PCMemory(TotalMem, UsedMem, "")
+                Next
+            End If
         Else
             Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
             Dim TotalMem As Long

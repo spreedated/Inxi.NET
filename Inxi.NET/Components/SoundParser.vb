@@ -19,6 +19,7 @@
 Imports Extensification.DictionaryExts
 Imports System.Management
 Imports Newtonsoft.Json.Linq
+Imports Claunia.PropertyList
 
 Module SoundParser
 
@@ -26,7 +27,7 @@ Module SoundParser
     ''' Parses sound cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseSound(InxiToken As JToken) As Dictionary(Of String, Sound)
+    Function ParseSound(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Sound)
         Dim SPUParsed As New Dictionary(Of String, Sound)
         Dim SPU As Sound
 
@@ -36,18 +37,25 @@ Module SoundParser
         Dim SPUDriver As String
 
         If IsUnix() Then
-            For Each InxiSPU In InxiToken.SelectToken("005#Audio")
-                If InxiSPU("001#Device") IsNot Nothing Then
-                    'Get information of a sound card
-                    SPUName = InxiSPU("001#Device")
-                    SPUVendor = InxiSPU("002#vendor")
-                    SPUDriver = InxiSPU("003#driver")
+            If IsMacOS() Then
+                'TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
+                'Create an instance of sound class
+                SPU = New Sound("Placeholder", "EoflaOE", "SoundParser")
+                SPUParsed.AddIfNotFound("Placeholder", SPU)
+            Else
+                For Each InxiSPU In InxiToken.SelectToken("005#Audio")
+                    If InxiSPU("001#Device") IsNot Nothing Then
+                        'Get information of a sound card
+                        SPUName = InxiSPU("001#Device")
+                        SPUVendor = InxiSPU("002#vendor")
+                        SPUDriver = InxiSPU("003#driver")
 
-                    'Create an instance of sound class
-                    SPU = New Sound(SPUName, SPUVendor, SPUDriver)
-                    SPUParsed.AddIfNotFound(SPUName, SPU)
-                End If
-            Next
+                        'Create an instance of sound class
+                        SPU = New Sound(SPUName, SPUVendor, SPUDriver)
+                        SPUParsed.AddIfNotFound(SPUName, SPU)
+                    End If
+                Next
+            End If
         Else
             Dim SoundDevice As New ManagementObjectSearcher("SELECT * FROM Win32_SoundDevice")
             For Each Device As ManagementBaseObject In SoundDevice.Get

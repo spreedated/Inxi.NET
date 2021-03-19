@@ -18,6 +18,7 @@
 
 Imports System.Management
 Imports Newtonsoft.Json.Linq
+Imports Claunia.PropertyList
 
 Module HardDriveParser
 
@@ -25,68 +26,87 @@ Module HardDriveParser
     ''' Parses hard drives
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseHardDrives(InxiToken As JToken) As Dictionary(Of String, HardDrive)
+    Function ParseHardDrives(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardDrive)
         'Variables (global)
         Dim HDDParsed As New Dictionary(Of String, HardDrive)
         Dim DriveParts As New Dictionary(Of String, Partition)
         Dim Drive As HardDrive
         Dim DrivePart As Partition
 
-        'If the system is Unix, use Inxi. If on Windows, use WMI. macOS, anyone?
+        'If the system is Unix, use Inxi. If on Windows, use WMI. If on macOS, use system_profiler.
         If IsUnix() Then
-            'Variables (Inxi)
-            Dim InxiDriveReady As Boolean = False
+            If IsMacOS() Then
+                'Check for data type
+                For Each DataType As NSDictionary In SystemProfilerToken
+                    If DataType("_dataType").ToObject = "SPStorageDataType" Then
+                        'Get information of a drive
+                        Dim DriveEnum As NSArray = DataType("_items")
+                        For Each DriveDict As NSDictionary In DriveEnum
+                            Dim DriveSize As String = DriveDict("size_in_bytes").ToObject
+                            Dim DriveModel As String = TryCast(DriveDict("physical_drive"), NSDictionary)("device_name").ToObject
+                            Dim DriveSerial As String = DriveDict("volume_uuid").ToObject
 
-            'Enumerate each drive
-            For Each InxiDrive In InxiToken.SelectToken("007#Drives")
-                If InxiDriveReady Then
-                    'Get information of a drive
-                    Dim DriveSize As String = InxiDrive("004#size")
-                    Dim DriveModel As String = InxiDrive("003#model")
-                    Dim DriveVendor As String = InxiDrive("002#vendor")
-                    Dim DriveSerial As String = InxiDrive("006#serial")
-                    Dim DriveSpeed As String = InxiDrive("005#speed")
-                    If DriveVendor = "" Then
-                        DriveSize = InxiDrive("003#size")
-                        DriveModel = InxiDrive("002#model")
-                    End If
-
-                    'Get partitions
-                    Dim DrivePartToken As JToken = InxiToken.SelectToken("009#Partition")
-                    If DrivePartToken IsNot Nothing Then
-                        For Each DrivePartition In DrivePartToken
-                            If DrivePartition("006#dev") Is Nothing Then
-                                Dim DrvDevPath As String = DrivePartition("005#dev").ToString
-                                Dim TarDevPath As String = InxiDrive("001#ID").ToString
-                                Dim DrvDevChar As Char
-                                Dim CurrDrvChar As Char
-
-                                If DrvDevPath.Contains("hd") Or DrvDevPath.Contains("sd") Or DrvDevPath.Contains("vd") Then '/dev/hdX, /dev/sdX, /dev/vdX
-                                    CurrDrvChar = DrvDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "").Chars(0)
-                                    DrvDevChar = TarDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "").Chars(0)
-                                ElseIf DrvDevPath.Contains("mmcblk") Then '/dev/mmcblkXpY
-                                    CurrDrvChar = DrvDevPath.Replace("/dev/mmcblk", "").Chars(0)
-                                    DrvDevChar = TarDevPath.Replace("/dev/mmcblk", "").Chars(0)
-                                ElseIf DrvDevPath.Contains("nvme") Then '/dev/nvmeXnY
-                                    CurrDrvChar = DrvDevPath.Replace("/dev/nvme", "").Chars(0)
-                                    DrvDevChar = TarDevPath.Replace("/dev/nvme", "").Chars(0)
-                                End If
-
-                                If CurrDrvChar = DrvDevChar Then
-                                    DrivePart = New Partition(DrvDevPath, DrivePartition("004#fs"), DrivePartition("002#size"), DrivePartition("003#used"))
-                                    DriveParts.Add(DrvDevPath, DrivePart)
-                                End If
-                            End If
+                            'Create an instance of hard drive class
+                            Drive = New HardDrive(DriveDict("bsd_name").ToObject, DriveSize, DriveModel, "", "", DriveSerial, DriveParts)
+                            HDDParsed.Add(DriveModel, Drive)
                         Next
                     End If
+                Next
+            Else
+                'Variables (Inxi)
+                Dim InxiDriveReady As Boolean = False
 
-                    'Create an instance of hard drive class
-                    Drive = New HardDrive(InxiDrive("001#ID"), DriveSize, DriveModel, DriveVendor, DriveSpeed, DriveSerial, DriveParts)
-                    HDDParsed.Add(InxiDrive("001#ID"), Drive)
-                Else
-                    InxiDriveReady = True
-                End If
-            Next
+                'Enumerate each drive
+                For Each InxiDrive In InxiToken.SelectToken("007#Drives")
+                    If InxiDriveReady Then
+                        'Get information of a drive
+                        Dim DriveSize As String = InxiDrive("004#size")
+                        Dim DriveModel As String = InxiDrive("003#model")
+                        Dim DriveVendor As String = InxiDrive("002#vendor")
+                        Dim DriveSerial As String = InxiDrive("006#serial")
+                        Dim DriveSpeed As String = InxiDrive("005#speed")
+                        If DriveVendor = "" Then
+                            DriveSize = InxiDrive("003#size")
+                            DriveModel = InxiDrive("002#model")
+                        End If
+
+                        'Get partitions
+                        Dim DrivePartToken As JToken = InxiToken.SelectToken("009#Partition")
+                        If DrivePartToken IsNot Nothing Then
+                            For Each DrivePartition In DrivePartToken
+                                If DrivePartition("006#dev") Is Nothing Then
+                                    Dim DrvDevPath As String = DrivePartition("005#dev").ToString
+                                    Dim TarDevPath As String = InxiDrive("001#ID").ToString
+                                    Dim DrvDevChar As Char
+                                    Dim CurrDrvChar As Char
+
+                                    If DrvDevPath.Contains("hd") Or DrvDevPath.Contains("sd") Or DrvDevPath.Contains("vd") Then '/dev/hdX, /dev/sdX, /dev/vdX
+                                        CurrDrvChar = DrvDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "").Chars(0)
+                                        DrvDevChar = TarDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "").Chars(0)
+                                    ElseIf DrvDevPath.Contains("mmcblk") Then '/dev/mmcblkXpY
+                                        CurrDrvChar = DrvDevPath.Replace("/dev/mmcblk", "").Chars(0)
+                                        DrvDevChar = TarDevPath.Replace("/dev/mmcblk", "").Chars(0)
+                                    ElseIf DrvDevPath.Contains("nvme") Then '/dev/nvmeXnY
+                                        CurrDrvChar = DrvDevPath.Replace("/dev/nvme", "").Chars(0)
+                                        DrvDevChar = TarDevPath.Replace("/dev/nvme", "").Chars(0)
+                                    End If
+
+                                    If CurrDrvChar = DrvDevChar Then
+                                        DrivePart = New Partition(DrvDevPath, DrivePartition("004#fs"), DrivePartition("002#size"), DrivePartition("003#used"))
+                                        DriveParts.Add(DrvDevPath, DrivePart)
+                                    End If
+                                End If
+                            Next
+                        End If
+
+                        'Create an instance of hard drive class
+                        Drive = New HardDrive(InxiDrive("001#ID"), DriveSize, DriveModel, DriveVendor, DriveSpeed, DriveSerial, DriveParts)
+                        HDDParsed.Add(InxiDrive("001#ID"), Drive)
+                    Else
+                        InxiDriveReady = True
+                    End If
+                Next
+            End If
         Else 'on Windows
             'Variables (WMI)
             Dim HardDisks As New ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive")

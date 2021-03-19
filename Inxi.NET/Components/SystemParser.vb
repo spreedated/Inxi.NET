@@ -17,6 +17,7 @@
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Imports System.Management
+Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 
 Module SystemParser
@@ -25,22 +26,42 @@ Module SystemParser
     ''' Parses system info
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseSystem(InxiToken As JToken) As SystemInfo
+    Function ParseSystem(InxiToken As JToken, SystemProfilerToken As NSArray) As SystemInfo
         Dim SysInfo As SystemInfo
         If IsUnix() Then
-            For Each InxiSys In InxiToken.SelectToken("000#System")
-                'Get information of system
-                Dim Hostname As String = InxiSys("000#Host")
-                Dim Version As String = InxiSys("001#Kernel")
-                Dim Bits As Integer = InxiSys("002#bits")
-                Dim Distro As String = InxiSys("008#Distro")
-                Dim DesktopMan As String = InxiSys("005#Desktop")
-                Dim WindowMan As String = InxiSys("006#wm")
-                Dim DisplayMan As String = InxiSys("007#dm")
+            If IsMacOS() Then
+                'Check for data type
+                For Each DataType As NSDictionary In SystemProfilerToken
+                    If DataType("_dataType").ToObject = "SPSoftwareDataType" Then
+                        'Get information of a drive
+                        'TODO: Bits, DE, WM, and DM not implemented in macOS.
+                        Dim SoftwareEnum As NSArray = DataType("_items")
+                        For Each SoftwareDict As NSDictionary In SoftwareEnum
+                            'Get information of memory
+                            Dim Hostname As String = SoftwareDict("local_host_name").ToObject
+                            Dim Version As String = SoftwareDict("kernel_version").ToObject
+                            Dim Distro As String = SoftwareDict("os_version").ToObject
 
-                'Create an instance of system class
-                SysInfo = New SystemInfo(Hostname, Version, Bits, Distro, DesktopMan, WindowMan, DisplayMan)
-            Next
+                            'Create an instance of system class
+                            SysInfo = New SystemInfo(Hostname, Version, 64, Distro, "", "", "")
+                        Next
+                    End If
+                Next
+            Else
+                For Each InxiSys In InxiToken.SelectToken("000#System")
+                    'Get information of system
+                    Dim Hostname As String = InxiSys("000#Host")
+                    Dim Version As String = InxiSys("001#Kernel")
+                    Dim Bits As Integer = InxiSys("002#bits")
+                    Dim Distro As String = InxiSys("008#Distro")
+                    Dim DesktopMan As String = InxiSys("005#Desktop")
+                    Dim WindowMan As String = InxiSys("006#wm")
+                    Dim DisplayMan As String = InxiSys("007#dm")
+
+                    'Create an instance of system class
+                    SysInfo = New SystemInfo(Hostname, Version, Bits, Distro, DesktopMan, WindowMan, DisplayMan)
+                Next
+            End If
         Else
             Dim WMISystem As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
 

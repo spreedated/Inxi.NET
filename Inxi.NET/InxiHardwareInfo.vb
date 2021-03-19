@@ -17,6 +17,7 @@
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Imports System.Management
+Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 
 Public Class HardwareInfo
@@ -58,23 +59,41 @@ Public Class HardwareInfo
     ''' Inxi token used for hardware probe
     ''' </summary>
     Friend InxiToken As JToken
+    ''' <summary>
+    ''' SystemProfiler token used for hardware probe
+    ''' </summary>
+    Friend SystemProfilerToken As NSArray
 
     ''' <summary>
     ''' Initializes a new instance of hardware info
     ''' </summary>
     Sub New(ByVal InxiPath As String)
         If IsUnix() Then
-            'Start the Inxi process
-            Dim InxiProcess As New Process
-            Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fxx --output json --output-file print",
-                                                              .CreateNoWindow = True,
-                                                              .UseShellExecute = False,
-                                                              .WindowStyle = ProcessWindowStyle.Hidden,
-                                                              .RedirectStandardOutput = True}
-            InxiProcess.StartInfo = InxiProcessInfo
-            InxiProcess.Start()
-            InxiProcess.WaitForExit()
-            InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd)
+            If IsMacOS() Then
+                'Start the SystemProfiler process
+                Dim SystemProfilerProcess As New Process
+                Dim SystemProfilerProcessInfo As New ProcessStartInfo With {.FileName = "/usr/sbin/system_profiler", .Arguments = "SPSoftwareDataType SPAudioDataType SPHardwareDataType SPNetworkDataType SPStorageDataType SPDisplaysDataType -xml",
+                                                                            .CreateNoWindow = True,
+                                                                            .UseShellExecute = False,
+                                                                            .WindowStyle = ProcessWindowStyle.Hidden,
+                                                                            .RedirectStandardOutput = True}
+                SystemProfilerProcess.StartInfo = SystemProfilerProcessInfo
+                SystemProfilerProcess.Start()
+                SystemProfilerProcess.WaitForExit(10000)
+                SystemProfilerToken = PropertyListParser.Parse(Text.Encoding.Default.GetBytes(SystemProfilerProcess.StandardOutput.ReadToEnd))
+            Else
+                'Start the Inxi process
+                Dim InxiProcess As New Process
+                Dim InxiProcessInfo As New ProcessStartInfo With {.FileName = InxiPath, .Arguments = "-Fxx --output json --output-file print",
+                                                                  .CreateNoWindow = True,
+                                                                  .UseShellExecute = False,
+                                                                  .WindowStyle = ProcessWindowStyle.Hidden,
+                                                                  .RedirectStandardOutput = True}
+                InxiProcess.StartInfo = InxiProcessInfo
+                InxiProcess.Start()
+                InxiProcess.WaitForExit()
+                InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd)
+            End If
         End If
 
         'Ready variables
@@ -88,15 +107,14 @@ Public Class HardwareInfo
         Dim SystemParsed As SystemInfo
 
         'Parse hardware
-        'TODO: macOS support
-        HDDParsed = ParseHardDrives(InxiToken)
+        HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
         If Not IsUnix() Then Logicals = ParsePartitions(New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
-        CPUParsed = ParseProcessors(InxiToken)
-        GPUParsed = ParseGraphics(InxiToken)
-        SoundParsed = ParseSound(InxiToken)
-        NetParsed = ParseNetwork(InxiToken)
-        RAMParsed = ParsePCMemory(InxiToken)
-        SystemParsed = ParseSystem(InxiToken)
+        CPUParsed = ParseProcessors(InxiToken, SystemProfilerToken)
+        GPUParsed = ParseGraphics(InxiToken, SystemProfilerToken)
+        SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
+        NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
+        RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
+        SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
 
         'Install parsed information to current instance
 #Disable Warning BC42104

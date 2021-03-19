@@ -36,10 +36,14 @@ Public Class Inxi
     ''' <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs. Ignored in Windows.</param>
     Public Sub New(InxiPath As String, CpanelJsonXsPath As String)
         If IsUnix() Then
-            If File.Exists(InxiPath) And File.Exists(CpanelJsonXsPath) Then
+            If IsMacOS() Then
                 Hardware = New HardwareInfo(InxiPath)
             Else
-                Throw New InvalidOperationException("You must have Inxi and libcpanel-json-xs-perl installed. (Could not find """ + InxiPath + """ and """ + CpanelJsonXsPath + """.)")
+                If File.Exists(InxiPath) And File.Exists(CpanelJsonXsPath) Then
+                    Hardware = New HardwareInfo(InxiPath)
+                Else
+                    Throw New InvalidOperationException("You must have Inxi and libcpanel-json-xs-perl installed. (Could not find """ + InxiPath + """ and """ + CpanelJsonXsPath + """.)")
+                End If
             End If
         Else
             Hardware = New HardwareInfo(InxiPath)
@@ -55,6 +59,27 @@ Module InxiInternalUtils
     ''' </summary>
     Friend Function IsUnix()
         Return Environment.OSVersion.Platform = PlatformID.Unix
+    End Function
+
+    ''' <summary>
+    ''' Is the Unix platform macOS?
+    ''' </summary>
+    Friend Function IsMacOS()
+        If IsUnix() Then
+            Dim UnameS As New Process
+            Dim UnameSInfo As New ProcessStartInfo With {.FileName = "/usr/bin/uname", .Arguments = "-s",
+                                                         .CreateNoWindow = True,
+                                                         .UseShellExecute = False,
+                                                         .WindowStyle = ProcessWindowStyle.Hidden,
+                                                         .RedirectStandardOutput = True}
+            UnameS.StartInfo = UnameSInfo
+            UnameS.Start()
+            UnameS.WaitForExit()
+            Dim System As String = UnameS.StandardOutput.ReadToEnd
+            Return System.Contains("Darwin")
+        Else
+            Return False
+        End If
     End Function
 
 End Module

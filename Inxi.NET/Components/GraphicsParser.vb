@@ -19,6 +19,7 @@
 Imports Extensification.DictionaryExts
 Imports System.Management
 Imports Newtonsoft.Json.Linq
+Imports Claunia.PropertyList
 
 Module GraphicsParser
 
@@ -26,7 +27,7 @@ Module GraphicsParser
     ''' Parses graphics cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseGraphics(InxiToken As JToken) As Dictionary(Of String, Graphics)
+    Function ParseGraphics(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Graphics)
         Dim GPUParsed As New Dictionary(Of String, Graphics)
         Dim GPU As Graphics
 
@@ -36,18 +37,36 @@ Module GraphicsParser
         Dim GPUDriverVersion As String
 
         If IsUnix() Then
-            For Each InxiGPU In InxiToken.SelectToken("004#Graphics")
-                If InxiGPU("001#Device") IsNot Nothing Then
-                    'Get information of a graphics card
-                    GPUName = InxiGPU("001#Device")
-                    GPUDriver = InxiGPU("002#driver")
-                    GPUDriverVersion = InxiGPU("003#v")
+            If IsMacOS() Then
+                'Check for data type
+                For Each DataType As NSDictionary In SystemProfilerToken
+                    If DataType("_dataType").ToObject = "SPDisplaysDataType" Then
+                        'Get information of a graphics card
+                        'TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).
+                        Dim GraphicsEnum As NSArray = DataType("_items")
+                        For Each GraphicsDict As NSDictionary In GraphicsEnum
+                            GPUName = GraphicsDict("spdisplays_device-id").ToObject
 
-                    'Create an instance of graphics class
-                    GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
-                    GPUParsed.Add(GPUName, GPU)
-                End If
-            Next
+                            'Create an instance of graphics class
+                            GPU = New Graphics(GPUName, "", "")
+                            GPUParsed.Add(GPUName, GPU)
+                        Next
+                    End If
+                Next
+            Else
+                For Each InxiGPU In InxiToken.SelectToken("004#Graphics")
+                    If InxiGPU("001#Device") IsNot Nothing Then
+                        'Get information of a graphics card
+                        GPUName = InxiGPU("001#Device")
+                        GPUDriver = InxiGPU("002#driver")
+                        GPUDriverVersion = InxiGPU("003#v")
+
+                        'Create an instance of graphics class
+                        GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
+                        GPUParsed.Add(GPUName, GPU)
+                    End If
+                Next
+            End If
         Else
             Dim GraphicsCards As New ManagementObjectSearcher("SELECT * FROM Win32_VideoController")
             For Each Graphics As ManagementBaseObject In GraphicsCards.Get

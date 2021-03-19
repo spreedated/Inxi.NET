@@ -19,6 +19,7 @@
 Imports Extensification.DictionaryExts
 Imports System.Management
 Imports Newtonsoft.Json.Linq
+Imports Claunia.PropertyList
 
 Module NetworkParser
 
@@ -26,7 +27,7 @@ Module NetworkParser
     ''' Parses network cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseNetwork(InxiToken As JToken) As Dictionary(Of String, Network)
+    Function ParseNetwork(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Network)
         Dim NetworkParsed As New Dictionary(Of String, Network)
         Dim Network As Network
         Dim NetworkCycled As Boolean
@@ -42,42 +43,71 @@ Module NetworkParser
         Dim NetDeviceID As String = ""
 
         If IsUnix() Then
-            For Each InxiNetwork In InxiToken.SelectToken("006#Network")
-                If InxiNetwork("001#Device") IsNot Nothing Then
-                    'Get information of a network card
-                    NetName = InxiNetwork("001#Device")
-                    If InxiNetwork("002#type") IsNot Nothing And InxiNetwork("002#type") = "network bridge" Then
-                        NetDriver = InxiNetwork("003#driver")
-                        NetDriverVersion = InxiNetwork("004#v")
-                        NetworkCycled = True
-                    Else
-                        NetDriver = InxiNetwork("002#driver")
-                        NetDriverVersion = InxiNetwork("003#v")
-                    End If
-                ElseIf InxiNetwork("000#IF") IsNot Nothing Then
-                    NetDuplex = InxiNetwork("003#duplex")
-                    NetSpeed = InxiNetwork("002#speed")
-                    NetState = InxiNetwork("001#state")
-                    NetMacAddress = InxiNetwork("004#mac")
-                    NetDeviceID = InxiNetwork("000#IF")
-                    NetworkCycled = True 'Ensures that all info is filled.
-                End If
+            If IsMacOS() Then
+                'Check for data type
+                For Each DataType As NSDictionary In SystemProfilerToken
+                    If DataType("_dataType").ToObject = "SPNetworkDataType" Then
+                        'Get information of a drive
+                        'TODO: Name, Driver, DriverVersion, and State not implemented in macOS.
+                        Dim NetEnum As NSArray = DataType("_items")
+                        For Each NetDict As NSDictionary In NetEnum
+                            Dim EthernetDict As NSDictionary = NetDict("Ethernet")
+                            Dim EthernetMediaOptions As NSArray = EthernetDict("MediaOptions")
+                            For Each MediaOption As NSObject In EthernetMediaOptions
+                                NetDuplex += MediaOption.ToObject
+                            Next
+                            NetSpeed = EthernetDict("MediaSubType").ToObject
+                            NetMacAddress = EthernetDict("MAC Address").ToObject
+                            NetDeviceID = NetDict("interface").ToObject
 
-                'Create instance of network class
-                If NetworkCycled Then
-                    Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
-                    NetworkParsed.Add(NetName, Network)
-                    NetName = ""
-                    NetDriver = ""
-                    NetDriverVersion = ""
-                    NetDuplex = ""
-                    NetSpeed = ""
-                    NetState = ""
-                    NetMacAddress = ""
-                    NetDeviceID = ""
-                    NetworkCycled = False
-                End If
-            Next
+                            'Create instance of network class
+                            Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                            NetworkParsed.Add(NetName, Network)
+                            NetDuplex = ""
+                            NetSpeed = ""
+                            NetMacAddress = ""
+                            NetDeviceID = ""
+                        Next
+                    End If
+                Next
+            Else
+                For Each InxiNetwork In InxiToken.SelectToken("006#Network")
+                    If InxiNetwork("001#Device") IsNot Nothing Then
+                        'Get information of a network card
+                        NetName = InxiNetwork("001#Device")
+                        If InxiNetwork("002#type") IsNot Nothing And InxiNetwork("002#type") = "network bridge" Then
+                            NetDriver = InxiNetwork("003#driver")
+                            NetDriverVersion = InxiNetwork("004#v")
+                            NetworkCycled = True
+                        Else
+                            NetDriver = InxiNetwork("002#driver")
+                            NetDriverVersion = InxiNetwork("003#v")
+                        End If
+                    ElseIf InxiNetwork("000#IF") IsNot Nothing Then
+                        NetDuplex = InxiNetwork("003#duplex")
+                        NetSpeed = InxiNetwork("002#speed")
+                        NetState = InxiNetwork("001#state")
+                        NetMacAddress = InxiNetwork("004#mac")
+                        NetDeviceID = InxiNetwork("000#IF")
+                        NetworkCycled = True 'Ensures that all info is filled.
+                    End If
+
+                    'Create instance of network class
+                    If NetworkCycled Then
+                        Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                        NetworkParsed.Add(NetName, Network)
+                        NetName = ""
+                        NetDriver = ""
+                        NetDriverVersion = ""
+                        NetDuplex = ""
+                        NetSpeed = ""
+                        NetState = ""
+                        NetMacAddress = ""
+                        NetDeviceID = ""
+                        NetworkCycled = False
+                    End If
+                Next
+            End If
         Else
             Dim Networks As New ManagementObjectSearcher("SELECT * FROM Win32_NetworkAdapter")
             For Each Networking As ManagementBaseObject In Networks.Get
