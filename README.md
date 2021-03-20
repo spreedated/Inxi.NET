@@ -93,7 +93,7 @@ License (MIT): https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 ## License
 
     Inxi.NET - .NET Frontend for Inxi
-    Copyright (C) 2020  EoflaOE
+    Copyright (C) 2020-2021  EoflaOE
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
