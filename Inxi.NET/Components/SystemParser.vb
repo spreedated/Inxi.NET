@@ -48,15 +48,16 @@ Module SystemParser
                     End If
                 Next
             Else
-                For Each InxiSys In InxiToken.SelectToken("000#System")
+                For Each InxiSys In InxiToken.SelectTokenKeyEndingWith("System")
                     'Get information of system
-                    Dim Hostname As String = InxiSys("000#Host")
-                    Dim Version As String = InxiSys("001#Kernel")
-                    Dim Bits As Integer = InxiSys("002#bits")
-                    Dim Distro As String = InxiSys("008#Distro")
-                    Dim DesktopMan As String = InxiSys("005#Desktop")
-                    Dim WindowMan As String = InxiSys("006#wm")
-                    Dim DisplayMan As String = InxiSys("007#dm")
+                    Dim Hostname As String = InxiSys.SelectTokenKeyEndingWith("Host")
+                    Dim Version As String = InxiSys.SelectTokenKeyEndingWith("Kernel")
+                    Dim Bits As Integer = InxiSys.SelectTokenKeyEndingWith("bits")
+                    Dim Distro As String = InxiSys.SelectTokenKeyEndingWith("Distro")
+                    Dim DesktopMan As String = InxiSys.SelectTokenKeyEndingWith("Desktop")
+                    Dim WindowMan As String = InxiSys.SelectTokenKeyEndingWith("WM")
+                    Dim DisplayMan As String = InxiSys.SelectTokenKeyEndingWith("dm")
+                    If String.IsNullOrEmpty(WindowMan) Then WindowMan = InxiSys.SelectTokenKeyEndingWith("wm")
 
                     'Create an instance of system class
                     SysInfo = New SystemInfo(Hostname, Version, Bits, Distro, DesktopMan, WindowMan, DisplayMan)

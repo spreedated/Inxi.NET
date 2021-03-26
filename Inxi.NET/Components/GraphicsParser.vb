@@ -54,12 +54,12 @@ Module GraphicsParser
                     End If
                 Next
             Else
-                For Each InxiGPU In InxiToken.SelectToken("004#Graphics")
-                    If InxiGPU("001#Device") IsNot Nothing Then
+                For Each InxiGPU In InxiToken.SelectTokenKeyEndingWith("Graphics")
+                    If InxiGPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                         'Get information of a graphics card
-                        GPUName = InxiGPU("001#Device")
-                        GPUDriver = InxiGPU("002#driver")
-                        GPUDriverVersion = InxiGPU("003#v")
+                        GPUName = InxiGPU.SelectTokenKeyEndingWith("Device")
+                        GPUDriver = InxiGPU.SelectTokenKeyEndingWith("driver")
+                        GPUDriverVersion = InxiGPU.SelectTokenKeyEndingWith("v")
 
                         'Create an instance of graphics class
                         GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)

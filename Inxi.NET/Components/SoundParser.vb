@@ -43,12 +43,12 @@ Module SoundParser
                 SPU = New Sound("Placeholder", "EoflaOE", "SoundParser")
                 SPUParsed.AddIfNotFound("Placeholder", SPU)
             Else
-                For Each InxiSPU In InxiToken.SelectToken("005#Audio")
-                    If InxiSPU("001#Device") IsNot Nothing Then
+                For Each InxiSPU In InxiToken.SelectTokenKeyEndingWith("Audio")
+                    If InxiSPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                         'Get information of a sound card
-                        SPUName = InxiSPU("001#Device")
-                        SPUVendor = InxiSPU("002#vendor")
-                        SPUDriver = InxiSPU("003#driver")
+                        SPUName = InxiSPU.SelectTokenKeyEndingWith("Device")
+                        SPUVendor = InxiSPU.SelectTokenKeyEndingWith("vendor")
+                        SPUDriver = InxiSPU.SelectTokenKeyEndingWith("driver")
 
                         'Create an instance of sound class
                         SPU = New Sound(SPUName, SPUVendor, SPUDriver)

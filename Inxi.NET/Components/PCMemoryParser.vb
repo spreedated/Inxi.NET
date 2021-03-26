@@ -46,11 +46,11 @@ Module PCMemoryParser
                     End If
                 Next
             Else
-                For Each InxiMem In InxiToken.SelectToken("011#Info")
+                For Each InxiMem In InxiToken.SelectTokenKeyEndingWith("Info")
                     'Get information of memory
                     'TODO: Free memory is not implemented in Inxi.
-                    Dim TotalMem As String = InxiMem("002#Memory")
-                    Dim UsedMem As String = InxiMem("003#used")
+                    Dim TotalMem As String = InxiMem.SelectTokenKeyEndingWith("Memory")
+                    Dim UsedMem As String = InxiMem.SelectTokenKeyEndingWith("used")
 
                     'Create an instance of memory class
                     Mem = New PCMemory(TotalMem, UsedMem, "")

@@ -57,26 +57,26 @@ Module HardDriveParser
                 Dim InxiDriveReady As Boolean = False
 
                 'Enumerate each drive
-                For Each InxiDrive In InxiToken.SelectToken("007#Drives")
+                For Each InxiDrive In InxiToken.SelectTokenKeyEndingWith("Drives")
                     If InxiDriveReady Then
                         'Get information of a drive
-                        Dim DriveSize As String = InxiDrive("004#size")
-                        Dim DriveModel As String = InxiDrive("003#model")
-                        Dim DriveVendor As String = InxiDrive("002#vendor")
-                        Dim DriveSerial As String = InxiDrive("006#serial")
-                        Dim DriveSpeed As String = InxiDrive("005#speed")
+                        Dim DriveSize As String = InxiDrive.SelectTokenKeyEndingWith("size")
+                        Dim DriveModel As String = InxiDrive.SelectTokenKeyEndingWith("model")
+                        Dim DriveVendor As String = InxiDrive.SelectTokenKeyEndingWith("vendor")
+                        Dim DriveSerial As String = InxiDrive.SelectTokenKeyEndingWith("serial")
+                        Dim DriveSpeed As String = InxiDrive.SelectTokenKeyEndingWith("speed")
                         If DriveVendor = "" Then
-                            DriveSize = InxiDrive("003#size")
-                            DriveModel = InxiDrive("002#model")
+                            DriveSize = InxiDrive.SelectTokenKeyEndingWith("size")
+                            DriveModel = InxiDrive.SelectTokenKeyEndingWith("model")
                         End If
 
                         'Get partitions
-                        Dim DrivePartToken As JToken = InxiToken.SelectToken("009#Partition")
+                        Dim DrivePartToken As JToken = InxiToken.SelectTokenKeyEndingWith("Partition")
                         If DrivePartToken IsNot Nothing Then
                             For Each DrivePartition In DrivePartToken
-                                If DrivePartition("006#dev") Is Nothing Then
-                                    Dim DrvDevPath As String = DrivePartition("005#dev").ToString
-                                    Dim TarDevPath As String = InxiDrive("001#ID").ToString
+                                If DrivePartition.SelectTokenKeyEndingWith("dev") Is Nothing Then
+                                    Dim DrvDevPath As String = DrivePartition.SelectTokenKeyEndingWith("dev").ToString
+                                    Dim TarDevPath As String = InxiDrive.SelectTokenKeyEndingWith("ID").ToString
                                     Dim DrvDevChar As Char
                                     Dim CurrDrvChar As Char
 
@@ -92,7 +92,7 @@ Module HardDriveParser
                                     End If
 
                                     If CurrDrvChar = DrvDevChar Then
-                                        DrivePart = New Partition(DrvDevPath, DrivePartition("004#fs"), DrivePartition("002#size"), DrivePartition("003#used"))
+                                        DrivePart = New Partition(DrvDevPath, DrivePartition.SelectTokenKeyEndingWith("fs"), DrivePartition.SelectTokenKeyEndingWith("size"), DrivePartition.SelectTokenKeyEndingWith("used"))
                                         DriveParts.Add(DrvDevPath, DrivePart)
                                     End If
                                 End If
@@ -100,8 +100,8 @@ Module HardDriveParser
                         End If
 
                         'Create an instance of hard drive class
-                        Drive = New HardDrive(InxiDrive("001#ID"), DriveSize, DriveModel, DriveVendor, DriveSpeed, DriveSerial, DriveParts)
-                        HDDParsed.Add(InxiDrive("001#ID"), Drive)
+                        Drive = New HardDrive(InxiDrive.SelectTokenKeyEndingWith("ID"), DriveSize, DriveModel, DriveVendor, DriveSpeed, DriveSerial, DriveParts)
+                        HDDParsed.Add(InxiDrive.SelectTokenKeyEndingWith("ID"), Drive)
                     Else
                         InxiDriveReady = True
                     End If

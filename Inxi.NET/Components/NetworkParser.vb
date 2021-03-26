@@ -71,24 +71,24 @@ Module NetworkParser
                     End If
                 Next
             Else
-                For Each InxiNetwork In InxiToken.SelectToken("006#Network")
-                    If InxiNetwork("001#Device") IsNot Nothing Then
+                For Each InxiNetwork In InxiToken.SelectTokenKeyEndingWith("Network")
+                    If InxiNetwork.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                         'Get information of a network card
-                        NetName = InxiNetwork("001#Device")
-                        If InxiNetwork("002#type") IsNot Nothing And InxiNetwork("002#type") = "network bridge" Then
-                            NetDriver = InxiNetwork("003#driver")
-                            NetDriverVersion = InxiNetwork("004#v")
+                        NetName = InxiNetwork.SelectTokenKeyEndingWith("Device")
+                        If InxiNetwork.SelectTokenKeyEndingWith("type") IsNot Nothing And InxiNetwork.SelectTokenKeyEndingWith("type") = "network bridge" Then
+                            NetDriver = InxiNetwork.SelectTokenKeyEndingWith("driver")
+                            NetDriverVersion = InxiNetwork.SelectTokenKeyEndingWith("v")
                             NetworkCycled = True
                         Else
-                            NetDriver = InxiNetwork("002#driver")
-                            NetDriverVersion = InxiNetwork("003#v")
+                            NetDriver = InxiNetwork.SelectTokenKeyEndingWith("driver")
+                            NetDriverVersion = InxiNetwork.SelectTokenKeyEndingWith("v")
                         End If
-                    ElseIf InxiNetwork("000#IF") IsNot Nothing Then
-                        NetDuplex = InxiNetwork("003#duplex")
-                        NetSpeed = InxiNetwork("002#speed")
-                        NetState = InxiNetwork("001#state")
-                        NetMacAddress = InxiNetwork("004#mac")
-                        NetDeviceID = InxiNetwork("000#IF")
+                    ElseIf InxiNetwork.SelectTokenKeyEndingWith("IF") IsNot Nothing Then
+                        NetDuplex = InxiNetwork.SelectTokenKeyEndingWith("duplex")
+                        NetSpeed = InxiNetwork.SelectTokenKeyEndingWith("speed")
+                        NetState = InxiNetwork.SelectTokenKeyEndingWith("state")
+                        NetMacAddress = InxiNetwork.SelectTokenKeyEndingWith("mac")
+                        NetDeviceID = InxiNetwork.SelectTokenKeyEndingWith("IF")
                         NetworkCycled = True 'Ensures that all info is filled.
                     End If
 

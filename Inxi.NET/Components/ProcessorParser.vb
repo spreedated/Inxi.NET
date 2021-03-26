@@ -67,23 +67,25 @@ Module ProcessorParser
                     End If
                 Next
             Else
-                For Each InxiCPU In InxiToken.SelectToken("003#CPU")
+                For Each InxiCPU In InxiToken.SelectTokenKeyEndingWith("CPU")
                     If Not CPUSpeedReady Then
                         'Get information of a processor
                         'TODO: L3 cache is not implemented in Linux
-                        CPUName = InxiCPU("001#model")
-                        CPUTopology = InxiCPU("000#Topology")
-                        CPUType = InxiCPU("003#type")
-                        CPUBits = InxiCPU("002#bits")
-                        CPUMilestone = InxiCPU("004#arch")
-                        CPUL2Size = InxiCPU("006#L2 cache")
-                        CPURev = InxiCPU("005#rev")
+                        'TODO: L2 cache probing is currently disabled as a side effect of fixing regression introduced in Inxi versions >= 3.1.03
+                        CPUName = InxiCPU.SelectTokenKeyEndingWith("model")
+                        CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Topology")
+                        If String.IsNullOrEmpty(CPUTopology) Then CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Info")
+                        CPUType = InxiCPU.SelectTokenKeyEndingWith("type")
+                        CPUBits = InxiCPU.SelectTokenKeyEndingWith("bits")
+                        CPUMilestone = InxiCPU.SelectTokenKeyEndingWith("arch")
+                        'CPUL2Size = InxiCPU.SelectTokenKeyContaining("L2")
+                        CPURev = InxiCPU.SelectTokenKeyEndingWith("rev")
                         CPUSpeedReady = True
-                    ElseIf InxiCPU("007#flags") IsNot Nothing Then
-                        CPUFlags = CStr(InxiCPU("007#flags")).Split(" "c)
-                        CPUBogoMips = InxiCPU("008#bogomips")
+                    ElseIf InxiCPU.SelectTokenKeyEndingWith("flags") IsNot Nothing Then
+                        CPUFlags = CStr(InxiCPU.SelectTokenKeyEndingWith("flags")).Split(" "c)
+                        CPUBogoMips = InxiCPU.SelectTokenKeyEndingWith("bogomips")
                     Else
-                        CPUSpeed = InxiCPU("009#Speed")
+                        CPUSpeed = InxiCPU.SelectTokenKeyEndingWith("Speed")
                     End If
                 Next
             End If
