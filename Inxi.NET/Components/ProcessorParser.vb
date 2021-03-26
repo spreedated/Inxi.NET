@@ -71,7 +71,7 @@ Module ProcessorParser
                     If Not CPUSpeedReady Then
                         'Get information of a processor
                         'TODO: L3 cache is not implemented in Linux
-                        'TODO: L2 cache probing is currently disabled as a side effect of fixing regression introduced in Inxi versions >= 3.1.03
+                        'TODO: L2 cache probing is currently disabled as a side effect of fixing regression introduced in Inxi versions >= 3.1.03 due to an unexpected character. We'll try to fix this.
                         CPUName = InxiCPU.SelectTokenKeyEndingWith("model")
                         CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Topology")
                         If String.IsNullOrEmpty(CPUTopology) Then CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Info")
