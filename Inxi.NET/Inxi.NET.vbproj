@@ -7,7 +7,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2021.1.1</Version>
+    <Version>2021.2</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2021 EoflaOE and its companies</Copyright>
@@ -16,7 +16,10 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2021.1.1:
+    <PackageReleaseNotes>2021.2:
+- 
+
+2021.1.1:
 - Fixed regression in Inxi versions 3.1.03+
 
 2021.1:
@@ -46,8 +49,8 @@
 - Initial release</PackageReleaseNotes>
     <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2021.1.1.0</AssemblyVersion>
-    <FileVersion>2021.1.1.0</FileVersion>
+    <AssemblyVersion>2021.2.0.0</AssemblyVersion>
+    <FileVersion>2021.2.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -60,7 +63,8 @@
 
   <ItemGroup>
     <PackageReference Include="CoreCompat.plist-cil" Version="2.1.1" />
-    <PackageReference Include="Extensification" Version="2021.2.1" />
+    <PackageReference Include="Extensification" Version="2021.3.0" />
+    <PackageReference Include="Extensification.External" Version="2021.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Management" Version="5.0.0" />
   </ItemGroup>

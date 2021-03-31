@@ -17,6 +17,7 @@
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Imports Extensification.DictionaryExts
+Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports System.Management
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList

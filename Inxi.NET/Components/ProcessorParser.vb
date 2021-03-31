@@ -18,6 +18,7 @@
 
 Imports Extensification.ArrayExts
 Imports Extensification.DictionaryExts
+Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports System.Management
 Imports System.Runtime.InteropServices
 Imports Newtonsoft.Json.Linq
