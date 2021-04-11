@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2021.2:
-- 
+- New branding
 
 2021.1.1:
 - Fixed regression in Inxi versions 3.1.03+
@@ -47,7 +47,7 @@
 
 2020.0:
 - Initial release</PackageReleaseNotes>
-    <PackageIcon>Inxi.NET-Logo.png</PackageIcon>
+    <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <AssemblyVersion>2021.2.0.0</AssemblyVersion>
     <FileVersion>2021.2.0.0</FileVersion>
@@ -70,14 +70,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Inxi.NET-Logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <Folder Include="My Project\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="My Project\" />
+    <None Include="OfficialAppIcon-InxiNET-512.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
