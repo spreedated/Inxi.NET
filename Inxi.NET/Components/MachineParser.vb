@@ -61,13 +61,18 @@ Module MachineParser
         Else
             Dim WMIMachine As New ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem")
             Dim WMIBoard As New ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard")
+            Dim WMISystem As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
 
             'Get information of system and motherboard
             Dim [Type] As String = ""
             Dim MoboModel As String = ""
             Dim MoboManufacturer As String = ""
-            For Each MachineBase As ManagementBaseObject In WMIMachine.Get
-                [Type] = MachineBase("ChassisSKUNumber")
+            For Each WMISystemBase As ManagementBaseObject In WMISystem.Get
+                If WMISystemBase("Version").StartsWith("10") And Environment.OSVersion.Platform = PlatformID.Win32NT Then 'If running on Windows 10
+                    For Each MachineBase As ManagementBaseObject In WMIMachine.Get
+                        [Type] = MachineBase("ChassisSKUNumber")
+                    Next
+                End If
             Next
             For Each MoboBase As ManagementBaseObject In WMIBoard.Get
                 MoboModel = MoboBase("Model")
