@@ -19,6 +19,8 @@
     <PackageReleaseNotes>2021.2:
 - New branding
 - Restored L2 cache for CPU
+- Finally implemented network driver version for Windows
+- Added new BIOS and Machine modules
 
 2021.1.1:
 - Fixed regression in Inxi versions 3.1.03+

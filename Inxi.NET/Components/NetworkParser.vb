@@ -111,14 +111,21 @@ Module NetworkParser
             End If
         Else
             Dim Networks As New ManagementObjectSearcher("SELECT * FROM Win32_NetworkAdapter")
+            Dim NetworkDrivers As New ManagementObjectSearcher("SELECT * FROM Win32_PnPSignedDriver WHERE DeviceClass='NET'")
             For Each Networking As ManagementBaseObject In Networks.Get
-                'TODO: Network driver version and duplex not implemented in Windows
+                'TODO: Network driver duplex not implemented in Windows
                 NetName = Networking("Name")
                 NetDriver = Networking("ServiceName")
                 NetSpeed = Networking("Speed")
                 NetState = Networking("NetConnectionStatus")
                 NetMacAddress = Networking("MACAddress")
                 NetDeviceID = Networking("DeviceID")
+                For Each NetworkDriver As ManagementBaseObject In NetworkDrivers.Get
+                    If NetworkDriver("Description") = NetName Then
+                        NetDriverVersion = NetworkDriver("DriverVersion")
+                        Exit For
+                    End If
+                Next
                 Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
                 NetworkParsed.AddIfNotFound(NetName, Network)
             Next
