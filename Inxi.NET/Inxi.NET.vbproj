@@ -18,6 +18,7 @@
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2021.2:
 - New branding
+- Restored L2 cache for CPU
 
 2021.1.1:
 - Fixed regression in Inxi versions 3.1.03+
@@ -63,8 +64,8 @@
 
   <ItemGroup>
     <PackageReference Include="CoreCompat.plist-cil" Version="2.1.1" />
-    <PackageReference Include="Extensification" Version="2021.3.0" />
-    <PackageReference Include="Extensification.External" Version="2021.3.0" />
+    <PackageReference Include="Extensification" Version="2021.4.0" />
+    <PackageReference Include="Extensification.External" Version="2021.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Management" Version="5.0.0" />
   </ItemGroup>
