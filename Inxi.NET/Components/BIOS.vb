@@ -1,4 +1,4 @@
-
+﻿
 '    Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 '
 '    This file is part of Inxi.NET
@@ -16,27 +16,28 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-<TestClass>
-Public Class InxiTest
+Public Class BIOS
 
     ''' <summary>
-    ''' Tests getting hardware information
+    ''' BIOS (American Megatrends, Award, etc.)
     ''' </summary>
-    <TestMethod>
-    Sub TestGetHardwareInformation()
-        Dim InxiInstance As New Inxi()
-        Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
-        Assert.IsNotNull(InxiInstance)
-        Assert.IsNotNull(HardwareInfo)
-        Assert.IsNotNull(HardwareInfo.CPU)
-        Assert.IsNotNull(HardwareInfo.GPU)
-        Assert.IsNotNull(HardwareInfo.RAM)
-        Assert.IsNotNull(HardwareInfo.HDD)
-        Assert.IsNotNull(HardwareInfo.Sound)
-        Assert.IsNotNull(HardwareInfo.System)
-        Assert.IsNotNull(HardwareInfo.BIOS)
+    Public ReadOnly BIOS As String
+    ''' <summary>
+    ''' BIOS Date
+    ''' </summary>
+    Public ReadOnly [Date] As String
+    ''' <summary>
+    ''' BIOS Version
+    ''' </summary>
+    Public ReadOnly Version As String
+
+    ''' <summary>
+    ''' Installs specified values parsed by Inxi to the class
+    ''' </summary>
+    Friend Sub New(BIOS As String, [Date] As String, Version As String)
+        Me.BIOS = BIOS
+        Me.[Date] = [Date]
+        Me.Version = Version
     End Sub
 
 End Class

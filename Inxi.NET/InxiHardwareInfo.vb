@@ -51,6 +51,10 @@ Public Class HardwareInfo
     ''' </summary>
     Public ReadOnly System As SystemInfo
     ''' <summary>
+    ''' BIOS information
+    ''' </summary>
+    Public ReadOnly BIOS As BIOS
+    ''' <summary>
     ''' RAM information
     ''' </summary>
     Public ReadOnly RAM As PCMemory
@@ -104,6 +108,7 @@ Public Class HardwareInfo
         Dim SoundParsed As Dictionary(Of String, Sound)
         Dim NetParsed As Dictionary(Of String, Network)
         Dim RAMParsed As PCMemory
+        Dim BIOSParsed As BIOS
         Dim SystemParsed As SystemInfo
 
         'Parse hardware
@@ -114,6 +119,7 @@ Public Class HardwareInfo
         SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
         NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
         RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
+        BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
         SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
 
         'Install parsed information to current instance
@@ -125,6 +131,7 @@ Public Class HardwareInfo
         Sound = SoundParsed
         Network = NetParsed
         RAM = RAMParsed
+        BIOS = BIOSParsed
         System = SystemParsed
 #Enable Warning BC42104
     End Sub
