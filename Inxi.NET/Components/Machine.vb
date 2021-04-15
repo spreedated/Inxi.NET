@@ -1,4 +1,4 @@
-
+﻿
 '    Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 '
 '    This file is part of Inxi.NET
@@ -16,28 +16,28 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-<TestClass>
-Public Class InxiTest
+Public Class MachineInfo
 
     ''' <summary>
-    ''' Tests getting hardware information
+    ''' Machine type
     ''' </summary>
-    <TestMethod>
-    Sub TestGetHardwareInformation()
-        Dim InxiInstance As New Inxi()
-        Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
-        Assert.IsNotNull(InxiInstance)
-        Assert.IsNotNull(HardwareInfo)
-        Assert.IsNotNull(HardwareInfo.CPU)
-        Assert.IsNotNull(HardwareInfo.GPU)
-        Assert.IsNotNull(HardwareInfo.RAM)
-        Assert.IsNotNull(HardwareInfo.HDD)
-        Assert.IsNotNull(HardwareInfo.Sound)
-        Assert.IsNotNull(HardwareInfo.System)
-        Assert.IsNotNull(HardwareInfo.BIOS)
-        Assert.IsNotNull(HardwareInfo.Machine)
+    Public ReadOnly Type As String
+    ''' <summary>
+    ''' Motherboard manufacturer
+    ''' </summary>
+    Public ReadOnly MoboManufacturer As String
+    ''' <summary>
+    ''' Motherboard model
+    ''' </summary>
+    Public ReadOnly MoboModel As String
+
+    ''' <summary>
+    ''' Installs specified values parsed by Inxi to the class
+    ''' </summary>
+    Friend Sub New(Type As String, MoboManufacturer As String, MoboModel As String)
+        Me.Type = Type
+        Me.MoboManufacturer = MoboManufacturer
+        Me.MoboModel = MoboModel
     End Sub
 
 End Class

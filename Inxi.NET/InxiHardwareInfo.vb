@@ -51,6 +51,10 @@ Public Class HardwareInfo
     ''' </summary>
     Public ReadOnly System As SystemInfo
     ''' <summary>
+    ''' Machine information
+    ''' </summary>
+    Public ReadOnly Machine As MachineInfo
+    ''' <summary>
     ''' BIOS information
     ''' </summary>
     Public ReadOnly BIOS As BIOS
@@ -110,6 +114,7 @@ Public Class HardwareInfo
         Dim RAMParsed As PCMemory
         Dim BIOSParsed As BIOS
         Dim SystemParsed As SystemInfo
+        Dim MachineParsed As MachineInfo
 
         'Parse hardware
         HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
@@ -121,6 +126,7 @@ Public Class HardwareInfo
         RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
         BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
         SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
+        MachineParsed = ParseMachine(InxiToken, SystemProfilerToken)
 
         'Install parsed information to current instance
 #Disable Warning BC42104
@@ -133,6 +139,7 @@ Public Class HardwareInfo
         RAM = RAMParsed
         BIOS = BIOSParsed
         System = SystemParsed
+        Machine = MachineParsed
 #Enable Warning BC42104
     End Sub
 
