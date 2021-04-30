@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <RootNamespace>InxiFrontend</RootNamespace>
-    <TargetFrameworks>netcoreapp2.1;net45;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net45;netcoreapp3.1;net5.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2021.2</Version>
+    <Version>2021.2.1</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2021 EoflaOE and its companies</Copyright>
@@ -16,7 +16,10 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2021.2:
+    <PackageReleaseNotes>2021.2.1:
+- 
+
+2021.2:
 - New branding
 - Restored L2 cache for CPU
 - Finally implemented network driver version for Windows
@@ -52,8 +55,8 @@
 - Initial release</PackageReleaseNotes>
     <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2021.2.0.0</AssemblyVersion>
-    <FileVersion>2021.2.0.0</FileVersion>
+    <AssemblyVersion>2021.2.1.0</AssemblyVersion>
+    <FileVersion>2021.2.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
