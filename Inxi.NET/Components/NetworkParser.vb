@@ -45,12 +45,17 @@ Module NetworkParser
 
         If IsUnix() Then
             If IsMacOS() Then
+                'TODO: Name, Driver, DriverVersion, and State not implemented in macOS.
                 'Check for data type
+                Debug("Checking for data type...")
+                Debug("TODO: Name, Driver, DriverVersion, and State not implemented in macOS.")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPNetworkDataType" Then
-                        'Get information of a drive
-                        'TODO: Name, Driver, DriverVersion, and State not implemented in macOS.
+                        Debug("DataType found: SPNetworkDataType...")
+
+                        'Get information of a network adapter
                         Dim NetEnum As NSArray = DataType("_items")
+                        Debug("Enumerating network cards...")
                         For Each NetDict As NSDictionary In NetEnum
                             Dim EthernetDict As NSDictionary = NetDict("Ethernet")
                             Dim EthernetMediaOptions As NSArray = EthernetDict("MediaOptions")
@@ -60,10 +65,12 @@ Module NetworkParser
                             NetSpeed = EthernetDict("MediaSubType").ToObject
                             NetMacAddress = EthernetDict("MAC Address").ToObject
                             NetDeviceID = NetDict("interface").ToObject
+                            Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
 
                             'Create instance of network class
                             Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
                             NetworkParsed.Add(NetName, Network)
+                            Debug("Added {0} to the list of parsed network cards.", NetName)
                             NetDuplex = ""
                             NetSpeed = ""
                             NetMacAddress = ""
@@ -72,9 +79,10 @@ Module NetworkParser
                     End If
                 Next
             Else
+                Debug("Selecting the Network token...")
                 For Each InxiNetwork In InxiToken.SelectTokenKeyEndingWith("Network")
+                    'Get information of a network card
                     If InxiNetwork.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
-                        'Get information of a network card
                         NetName = InxiNetwork.SelectTokenKeyEndingWith("Device")
                         If InxiNetwork.SelectTokenKeyEndingWith("type") IsNot Nothing And InxiNetwork.SelectTokenKeyEndingWith("type") = "network bridge" Then
                             NetDriver = InxiNetwork.SelectTokenKeyEndingWith("driver")
@@ -95,8 +103,10 @@ Module NetworkParser
 
                     'Create instance of network class
                     If NetworkCycled Then
+                        Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
                         Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
                         NetworkParsed.Add(NetName, Network)
+                        Debug("Added {0} to the list of parsed network cards.", NetName)
                         NetName = ""
                         NetDriver = ""
                         NetDriverVersion = ""
@@ -110,10 +120,17 @@ Module NetworkParser
                 Next
             End If
         Else
+            Debug("Selecting entries from Win32_NetworkAdapter...")
             Dim Networks As New ManagementObjectSearcher("SELECT * FROM Win32_NetworkAdapter")
+            Debug("Selecting entries from Win32_PnPSignedDriver with device class of 'NET'...")
             Dim NetworkDrivers As New ManagementObjectSearcher("SELECT * FROM Win32_PnPSignedDriver WHERE DeviceClass='NET'")
+
+            'TODO: Network driver duplex not implemented in Windows
+            'Get information of network cards
+            Debug("Getting the base objects...")
+            Debug("TODO: Network driver duplex not implemented in Windows")
             For Each Networking As ManagementBaseObject In Networks.Get
-                'TODO: Network driver duplex not implemented in Windows
+                'Get information of a network card
                 NetName = Networking("Name")
                 NetDriver = Networking("ServiceName")
                 NetSpeed = Networking("Speed")
@@ -126,8 +143,12 @@ Module NetworkParser
                         Exit For
                     End If
                 Next
+                Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
+
+                'Create instance of network class
                 Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
                 NetworkParsed.AddIfNotFound(NetName, Network)
+                Debug("Added {0} to the list of parsed network cards.", NetName)
             Next
         End If
 

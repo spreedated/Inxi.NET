@@ -86,9 +86,11 @@ Public Class HardwareInfo
                                                                             .WindowStyle = ProcessWindowStyle.Hidden,
                                                                             .RedirectStandardOutput = True}
                 SystemProfilerProcess.StartInfo = SystemProfilerProcessInfo
+                Debug("Starting system_profiler with ""SPSoftwareDataType SPAudioDataType SPHardwareDataType SPNetworkDataType SPStorageDataType SPDisplaysDataType -xml""...")
                 SystemProfilerProcess.Start()
                 SystemProfilerProcess.WaitForExit(10000)
                 SystemProfilerToken = PropertyListParser.Parse(Text.Encoding.Default.GetBytes(SystemProfilerProcess.StandardOutput.ReadToEnd))
+                Debug("Token parsed.")
             Else
                 'Start the Inxi process
                 Dim InxiProcess As New Process
@@ -98,9 +100,11 @@ Public Class HardwareInfo
                                                                   .WindowStyle = ProcessWindowStyle.Hidden,
                                                                   .RedirectStandardOutput = True}
                 InxiProcess.StartInfo = InxiProcessInfo
+                Debug("Starting inxi with ""-Fxx --output json --output-file print""...")
                 InxiProcess.Start()
                 InxiProcess.WaitForExit()
                 InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd)
+                Debug("Token parsed.")
             End If
         End If
 
@@ -117,15 +121,24 @@ Public Class HardwareInfo
         Dim MachineParsed As MachineInfo
 
         'Parse hardware
+        Debug("Parsing HDD...")
         HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
         If Not IsUnix() Then Logicals = ParsePartitions(New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
+        Debug("Parsing CPU...")
         CPUParsed = ParseProcessors(InxiToken, SystemProfilerToken)
+        Debug("Parsing GPU...")
         GPUParsed = ParseGraphics(InxiToken, SystemProfilerToken)
+        Debug("Parsing sound...")
         SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
+        Debug("Parsing network...")
         NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
+        Debug("Parsing RAM...")
         RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
+        Debug("Parsing BIOS...")
         BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
+        Debug("Parsing system...")
         SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
+        Debug("Parsing machine...")
         MachineParsed = ParseMachine(InxiToken, SystemProfilerToken)
 
         'Install parsed information to current instance
@@ -140,6 +153,7 @@ Public Class HardwareInfo
         BIOS = BIOSParsed
         System = SystemParsed
         Machine = MachineParsed
+        Debug("Parsed information installed.")
 #Enable Warning BC42104
     End Sub
 

@@ -54,24 +54,31 @@ Module ProcessorParser
 
         If IsUnix() Then
             If IsMacOS() Then
+                'TODO: L2, L3, and speed only done in macOS
                 'Check for data type
+                Debug("Checking for data type...")
+                Debug("TODO: L2, L3, and speed only done in macOS.")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPHardwareDataType" Then
+                        Debug("DataType found: SPHardwareDataType...")
+
                         'Get information of a drive
-                        'TODO: L2, L3, and speed only done in macOS
                         Dim HardwareEnum As NSArray = DataType("_items")
                         For Each HardwareDict As NSDictionary In HardwareEnum
                             CPUL2Size = HardwareDict("l2_cache").ToObject
                             CPUL3Size = HardwareDict("l3_cache").ToObject.ToString.Replace(" MB", "")
                             CPUSpeed = HardwareDict("current_processor_speed").ToObject
+                            Debug("Got information. CPUL2Size: {0}, CPUL3Size: {1}, CPUSpeed: {2}", CPUL2Size, CPUL3Size, CPUSpeed)
                         Next
                     End If
                 Next
             Else
+                'TODO: L3 cache is not implemented in Linux
+                Debug("TODO: L3 cache is not implemented in Linux.")
+                Debug("Selecting the CPU token...")
                 For Each InxiCPU In InxiToken.SelectTokenKeyEndingWith("CPU")
                     If Not CPUSpeedReady Then
                         'Get information of a processor
-                        'TODO: L3 cache is not implemented in Linux
                         CPUName = InxiCPU.SelectTokenKeyEndingWith("model")
                         CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Topology")
                         If String.IsNullOrEmpty(CPUTopology) Then CPUTopology = InxiCPU.SelectTokenKeyEndingWith("Info")
@@ -87,14 +94,20 @@ Module ProcessorParser
                     Else
                         CPUSpeed = InxiCPU.SelectTokenKeyEndingWith("Speed")
                     End If
+                    Debug("Got information. CPUName: {0}, CPUTopology: {1}, CPUType: {2}, CPUBits: {3}, CPUMilestone: {4}, CPUL2Size: {5}, CPURev: {6}, CPUFlags: {7}, CPUBogoMips: {8}, CPUSpeed: {9}", CPUName, CPUTopology, CPUType, CPUBits, CPUMilestone, CPUL2Size, CPURev, CPUFlags.Length, CPUBogoMips, CPUSpeed)
                 Next
             End If
         Else
+            Debug("Selecting entries from Win32_Processor...")
             Dim CPUClass As New ManagementObjectSearcher("SELECT * FROM Win32_Processor")
+            Debug("Selecting entries from Win32_OperatingSystem...")
             Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
 
+            'TODO: Topology, Rev, BogoMips, and Milestone not implemented in Windows
+            'Get information of processors
+            Debug("Getting the base objects...")
+            Debug("TODO: Topology, Rev, BogoMips, and Milestone not implemented in Windows.")
             For Each CPUManagement As ManagementBaseObject In CPUClass.Get
-                'TODO: Topology, Rev, BogoMips, and Milestone not implemented in Windows
                 CPUName = CPUManagement("Name")
                 CPUType = CPUManagement("ProcessorType")
                 CPUBits = CPUManagement("DataWidth")
@@ -106,12 +119,14 @@ Module ProcessorParser
                         CPUFlags.Add(CPUFeature.ToString.ToLower)
                     End If
                 Next
+                Debug("Got information. CPUName: {0}, CPUType: {1}, CPUBits: {2}, CPUL2Size: {3}, CPUFlags: {4}, CPUL3Size: {5}, CPUSpeed: {6}", CPUName, CPUType, CPUBits, CPUL2Size, CPUFlags.Length, CPUL3Size, CPUSpeed)
             Next
         End If
 
         'Create an instance of processor class
         CPU = New Processor(CPUName, CPUTopology, CPUType, CPUBits, CPUMilestone, CPUFlags, CPUL2Size, CPUL3Size, CPURev, CPUBogoMips, CPUSpeed)
         CPUParsed.AddIfNotFound(CPUName, CPU)
+        Debug("Added {0} to the list of parsed processors.", CPUName)
 
         Return CPUParsed
     End Function

@@ -31,15 +31,21 @@ Module PCMemoryParser
         Dim Mem As PCMemory
         If IsUnix() Then
             If IsMacOS() Then
+                'TODO: Used memory and free memory not implemented in macOS.
                 'Check for data type
+                Debug("Checking for data type...")
+                Debug("TODO: Used memory and free memory not implemented in macOS.")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPHardwareDataType" Then
-                        'Get information of a drive
-                        'TODO: Used memory and free memory not implemented in macOS.
+                        Debug("DataType found: SPHardwareDataType...")
+
+                        'Get information of a memory
                         Dim HardwareEnum As NSArray = DataType("_items")
+                        Debug("Enumerating memory information...")
                         For Each HardwareDict As NSDictionary In HardwareEnum
                             'Get information of memory
                             Dim TotalMem As String = HardwareDict("physical_memory").ToObject
+                            Debug("Got information. TotalMem: {0}", TotalMem)
 
                             'Create an instance of memory class
                             Mem = New PCMemory(TotalMem, "", "")
@@ -47,27 +53,33 @@ Module PCMemoryParser
                     End If
                 Next
             Else
+                'TODO: Free memory is not implemented in Inxi.
+                Debug("TODO: Free memory is not implemented in Inxi.")
+                Debug("Selecting the Info token...")
                 For Each InxiMem In InxiToken.SelectTokenKeyEndingWith("Info")
                     'Get information of memory
-                    'TODO: Free memory is not implemented in Inxi.
                     Dim TotalMem As String = InxiMem.SelectTokenKeyEndingWith("Memory")
                     Dim UsedMem As String = InxiMem.SelectTokenKeyEndingWith("used")
+                    Debug("Got information. TotalMem: {0}, UsedMem: {1}", TotalMem, UsedMem)
 
                     'Create an instance of memory class
                     Mem = New PCMemory(TotalMem, UsedMem, "")
                 Next
             End If
         Else
+            Debug("Selecting entries from Win32_OperatingSystem...")
             Dim System As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
             Dim TotalMem As Long
             Dim UsedMem As Long
             Dim FreeMem As Long
 
             'Get memory
+            Debug("Getting the base objects...")
             For Each OS As ManagementBaseObject In System.Get
                 TotalMem = OS("TotalVisibleMemorySize")
                 UsedMem = TotalMem - OS("FreePhysicalMemory")
                 FreeMem = OS("FreePhysicalMemory")
+                Debug("Got information. TotalMem: {0}, UsedMem: {1}, FreeMem: {2}", TotalMem, UsedMem, FreeMem)
             Next
 
             'Create an instance of memory class

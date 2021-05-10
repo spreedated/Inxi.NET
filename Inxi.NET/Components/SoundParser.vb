@@ -41,34 +41,46 @@ Module SoundParser
             If IsMacOS() Then
                 'TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
                 'Create an instance of sound class
+                Debug("TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use ""system_profiler SPAudioDataType -xml >> audio.plist"" and attach it to Issues.")
                 SPU = New Sound("Placeholder", "EoflaOE", "SoundParser")
                 SPUParsed.AddIfNotFound("Placeholder", SPU)
+                Debug("Added Placeholder to the list of parsed SPUs.")
             Else
+                Debug("Selecting the Audio token...")
                 For Each InxiSPU In InxiToken.SelectTokenKeyEndingWith("Audio")
                     If InxiSPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                         'Get information of a sound card
                         SPUName = InxiSPU.SelectTokenKeyEndingWith("Device")
                         SPUVendor = InxiSPU.SelectTokenKeyEndingWith("vendor")
                         SPUDriver = InxiSPU.SelectTokenKeyEndingWith("driver")
+                        Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}", SPUName, SPUDriver, SPUVendor)
 
                         'Create an instance of sound class
                         SPU = New Sound(SPUName, SPUVendor, SPUDriver)
                         SPUParsed.AddIfNotFound(SPUName, SPU)
+                        Debug("Added {0} to the list of parsed SPUs.", SPUName)
                     End If
                 Next
             End If
         Else
+            Debug("Selecting entries from Win32_SoundDevice...")
             Dim SoundDevice As New ManagementObjectSearcher("SELECT * FROM Win32_SoundDevice")
+
+            'TODO: Driver not implemented in Windows
+            'Get information of sound cards
+            Debug("Getting the base objects...")
+            Debug("TODO: Driver not implemented in Windows.")
             For Each Device As ManagementBaseObject In SoundDevice.Get
                 'Get information of a sound card
-                'TODO: Driver not implemented in Windows
                 SPUName = Device("ProductName")
                 SPUVendor = Device("Manufacturer")
                 SPUDriver = ""
+                Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}", SPUName, SPUDriver, SPUVendor)
 
                 'Create an instance of sound class
                 SPU = New Sound(SPUName, SPUVendor, SPUDriver)
                 SPUParsed.AddIfNotFound(SPUName, SPU)
+                Debug("Added {0} to the list of parsed SPUs.", SPUName)
             Next
         End If
 

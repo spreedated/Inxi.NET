@@ -39,42 +39,65 @@ Module GraphicsParser
 
         If IsUnix() Then
             If IsMacOS() Then
+                'TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).
                 'Check for data type
+                Debug("Checking for data type...")
+                Debug("TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPDisplaysDataType" Then
+                        Debug("DataType found: SPDisplaysDataType...")
+
                         'Get information of a graphics card
-                        'TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).
                         Dim GraphicsEnum As NSArray = DataType("_items")
+                        Debug("Enumerating graphics cards...")
                         For Each GraphicsDict As NSDictionary In GraphicsEnum
                             GPUName = GraphicsDict("spdisplays_device-id").ToObject
+                            Debug("Got information. GPUName: {0}", GPUName)
 
                             'Create an instance of graphics class
                             GPU = New Graphics(GPUName, "", "")
                             GPUParsed.Add(GPUName, GPU)
+                            Debug("Added {0} to the list of parsed GPUs.", GPUName)
                         Next
                     End If
                 Next
             Else
+                Debug("Selecting the Graphics token...")
                 For Each InxiGPU In InxiToken.SelectTokenKeyEndingWith("Graphics")
                     If InxiGPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                         'Get information of a graphics card
                         GPUName = InxiGPU.SelectTokenKeyEndingWith("Device")
                         GPUDriver = InxiGPU.SelectTokenKeyEndingWith("driver")
                         GPUDriverVersion = InxiGPU.SelectTokenKeyEndingWith("v")
+                        Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}", GPUName, GPUDriver, GPUDriverVersion)
 
                         'Create an instance of graphics class
                         GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
                         GPUParsed.Add(GPUName, GPU)
+                        Debug("Added {0} to the list of parsed GPUs.", GPUName)
                     End If
                 Next
             End If
         Else
+            Debug("Selecting entries from Win32_VideoController...")
             Dim GraphicsCards As New ManagementObjectSearcher("SELECT * FROM Win32_VideoController")
+
+            'Get information of graphics cards
+            Debug("Getting the base objects...")
             For Each Graphics As ManagementBaseObject In GraphicsCards.Get
                 Try
-                    GPU = New Graphics(Graphics("Caption"), Graphics("InstalledDisplayDrivers"), Graphics("DriverVersion"))
-                    GPUParsed.AddIfNotFound(Graphics("Caption"), GPU)
+                    'Get information of a graphics card
+                    GPUName = Graphics("Caption")
+                    GPUDriver = Graphics("InstalledDisplayDrivers")
+                    GPUDriverVersion = Graphics("DriverVersion")
+                    Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}", GPUName, GPUDriver, GPUDriverVersion)
+
+                    'Create an instance of graphics class
+                    GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
+                    GPUParsed.AddIfNotFound(GPUName, GPU)
+                    Debug("Added {0} to the list of parsed GPUs.", GPUName)
                 Catch ex As Exception
+                    Debug("Error: {0}", ex.Message)
                     Continue For
                 End Try
             Next
