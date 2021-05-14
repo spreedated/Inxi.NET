@@ -77,18 +77,19 @@ Module SystemParser
             Dim WMISystem As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
 
             'Get information of system
-            'TODO: Desktop Manager, Window Manager, and Display Manager are not implemented on Windows.
+            'TODO: Desktop Manager and Display Manager are not implemented on Windows.
             Debug("Getting the base objects...")
-            Debug("TODO: Desktop Manager, Window Manager, and Display Manager are not implemented on Windows.")
+            Debug("TODO: Desktop Manager and Display Manager are not implemented on Windows.")
             For Each SystemBase As ManagementBaseObject In WMISystem.Get
                 Dim Hostname As String = Net.Dns.GetHostName
                 Dim Version As String = SystemBase("Version")
                 Dim Bits As Integer = SystemBase("OSArchitecture").ToString.Replace("-bit", "")
                 Dim Distro As String = SystemBase("Caption")
-                Debug("Got information. Hostname: {0}, Version: {1}, Distro: {2}, Bits: {3}", Hostname, Version, Distro, Bits)
+                Dim WM As String = If(Process.GetProcessesByName("dwm").Length > 0, "DWM", "Basic Window Manager")
+                Debug("Got information. Hostname: {0}, Version: {1}, Distro: {2}, Bits: {3}, WM: {4}", Hostname, Version, Distro, Bits, WM)
 
                 'Create an instance of system class
-                SysInfo = New SystemInfo(Hostname, Version, Bits, Distro, "", "", "")
+                SysInfo = New SystemInfo(Hostname, Version, Bits, Distro, "", WM, "")
             Next
         End If
 
