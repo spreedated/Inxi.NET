@@ -18,6 +18,7 @@
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2021.3:
 - Added debugging
+- Added selective parsing
 
 2021.2.1:
 - Fixed no code documentation

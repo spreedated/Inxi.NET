@@ -75,7 +75,7 @@ Public Class HardwareInfo
     ''' <summary>
     ''' Initializes a new instance of hardware info
     ''' </summary>
-    Sub New(ByVal InxiPath As String)
+    Sub New(ByVal InxiPath As String, ParseFlags As InxiParseFlags)
         If IsUnix() Then
             If IsMacOS() Then
                 'Start the SystemProfiler process
@@ -120,26 +120,65 @@ Public Class HardwareInfo
         Dim SystemParsed As SystemInfo
         Dim MachineParsed As MachineInfo
 
-        'Parse hardware
-        Debug("Parsing HDD...")
-        HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
-        If Not IsUnix() Then Logicals = ParsePartitions(New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
-        Debug("Parsing CPU...")
-        CPUParsed = ParseProcessors(InxiToken, SystemProfilerToken)
-        Debug("Parsing GPU...")
-        GPUParsed = ParseGraphics(InxiToken, SystemProfilerToken)
-        Debug("Parsing sound...")
-        SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
-        Debug("Parsing network...")
-        NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
-        Debug("Parsing RAM...")
-        RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
-        Debug("Parsing BIOS...")
-        BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
-        Debug("Parsing system...")
-        SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
-        Debug("Parsing machine...")
-        MachineParsed = ParseMachine(InxiToken, SystemProfilerToken)
+        'Parse hardware starting from HDD
+        If ParseFlags.HasFlag(InxiParseFlags.HardDrive) Then
+            Debug("Parsing HDD...")
+            HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
+        End If
+
+        'Logical partitions
+        If Not IsUnix() And ParseFlags.HasFlag(InxiParseFlags.HardDriveLogical) Then
+            Debug("Parsing logical partitions...")
+            Logicals = ParsePartitions(New ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
+        End If
+
+        'Processor
+        If ParseFlags.HasFlag(InxiParseFlags.Processor) Then
+            Debug("Parsing CPU...")
+            CPUParsed = ParseProcessors(InxiToken, SystemProfilerToken)
+        End If
+
+        'Graphics
+        If ParseFlags.HasFlag(InxiParseFlags.Graphics) Then
+            Debug("Parsing GPU...")
+            GPUParsed = ParseGraphics(InxiToken, SystemProfilerToken)
+        End If
+
+        'Sound
+        If ParseFlags.HasFlag(InxiParseFlags.Sound) Then
+            Debug("Parsing sound...")
+            SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
+        End If
+
+        'Network
+        If ParseFlags.HasFlag(InxiParseFlags.Network) Then
+            Debug("Parsing network...")
+            NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
+        End If
+
+        'PC Memory
+        If ParseFlags.HasFlag(InxiParseFlags.PCMemory) Then
+            Debug("Parsing RAM...")
+            RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
+        End If
+
+        'BIOS
+        If ParseFlags.HasFlag(InxiParseFlags.BIOS) Then
+            Debug("Parsing BIOS...")
+            BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
+        End If
+
+        'System
+        If ParseFlags.HasFlag(InxiParseFlags.System) Then
+            Debug("Parsing system...")
+            SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
+        End If
+
+        'Machine
+        If ParseFlags.HasFlag(InxiParseFlags.Machine) Then
+            Debug("Parsing machine...")
+            MachineParsed = ParseMachine(InxiToken, SystemProfilerToken)
+        End If
 
         'Install parsed information to current instance
 #Disable Warning BC42104
