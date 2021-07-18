@@ -7,7 +7,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2021.3</Version>
+    <Version>2021.4</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2021 EoflaOE and its companies</Copyright>
@@ -16,7 +16,10 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2021.3:
+    <PackageReleaseNotes>2021.4:
+- 
+
+2021.3:
 - Added debugging
 - Added selective parsing
 
@@ -59,8 +62,8 @@
 - Initial release</PackageReleaseNotes>
     <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2021.3.0.0</AssemblyVersion>
-    <FileVersion>2021.3.0.0</FileVersion>
+    <AssemblyVersion>2021.4.0.0</AssemblyVersion>
+    <FileVersion>2021.4.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
