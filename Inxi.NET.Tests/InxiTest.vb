@@ -45,7 +45,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveBIOS()
-        Dim InxiInstance As New Inxi(InxiParseFlags.BIOS)
+        Dim InxiInstance As New Inxi(InxiHardwareType.BIOS)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -57,7 +57,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveGraphics()
-        Dim InxiInstance As New Inxi(InxiParseFlags.Graphics)
+        Dim InxiInstance As New Inxi(InxiHardwareType.Graphics)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -69,7 +69,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveHardDrive()
-        Dim InxiInstance As New Inxi(InxiParseFlags.HardDrive)
+        Dim InxiInstance As New Inxi(InxiHardwareType.HardDrive)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -81,7 +81,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveMachine()
-        Dim InxiInstance As New Inxi(InxiParseFlags.Machine)
+        Dim InxiInstance As New Inxi(InxiHardwareType.Machine)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -93,7 +93,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveNetwork()
-        Dim InxiInstance As New Inxi(InxiParseFlags.Network)
+        Dim InxiInstance As New Inxi(InxiHardwareType.Network)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -105,7 +105,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectivePCMemory()
-        Dim InxiInstance As New Inxi(InxiParseFlags.PCMemory)
+        Dim InxiInstance As New Inxi(InxiHardwareType.PCMemory)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -117,7 +117,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveProcessor()
-        Dim InxiInstance As New Inxi(InxiParseFlags.Processor)
+        Dim InxiInstance As New Inxi(InxiHardwareType.Processor)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -129,7 +129,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveSound()
-        Dim InxiInstance As New Inxi(InxiParseFlags.Sound)
+        Dim InxiInstance As New Inxi(InxiHardwareType.Sound)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
@@ -141,7 +141,7 @@ Public Class InxiTest
     ''' </summary>
     <TestMethod>
     Sub TestGetHardwareInformationSelectiveSystem()
-        Dim InxiInstance As New Inxi(InxiParseFlags.System)
+        Dim InxiInstance As New Inxi(InxiHardwareType.System)
         Dim HardwareInfo As HardwareInfo = InxiInstance.Hardware
         Assert.IsNotNull(InxiInstance)
         Assert.IsNotNull(HardwareInfo)
