@@ -16,12 +16,12 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Partition
+Public Class WindowsLogicalPartition
 
     ''' <summary>
-    ''' The udev ID of drive partition
+    ''' The drive letter of drive partition
     ''' </summary>
-    Public ReadOnly ID As String
+    Public ReadOnly Letter As String
     ''' <summary>
     ''' The filesystem of partition
     ''' </summary>
@@ -36,10 +36,10 @@ Public Class Partition
     Public ReadOnly Used As String
 
     ''' <summary>
-    ''' Installs specified values parsed by Inxi to the class
+    ''' Installs specified values parsed to the class
     ''' </summary>
-    Friend Sub New(ID As String, FileSystem As String, Size As String, Used As String)
-        Me.ID = ID
+    Friend Sub New(Letter As String, FileSystem As String, Size As String, Used As String)
+        Me.Letter = Letter
         Me.FileSystem = FileSystem
         Me.Size = Size
         Me.Used = Used
