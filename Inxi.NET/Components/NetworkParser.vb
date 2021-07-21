@@ -42,13 +42,15 @@ Module NetworkParser
         Dim NetState As String = ""
         Dim NetMacAddress As String = ""
         Dim NetDeviceID As String = ""
+        Dim NetBusID As String = ""
+        Dim NetChipID As String = ""
 
         If IsUnix() Then
             If IsMacOS() Then
-                'TODO: Name, Driver, DriverVersion, and State not implemented in macOS.
+                'TODO: Name, Driver, DriverVersion, Bus ID, Chip ID, and State not implemented in macOS.
                 'Check for data type
                 Debug("Checking for data type...")
-                Debug("TODO: Name, Driver, DriverVersion, and State not implemented in macOS.")
+                Debug("TODO: Name, Driver, DriverVersion, Bus ID, Chip ID, and State not implemented in macOS.")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPNetworkDataType" Then
                         Debug("DataType found: SPNetworkDataType...")
@@ -65,16 +67,18 @@ Module NetworkParser
                             NetSpeed = EthernetDict("MediaSubType").ToObject
                             NetMacAddress = EthernetDict("MAC Address").ToObject
                             NetDeviceID = NetDict("interface").ToObject
-                            Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
+                            Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}, NetChipID: {7}, NetBusID: {8}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID, NetChipID, NetBusID)
 
                             'Create instance of network class
-                            Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                            Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID, NetChipID, NetBusID)
                             NetworkParsed.Add(NetName, Network)
                             Debug("Added {0} to the list of parsed network cards.", NetName)
                             NetDuplex = ""
                             NetSpeed = ""
                             NetMacAddress = ""
                             NetDeviceID = ""
+                            NetChipID = ""
+                            NetBusID = ""
                         Next
                     End If
                 Next
@@ -98,13 +102,15 @@ Module NetworkParser
                         NetState = InxiNetwork.SelectTokenKeyEndingWith("state")
                         NetMacAddress = InxiNetwork.SelectTokenKeyEndingWith("mac")
                         NetDeviceID = InxiNetwork.SelectTokenKeyEndingWith("IF")
+                        NetBusID = InxiNetwork.SelectTokenKeyEndingWith("bus ID")
+                        NetChipID = InxiNetwork.SelectTokenKeyEndingWith("chip ID")
                         NetworkCycled = True 'Ensures that all info is filled.
                     End If
 
                     'Create instance of network class
                     If NetworkCycled Then
-                        Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
-                        Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                        Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}, NetChipID: {7}, NetBusID: {8}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID, NetChipID, NetBusID)
+                        Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID, NetChipID, NetBusID)
                         NetworkParsed.Add(NetName, Network)
                         Debug("Added {0} to the list of parsed network cards.", NetName)
                         NetName = ""
@@ -115,6 +121,8 @@ Module NetworkParser
                         NetState = ""
                         NetMacAddress = ""
                         NetDeviceID = ""
+                        NetChipID = ""
+                        NetBusID = ""
                         NetworkCycled = False
                     End If
                 Next
@@ -125,10 +133,10 @@ Module NetworkParser
             Debug("Selecting entries from Win32_PnPSignedDriver with device class of 'NET'...")
             Dim NetworkDrivers As New ManagementObjectSearcher("SELECT * FROM Win32_PnPSignedDriver WHERE DeviceClass='NET'")
 
-            'TODO: Network driver duplex not implemented in Windows
+            'TODO: Network driver duplex and bus ID not implemented in Windows
             'Get information of network cards
             Debug("Getting the base objects...")
-            Debug("TODO: Network driver duplex not implemented in Windows")
+            Debug("TODO: Network driver duplex and bus ID not implemented in Windows")
             For Each Networking As ManagementBaseObject In Networks.Get
                 'Get information of a network card
                 NetName = Networking("Name")
@@ -137,16 +145,17 @@ Module NetworkParser
                 NetState = Networking("NetConnectionStatus")
                 NetMacAddress = Networking("MACAddress")
                 NetDeviceID = Networking("DeviceID")
+                NetChipID = Networking("PNPDeviceID")
                 For Each NetworkDriver As ManagementBaseObject In NetworkDrivers.Get
                     If NetworkDriver("Description") = NetName Then
                         NetDriverVersion = NetworkDriver("DriverVersion")
                         Exit For
                     End If
                 Next
-                Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID)
+                Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}, NetChipID: {7}, NetBusID: {8}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID, NetChipID, NetBusID)
 
                 'Create instance of network class
-                Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID)
+                Network = New Network(NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetMacAddress, NetDeviceID, NetChipID, NetBusID)
                 NetworkParsed.AddIfNotFound(NetName, Network)
                 Debug("Added {0} to the list of parsed network cards.", NetName)
             Next

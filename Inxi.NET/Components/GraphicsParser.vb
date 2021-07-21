@@ -36,13 +36,15 @@ Module GraphicsParser
         Dim GPUName As String
         Dim GPUDriver As String
         Dim GPUDriverVersion As String
+        Dim GPUBusID As String
+        Dim GPUChipID As String
 
         If IsUnix() Then
             If IsMacOS() Then
-                'TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).
+                'TODO: GPU Driver, bus ID, and driver version not implemented (maybe kexts (kernel extensions) provide this information).
                 'Check for data type
                 Debug("Checking for data type...")
-                Debug("TODO: GPU Driver and driver version not implemented (maybe kexts (kernel extensions) provide this information).")
+                Debug("TODO: GPU Driver, bus ID, and driver version not implemented (maybe kexts (kernel extensions) provide this information).")
                 For Each DataType As NSDictionary In SystemProfilerToken
                     If DataType("_dataType").ToObject = "SPDisplaysDataType" Then
                         Debug("DataType found: SPDisplaysDataType...")
@@ -52,10 +54,11 @@ Module GraphicsParser
                         Debug("Enumerating graphics cards...")
                         For Each GraphicsDict As NSDictionary In GraphicsEnum
                             GPUName = GraphicsDict("spdisplays_device-id").ToObject
-                            Debug("Got information. GPUName: {0}", GPUName)
+                            GPUChipID = GraphicsDict("spdisplays_vendor-id").ToObject
+                            Debug("Got information. GPUName: {0}, GPUChipID: {1}", GPUName)
 
                             'Create an instance of graphics class
-                            GPU = New Graphics(GPUName, "", "")
+                            GPU = New Graphics(GPUName, "", "", GPUChipID, "")
                             GPUParsed.Add(GPUName, GPU)
                             Debug("Added {0} to the list of parsed GPUs.", GPUName)
                         Next
@@ -69,10 +72,12 @@ Module GraphicsParser
                         GPUName = InxiGPU.SelectTokenKeyEndingWith("Device")
                         GPUDriver = InxiGPU.SelectTokenKeyEndingWith("driver")
                         GPUDriverVersion = InxiGPU.SelectTokenKeyEndingWith("v")
-                        Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}", GPUName, GPUDriver, GPUDriverVersion)
+                        GPUChipID = InxiGPU.SelectTokenKeyEndingWith("chip ID")
+                        GPUBusID = InxiGPU.SelectTokenKeyEndingWith("bus ID")
+                        Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}, GPUChipID: {3}, GPUBusID: {4}", GPUName, GPUDriver, GPUDriverVersion, GPUChipID, GPUBusID)
 
                         'Create an instance of graphics class
-                        GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
+                        GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion, GPUChipID, GPUBusID)
                         GPUParsed.Add(GPUName, GPU)
                         Debug("Added {0} to the list of parsed GPUs.", GPUName)
                     End If
@@ -82,18 +87,22 @@ Module GraphicsParser
             Debug("Selecting entries from Win32_VideoController...")
             Dim GraphicsCards As New ManagementObjectSearcher("SELECT * FROM Win32_VideoController")
 
-            'Get information of graphics cards
+            'TODO: Bus ID not implemented in Windows
+            'Get information of sound cards
             Debug("Getting the base objects...")
+            Debug("TODO: Bus ID not implemented in Windows.")
             For Each Graphics As ManagementBaseObject In GraphicsCards.Get
                 Try
                     'Get information of a graphics card
                     GPUName = Graphics("Caption")
                     GPUDriver = Graphics("InstalledDisplayDrivers")
                     GPUDriverVersion = Graphics("DriverVersion")
-                    Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}", GPUName, GPUDriver, GPUDriverVersion)
+                    GPUChipID = Graphics("PNPDeviceID")
+                    GPUBusID = ""
+                    Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}, GPUChipID: {3}, GPUBusID: {4}", GPUName, GPUDriver, GPUDriverVersion, GPUChipID, GPUBusID)
 
                     'Create an instance of graphics class
-                    GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion)
+                    GPU = New Graphics(GPUName, GPUDriver, GPUDriverVersion, GPUChipID, GPUBusID)
                     GPUParsed.AddIfNotFound(GPUName, GPU)
                     Debug("Added {0} to the list of parsed GPUs.", GPUName)
                 Catch ex As Exception

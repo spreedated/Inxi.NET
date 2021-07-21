@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2021.4:
-- 
+- Added new properties to modules
 
 2021.3:
 - Added debugging

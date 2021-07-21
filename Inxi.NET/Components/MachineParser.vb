@@ -43,12 +43,15 @@ Module MachineParser
                         For Each SoftwareDict As NSDictionary In SoftwareEnum
                             'Get information of machine
                             Dim Type As String = If(SoftwareDict("machine_name").ToObject.ToString.Contains("MacBook"), "Laptop", "Desktop")
+                            Dim Product As String = SoftwareDict("machine_name").ToObject
+                            Dim System As String = "macOS"
+                            Dim Chassis As String = "Apple"
                             Dim MoboManufacturer As String = "Apple"
                             Dim MoboModel As String = SoftwareDict("machine_model").ToObject
-                            Debug("Got information. Type: {0}, MoboManufacturer: {1}, MoboModel: {2}", Type, MoboManufacturer, MoboModel)
+                            Debug("Got information. Type: {0}, Product: {1}, System: {2}, Chassis: {3}, MoboManufacturer: {4}, MoboModel: {5}", Type, Product, System, Chassis, MoboManufacturer, MoboModel)
 
                             'Create an instance of machine class
-                            MachInfo = New MachineInfo(Type, MoboManufacturer, MoboModel)
+                            MachInfo = New MachineInfo(Type, Product, System, Chassis, MoboManufacturer, MoboModel)
                         Next
                     End If
                 Next
@@ -57,12 +60,15 @@ Module MachineParser
                 For Each InxiSys In InxiToken.SelectTokenKeyEndingWith("Machine")
                     'Get information of system
                     Dim Type As String = InxiSys.SelectTokenKeyEndingWith("Type")
+                    Dim Product As String = InxiSys.SelectTokenKeyEndingWith("product")
+                    Dim System As String = InxiSys.SelectTokenKeyEndingWith("System")
+                    Dim Chassis As String = InxiSys.SelectTokenKeyEndingWith("Chassis")
                     Dim MoboManufacturer As String = InxiSys.SelectTokenKeyEndingWith("Mobo")
                     Dim MoboModel As String = InxiSys.SelectTokenKeyEndingWith("model")
-                    Debug("Got information. Type: {0}, MoboManufacturer: {1}, MoboModel: {2}", Type, MoboManufacturer, MoboModel)
+                    Debug("Got information. Type: {0}, Product: {1}, System: {2}, Chassis: {3}, MoboManufacturer: {4}, MoboModel: {5}", Type, Product, System, Chassis, MoboManufacturer, MoboModel)
 
                     'Create an instance of system class
-                    MachInfo = New MachineInfo(Type, MoboManufacturer, MoboModel)
+                    MachInfo = New MachineInfo(Type, Product, System, Chassis, MoboManufacturer, MoboModel)
                 Next
             End If
         Else
@@ -75,26 +81,42 @@ Module MachineParser
 
             'Get information of system and motherboard
             Dim [Type] As String = ""
+            Dim Product As String = ""
+            Dim System As String = ""
+            Dim Chassis As String = ""
             Dim MoboModel As String = ""
             Dim MoboManufacturer As String = ""
+
+            'Get information for ChassisSKUNumber
             Debug("Getting the base objects...")
             For Each WMISystemBase As ManagementBaseObject In WMISystem.Get
                 If WMISystemBase("Version").StartsWith("10") And Environment.OSVersion.Platform = PlatformID.Win32NT Then 'If running on Windows 10
-                    Debug("Target is running Windows 10.")
+                    Debug("Target is running Windows 10/11.")
                     For Each MachineBase As ManagementBaseObject In WMIMachine.Get
                         [Type] = MachineBase("ChassisSKUNumber")
                     Next
                 End If
             Next
+
+            'TODO: Chassis not implemented in Windows
+            'Get informaiton for machine model and family
+            Debug("Getting the base objects...")
+            Debug("TODO: Chassis not implemented in Windows")
+            For Each MachineBase As ManagementBaseObject In WMIMachine.Get
+                Product = MachineBase("Model")
+                System = MachineBase("SystemFamily")
+            Next
+
+            'Get information for model and manufacturer
             Debug("Getting the base objects...")
             For Each MoboBase As ManagementBaseObject In WMIBoard.Get
                 MoboModel = MoboBase("Model")
                 MoboManufacturer = MoboBase("Manufacturer")
             Next
-            Debug("Got information. Type: {0}, MoboManufacturer: {1}, MoboModel: {2}", [Type], MoboManufacturer, MoboModel)
+            Debug("Got information. Type: {0}, Product: {1}, System: {2}, Chassis: {3}, MoboManufacturer: {4}, MoboModel: {5}", Type, Product, System, Chassis, MoboManufacturer, MoboModel)
 
             'Create an instance of system class
-            MachInfo = New MachineInfo(Type, MoboManufacturer, MoboModel)
+            MachInfo = New MachineInfo(Type, Product, System, Chassis, MoboManufacturer, MoboModel)
         End If
 
 #Disable Warning BC42104

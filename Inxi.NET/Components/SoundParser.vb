@@ -36,13 +36,15 @@ Module SoundParser
         Dim SPUName As String
         Dim SPUVendor As String
         Dim SPUDriver As String
+        Dim SPUBusID As String
+        Dim SPUChipID As String
 
         If IsUnix() Then
             If IsMacOS() Then
                 'TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
                 'Create an instance of sound class
                 Debug("TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use ""system_profiler SPAudioDataType -xml >> audio.plist"" and attach it to Issues.")
-                SPU = New Sound("Placeholder", "EoflaOE", "SoundParser")
+                SPU = New Sound("Placeholder", "EoflaOE", "SoundParser", "", "")
                 SPUParsed.AddIfNotFound("Placeholder", SPU)
                 Debug("Added Placeholder to the list of parsed SPUs.")
             Else
@@ -53,10 +55,12 @@ Module SoundParser
                         SPUName = InxiSPU.SelectTokenKeyEndingWith("Device")
                         SPUVendor = InxiSPU.SelectTokenKeyEndingWith("vendor")
                         SPUDriver = InxiSPU.SelectTokenKeyEndingWith("driver")
-                        Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}", SPUName, SPUDriver, SPUVendor)
+                        SPUBusID = InxiSPU.SelectTokenKeyEndingWith("bus ID")
+                        SPUChipID = InxiSPU.SelectTokenKeyEndingWith("chip ID")
+                        Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID)
 
                         'Create an instance of sound class
-                        SPU = New Sound(SPUName, SPUVendor, SPUDriver)
+                        SPU = New Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID)
                         SPUParsed.AddIfNotFound(SPUName, SPU)
                         Debug("Added {0} to the list of parsed SPUs.", SPUName)
                     End If
@@ -75,10 +79,12 @@ Module SoundParser
                 SPUName = Device("ProductName")
                 SPUVendor = Device("Manufacturer")
                 SPUDriver = ""
-                Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}", SPUName, SPUDriver, SPUVendor)
+                SPUChipID = Device("DeviceID")
+                SPUBusID = ""
+                Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID)
 
                 'Create an instance of sound class
-                SPU = New Sound(SPUName, SPUVendor, SPUDriver)
+                SPU = New Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID)
                 SPUParsed.AddIfNotFound(SPUName, SPU)
                 Debug("Added {0} to the list of parsed SPUs.", SPUName)
             Next

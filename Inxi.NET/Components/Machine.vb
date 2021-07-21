@@ -23,6 +23,18 @@ Public Class MachineInfo
     ''' </summary>
     Public ReadOnly Type As String
     ''' <summary>
+    ''' Machine product name
+    ''' </summary>
+    Public ReadOnly Product As String
+    ''' <summary>
+    ''' Machine system name
+    ''' </summary>
+    Public ReadOnly System As String
+    ''' <summary>
+    ''' Machine chassis
+    ''' </summary>
+    Public ReadOnly Chassis As String
+    ''' <summary>
     ''' Motherboard manufacturer
     ''' </summary>
     Public ReadOnly MoboManufacturer As String
@@ -34,8 +46,11 @@ Public Class MachineInfo
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Type As String, MoboManufacturer As String, MoboModel As String)
+    Friend Sub New(Type As String, Product As String, System As String, Chassis As String, MoboManufacturer As String, MoboModel As String)
         Me.Type = Type
+        Me.Product = Product
+        Me.System = System
+        Me.Chassis = Chassis
         Me.MoboManufacturer = MoboManufacturer
         Me.MoboModel = MoboModel
     End Sub

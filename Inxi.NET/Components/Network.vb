@@ -50,12 +50,19 @@ Public Class Network
     ''' Device identifier
     ''' </summary>
     Public ReadOnly DeviceID As String
-
+    ''' <summary>
+    ''' Device chip ID
+    ''' </summary>
+    Public ReadOnly ChipID As String
+    ''' <summary>
+    ''' Device bus ID
+    ''' </summary>
+    Public ReadOnly BusID As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Driver As String, DriverVersion As String, Duplex As String, Speed As String, State As String, MacAddress As String, DeviceID As String)
+    Friend Sub New(Name As String, Driver As String, DriverVersion As String, Duplex As String, Speed As String, State As String, MacAddress As String, DeviceID As String, ChipID As String, BusID As String)
         Me.Name = Name
         Me.Driver = Driver
         Me.DriverVersion = DriverVersion
@@ -64,6 +71,8 @@ Public Class Network
         Me.State = State
         Me.MacAddress = MacAddress
         Me.DeviceID = DeviceID
+        Me.ChipID = ChipID
+        Me.BusID = BusID
     End Sub
 
 End Class

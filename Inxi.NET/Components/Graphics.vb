@@ -30,14 +30,24 @@ Public Class Graphics
     ''' Driver version
     ''' </summary>
     Public ReadOnly DriverVersion As String
+    ''' <summary>
+    ''' Device chip ID
+    ''' </summary>
+    Public ReadOnly ChipID As String
+    ''' <summary>
+    ''' Device bus ID
+    ''' </summary>
+    Public ReadOnly BusID As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Driver As String, DriverVersion As String)
+    Friend Sub New(Name As String, Driver As String, DriverVersion As String, ChipID As String, BusID As String)
         Me.Name = Name
         Me.Driver = Driver
         Me.DriverVersion = DriverVersion
+        Me.ChipID = ChipID
+        Me.BusID = BusID
     End Sub
 
 End Class
