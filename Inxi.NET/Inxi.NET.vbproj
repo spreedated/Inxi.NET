@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>InxiFrontend</RootNamespace>
-    <TargetFrameworks>netcoreapp2.1;net45;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp3.1;net5.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
