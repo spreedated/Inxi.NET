@@ -30,7 +30,7 @@ Public Class Inxi
     ''' Intializes the new instance of Inxi class and parses hardware
     ''' </summary>
     Public Sub New()
-        Me.New("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", [Enum].GetValues(GetType(InxiHardwareType)).Cast(Of Integer)().Sum)
+        Me.New("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", "/usr/bin/json_xs", [Enum].GetValues(GetType(InxiHardwareType)).Cast(Of Integer)().Sum)
     End Sub
 
     ''' <summary>
@@ -38,7 +38,7 @@ Public Class Inxi
     ''' </summary>
     ''' <param name="HardwareTypes">Hardware types to parse</param>
     Public Sub New(HardwareTypes As InxiHardwareType)
-        Me.New("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", HardwareTypes)
+        Me.New("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", "/usr/bin/json_xs", HardwareTypes)
     End Sub
 
     ''' <summary>
@@ -46,27 +46,39 @@ Public Class Inxi
     ''' </summary>
     ''' <param name="InxiPath">Path to Inxi executable. It's usually /usr/bin/inxi. Ignored in Windows.</param>
     ''' <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs. Ignored in Windows.</param>
+    ''' <param name="JsonXsPath">Path to JsonXS executable. It's usually /usr/bin/json_xs. Ignored in Windows.</param>
     ''' <param name="HardwareTypes">Hardware types to parse</param>
-    Public Sub New(InxiPath As String, CpanelJsonXsPath As String, HardwareTypes As InxiHardwareType)
+    Public Sub New(InxiPath As String, CpanelJsonXsPath As String, JsonXsPath As String, HardwareTypes As InxiHardwareType)
+        Dim FrontendVersion As String = GetExecutingAssembly().GetName().Version.ToString()
         If IsUnix() Then
-            Debug("Inxi.NET {0} running on Unix.", GetExecutingAssembly().GetName().Version.ToString())
+            Debug("Inxi.NET {0} running on Unix.", FrontendVersion)
             Debug("Inxi parse flags: {0}", HardwareTypes)
+
+            'Check to see if we're on macOS or on regular Unix
             If IsMacOS() Then
+                'Use System Profiler to get hardware information
                 Debug("Type: macOS")
                 Hardware = New HardwareInfo(InxiPath, HardwareTypes)
             Else
+                'Use Inxi to get hardware information
                 Debug("Type: Unix")
-                Debug("Looking for {0} and {1}...", InxiPath, CpanelJsonXsPath)
-                If File.Exists(InxiPath) And File.Exists(CpanelJsonXsPath) Then
-                    Debug("They're installed.")
-                    Hardware = New HardwareInfo(InxiPath, HardwareTypes)
+                Debug("Looking for Inxi executable at {0}...", InxiPath)
+                If File.Exists(InxiPath) Then
+                    Debug("Looking for Json XS perl module binary at {0} or {1}...", CpanelJsonXsPath, JsonXsPath)
+                    If File.Exists(CpanelJsonXsPath) Or File.Exists(JsonXsPath) Then
+                        Debug("Found Json XS perl module!")
+                        Hardware = New HardwareInfo(InxiPath, HardwareTypes)
+                    Else
+                        Debug("Json XS perl module is not installed.")
+                        Throw New InvalidOperationException("You must have libcpanel-json-xs-perl or libjson-xs-perl installed. (Could not find """ + CpanelJsonXsPath + """ or """ + JsonXsPath + """.)")
+                    End If
                 Else
-                    Debug("They're not installed.")
-                    Throw New InvalidOperationException("You must have Inxi and libcpanel-json-xs-perl installed. (Could not find """ + InxiPath + """ and """ + CpanelJsonXsPath + """.)")
+                    Debug("Inxi is not installed.")
+                    Throw New InvalidOperationException("You must have Inxi installed. (Could not find """ + InxiPath + """.)")
                 End If
             End If
         Else
-            Debug("Inxi.NET {0} running on Windows.", GetExecutingAssembly().GetName().Version.ToString())
+            Debug("Inxi.NET {0} running on Windows.", FrontendVersion)
             Hardware = New HardwareInfo(InxiPath, HardwareTypes)
         End If
     End Sub

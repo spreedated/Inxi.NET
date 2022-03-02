@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>2022.0.0:
-- 
+- Added support for libjson-xs-perl
 
 2021.4.0.1:
 - Updated libraries for use with KS 0.0.18.0
@@ -69,8 +69,8 @@
     <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2021.5.0.0</AssemblyVersion>
-    <FileVersion>2021.5.0.0</FileVersion>
+    <AssemblyVersion>2022.0.0.0</AssemblyVersion>
+    <FileVersion>2022.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
