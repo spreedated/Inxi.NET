@@ -17,6 +17,14 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>../Inxi.NET.Tests.Bin/</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>../Inxi.NET.Tests.Bin/</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Inxi.NET\Inxi.NET.vbproj" />
   </ItemGroup>
