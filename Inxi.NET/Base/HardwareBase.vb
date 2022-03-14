@@ -16,28 +16,11 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class PCMemory
+Public MustInherit Class HardwareBase
 
     ''' <summary>
-    ''' Total memory installed
+    ''' The hardware name
     ''' </summary>
-    Public ReadOnly TotalMemory As String
-    ''' <summary>
-    ''' Used memory
-    ''' </summary>
-    Public ReadOnly UsedMemory As String
-    ''' <summary>
-    ''' Free memory
-    ''' </summary>
-    Public ReadOnly FreeMemory As String
-
-    ''' <summary>
-    ''' Installs specified values parsed by Inxi to the class
-    ''' </summary>
-    Friend Sub New(TotalMemory As String, UsedMemory As String, FreeMemory As String)
-        Me.TotalMemory = TotalMemory
-        Me.UsedMemory = UsedMemory
-        Me.FreeMemory = FreeMemory
-    End Sub
+    Public MustOverride ReadOnly Property Name As String
 
 End Class

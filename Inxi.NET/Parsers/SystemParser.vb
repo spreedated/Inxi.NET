@@ -21,14 +21,16 @@ Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 
-Module SystemParser
+Class SystemParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses system info
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseSystem(InxiToken As JToken, SystemProfilerToken As NSArray) As SystemInfo
-        Dim SysInfo As SystemInfo
+    Overrides Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
+        Dim SysInfo As HardwareBase
         If IsUnix() Then
             If IsMacOS() Then
                 'TODO: Bits, DE, WM, and DM not implemented in macOS.
@@ -98,4 +100,4 @@ Module SystemParser
 #Enable Warning BC42104
     End Function
 
-End Module
+End Class

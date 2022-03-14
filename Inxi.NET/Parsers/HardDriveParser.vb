@@ -21,15 +21,17 @@ Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module HardDriveParser
+Class HardDriveParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses hard drives
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseHardDrives(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardDrive)
+    Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
         'Variables (global)
-        Dim HDDParsed As New Dictionary(Of String, HardDrive)
+        Dim HDDParsed As New Dictionary(Of String, HardwareBase)
         Dim DriveParts As New Dictionary(Of String, Partition)
         Dim Drive As HardDrive
         Dim DrivePart As Partition
@@ -185,4 +187,4 @@ Module HardDriveParser
         Return HDDParsed
     End Function
 
-End Module
+End Class

@@ -16,38 +16,39 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Sound
+Public Class Partition
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' Name of sound card
+    ''' The name of drive partition (usually udev ID)
     ''' </summary>
-    Public ReadOnly Name As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' The maker of sound card
+    ''' The udev ID of drive partition (compatibility)
     ''' </summary>
-    Public ReadOnly Vendor As String
+    Public ReadOnly Property ID As String
     ''' <summary>
-    ''' Driver software used for sound card
+    ''' The filesystem of partition
     ''' </summary>
-    Public ReadOnly Driver As String
+    Public ReadOnly Property FileSystem As String
     ''' <summary>
-    ''' Device chip ID
+    ''' The size of partition
     ''' </summary>
-    Public ReadOnly ChipID As String
+    Public ReadOnly Property Size As String
     ''' <summary>
-    ''' Device bus ID
+    ''' The used size of partition
     ''' </summary>
-    Public ReadOnly BusID As String
+    Public ReadOnly Property Used As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Vendor As String, Driver As String, ChipID As String, BusID As String)
-        Me.Name = Name
-        Me.Vendor = Vendor
-        Me.Driver = Driver
-        Me.ChipID = ChipID
-        Me.BusID = BusID
+    Friend Sub New(ID As String, FileSystem As String, Size As String, Used As String)
+        Me.ID = ID
+        Name = ID
+        Me.FileSystem = FileSystem
+        Me.Size = Size
+        Me.Used = Used
     End Sub
 
 End Class

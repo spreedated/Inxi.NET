@@ -22,14 +22,16 @@ Imports System.Management
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module NetworkParser
+Class NetworkParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses network cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseNetwork(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Network)
-        Dim NetworkParsed As New Dictionary(Of String, Network)
+    Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim NetworkParsed As New Dictionary(Of String, HardwareBase)
         Dim Network As Network
         Dim NetworkCycled As Boolean
 
@@ -165,4 +167,4 @@ Module NetworkParser
         Return NetworkParsed
     End Function
 
-End Module
+End Class

@@ -24,14 +24,16 @@ Imports System.Runtime.InteropServices
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module ProcessorParser
+Class ProcessorParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses processors
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseProcessors(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Processor)
-        Dim CPUParsed As New Dictionary(Of String, Processor)
+    Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim CPUParsed As New Dictionary(Of String, HardwareBase)
         Dim CPU As Processor
         Dim CPUSpeedReady As Boolean
 
@@ -131,7 +133,7 @@ Module ProcessorParser
         Return CPUParsed
     End Function
 
-End Module
+End Class
 
 Module CPUFeatures
 
@@ -141,7 +143,7 @@ Module CPUFeatures
     ''' <param name="processorFeature">An SSE version</param>
     ''' <returns>True if supported, false if not supported</returns>
     <DllImport("kernel32.dll")>
-    Friend Function IsProcessorFeaturePresent(ByVal processorFeature As SSEnum) As <MarshalAs(UnmanagedType.Bool)> Boolean
+    Friend Function IsProcessorFeaturePresent(processorFeature As SSEnum) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
     ''' <summary>

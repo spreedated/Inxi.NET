@@ -25,7 +25,7 @@ Public Module InxiTrace
     ''' Indicates whether the debug data is received or not. It can be used to write debug data to debugger.
     ''' </summary>
     ''' <param name="Message">A message</param>
-    Public Event DebugDataReceived(ByVal Message As String, ByVal PlainMessage As String)
+    Public Event DebugDataReceived(Message As String, PlainMessage As String)
     ''' <summary>
     ''' Event when specific hardware was parsed
     ''' </summary>
@@ -36,7 +36,7 @@ Public Module InxiTrace
     ''' Write a debug message
     ''' </summary>
     ''' <param name="Message">A message</param>
-    Friend Sub Debug(ByVal Message As String)
+    Friend Sub Debug(Message As String)
         'Get trace information
         Dim STrace As New StackTrace(True)
         Dim Source As String = Path.GetFileName(STrace.GetFrame(1).GetFileName)
@@ -61,7 +61,7 @@ Public Module InxiTrace
     ''' Write a debug message
     ''' </summary>
     ''' <param name="Message">A message</param>
-    Friend Sub Debug(ByVal Message As String, ParamArray Values() As Object)
+    Friend Sub Debug(Message As String, ParamArray Values() As Object)
         'Get trace information
         Dim STrace As New StackTrace(True)
         Dim Source As String = Path.GetFileName(STrace.GetFrame(1).GetFileName)

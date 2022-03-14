@@ -50,6 +50,7 @@ Module InxiConsoleTest
 
             Console.WriteLine("------ HDD Info:")
             For Each HDDInfo As HardDrive In HardwareInfo.HDD.Values
+                Console.WriteLine(">> HDD Name: {0}", HDDInfo.Name)
                 Console.WriteLine(">> HDD Vendor: {0}", HDDInfo.Vendor)
                 Console.WriteLine(">> HDD Model: {0}", HDDInfo.Model)
                 Console.WriteLine(">> HDD udev ID: {0}", HDDInfo.ID)
@@ -59,6 +60,7 @@ Module InxiConsoleTest
                 Console.WriteLine(">> HDD Mounted Partitions Count: {0}", HDDInfo.Partitions.Count)
                 Console.WriteLine(Environment.NewLine + "------ Partition Info:")
                 For Each PartInfo As Partition In HDDInfo.Partitions.Values
+                    Console.WriteLine(">> Partition Name: {0}", PartInfo.Name)
                     Console.WriteLine(">> Partition udev ID: {0}", PartInfo.ID)
                     Console.WriteLine(">> Partition Size: {0}", PartInfo.Size)
                     Console.WriteLine(">> Partition Used: {0}", PartInfo.Used)
@@ -86,13 +88,14 @@ Module InxiConsoleTest
             Next
 
             Console.WriteLine("------ System Memory Info:")
+            Console.WriteLine(">> Memory: {0}", HardwareInfo.RAM.Name)
             Console.WriteLine(">> Free Memory: {0}", HardwareInfo.RAM.FreeMemory)
             Console.WriteLine(">> Total Memory: {0}", HardwareInfo.RAM.TotalMemory)
             Console.WriteLine(">> Used Memory: {0}", HardwareInfo.RAM.UsedMemory)
 
             Console.WriteLine("------ System Info:")
             Console.WriteLine(">> Hostname: {0}", HardwareInfo.System.Hostname)
-            Console.WriteLine(">> System Distro: {0}", HardwareInfo.System.SystemDistro)
+            Console.WriteLine(">> System Distro (Name): {0}", HardwareInfo.System.SystemDistro)
             Console.WriteLine(">> System Version: {0}", HardwareInfo.System.SystemVersion)
             Console.WriteLine(">> System Bits: {0}-bit", HardwareInfo.System.SystemBits)
             Console.WriteLine(">> Desktop Manager: {0}", HardwareInfo.System.DesktopManager)
@@ -100,11 +103,15 @@ Module InxiConsoleTest
             Console.WriteLine(">> Display Manager: {0}", HardwareInfo.System.DisplayManager)
 
             Console.WriteLine("------ BIOS Info:")
-            Console.WriteLine(">> BIOS: {0}", HardwareInfo.BIOS.BIOS)
+            Console.WriteLine(">> BIOS: {0}", HardwareInfo.BIOS.Name)
             Console.WriteLine(">> Date: {0}", HardwareInfo.BIOS.Date)
             Console.WriteLine(">> Version: {0}", HardwareInfo.BIOS.Version)
 
             Console.WriteLine("------ Machine Info:")
+            Console.WriteLine(">> Name: {0}", HardwareInfo.Machine.Name)
+            Console.WriteLine(">> Product: {0}", HardwareInfo.Machine.Product)
+            Console.WriteLine(">> System: {0}", HardwareInfo.Machine.System)
+            Console.WriteLine(">> Chassis: {0}", HardwareInfo.Machine.Chassis)
             Console.WriteLine(">> Type: {0}", HardwareInfo.Machine.Type)
             Console.WriteLine(">> Motherboard Manufacturer: {0}", HardwareInfo.Machine.MoboManufacturer)
             Console.WriteLine(">> Motherboard Model: {0}", HardwareInfo.Machine.MoboModel)

@@ -16,33 +16,19 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Partition
+Imports Claunia.PropertyList
+Imports Newtonsoft.Json.Linq
+
+Public Interface IHardwareParser
 
     ''' <summary>
-    ''' The udev ID of drive partition
+    ''' The base hardware parser
     ''' </summary>
-    Public ReadOnly ID As String
-    ''' <summary>
-    ''' The filesystem of partition
-    ''' </summary>
-    Public ReadOnly FileSystem As String
-    ''' <summary>
-    ''' The size of partition
-    ''' </summary>
-    Public ReadOnly Size As String
-    ''' <summary>
-    ''' The used size of partition
-    ''' </summary>
-    Public ReadOnly Used As String
+    Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
 
     ''' <summary>
-    ''' Installs specified values parsed by Inxi to the class
+    ''' The base hardware parser
     ''' </summary>
-    Friend Sub New(ID As String, FileSystem As String, Size As String, Used As String)
-        Me.ID = ID
-        Me.FileSystem = FileSystem
-        Me.Size = Size
-        Me.Used = Used
-    End Sub
+    Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
 
-End Class
+End Interface

@@ -17,35 +17,40 @@
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Public Class SystemInfo
+    Inherits HardwareBase
 
-    ''' <summary>
-    ''' Host name
-    ''' </summary>
-    Public ReadOnly Hostname As String
-    ''' <summary>
-    ''' Linux kernel version or Windows NT kernel version
-    ''' </summary>
-    Public ReadOnly SystemVersion As String
-    ''' <summary>
-    ''' System bits
-    ''' </summary>
-    Public ReadOnly SystemBits As Integer
     ''' <summary>
     ''' System name
     ''' </summary>
-    Public ReadOnly SystemDistro As String
+    Public Overrides ReadOnly Property Name As String
+    ''' <summary>
+    ''' Host name
+    ''' </summary>
+    Public ReadOnly Property Hostname As String
+    ''' <summary>
+    ''' Linux kernel version or Windows NT kernel version
+    ''' </summary>
+    Public ReadOnly Property SystemVersion As String
+    ''' <summary>
+    ''' System bits
+    ''' </summary>
+    Public ReadOnly Property SystemBits As Integer
+    ''' <summary>
+    ''' System name
+    ''' </summary>
+    Public ReadOnly Property SystemDistro As String
     ''' <summary>
     ''' Desktop manager
     ''' </summary>
-    Public ReadOnly DesktopManager As String
+    Public ReadOnly Property DesktopManager As String
     ''' <summary>
     ''' Window manager
     ''' </summary>
-    Public ReadOnly WindowManager As String
+    Public ReadOnly Property WindowManager As String
     ''' <summary>
     ''' Display manager
     ''' </summary>
-    Public ReadOnly DisplayManager As String
+    Public ReadOnly Property DisplayManager As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
@@ -55,6 +60,7 @@ Public Class SystemInfo
         Me.SystemVersion = SystemVersion
         Me.SystemBits = SystemBits
         Me.SystemDistro = SystemDistro
+        Name = SystemDistro
         Me.DesktopManager = DesktopManager
         Me.WindowManager = WindowManager
         Me.DisplayManager = DisplayManager

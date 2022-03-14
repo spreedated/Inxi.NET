@@ -21,13 +21,15 @@ Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 
-Module BIOSParser
+Class BIOSParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses BIOS info
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseBIOS(InxiToken As JToken, SystemProfilerToken As NSArray) As BIOS
+    Overrides Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
         Dim BIOSInfo As BIOS
         If IsUnix() Then
             If IsMacOS() Then
@@ -69,4 +71,4 @@ Module BIOSParser
 #Enable Warning BC42104
     End Function
 
-End Module
+End Class

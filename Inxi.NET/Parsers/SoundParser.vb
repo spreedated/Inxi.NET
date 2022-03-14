@@ -22,14 +22,16 @@ Imports System.Management
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module SoundParser
+Class SoundParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses sound cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseSound(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Sound)
-        Dim SPUParsed As New Dictionary(Of String, Sound)
+    Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim SPUParsed As New Dictionary(Of String, HardwareBase)
         Dim SPU As Sound
 
         'SPU information fields
@@ -93,4 +95,4 @@ Module SoundParser
         Return SPUParsed
     End Function
 
-End Module
+End Class

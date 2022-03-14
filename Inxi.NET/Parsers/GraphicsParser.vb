@@ -22,14 +22,16 @@ Imports System.Management
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module GraphicsParser
+Class GraphicsParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses graphics cards
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseGraphics(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, Graphics)
-        Dim GPUParsed As New Dictionary(Of String, Graphics)
+    Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim GPUParsed As New Dictionary(Of String, HardwareBase)
         Dim GPU As Graphics
 
         'GPU information fields
@@ -115,4 +117,4 @@ Module GraphicsParser
         Return GPUParsed
     End Function
 
-End Module
+End Class

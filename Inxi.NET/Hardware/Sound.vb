@@ -16,33 +16,39 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class WindowsLogicalPartition
+Public Class Sound
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' The drive letter of drive partition
+    ''' Name of sound card
     ''' </summary>
-    Public ReadOnly Letter As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' The filesystem of partition
+    ''' The maker of sound card
     ''' </summary>
-    Public ReadOnly FileSystem As String
+    Public ReadOnly Property Vendor As String
     ''' <summary>
-    ''' The size of partition
+    ''' Driver software used for sound card
     ''' </summary>
-    Public ReadOnly Size As String
+    Public ReadOnly Property Driver As String
     ''' <summary>
-    ''' The used size of partition
+    ''' Device chip ID
     ''' </summary>
-    Public ReadOnly Used As String
+    Public ReadOnly Property ChipID As String
+    ''' <summary>
+    ''' Device bus ID
+    ''' </summary>
+    Public ReadOnly Property BusID As String
 
     ''' <summary>
-    ''' Installs specified values parsed to the class
+    ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Letter As String, FileSystem As String, Size As String, Used As String)
-        Me.Letter = Letter
-        Me.FileSystem = FileSystem
-        Me.Size = Size
-        Me.Used = Used
+    Friend Sub New(Name As String, Vendor As String, Driver As String, ChipID As String, BusID As String)
+        Me.Name = Name
+        Me.Vendor = Vendor
+        Me.Driver = Driver
+        Me.ChipID = ChipID
+        Me.BusID = BusID
     End Sub
 
 End Class

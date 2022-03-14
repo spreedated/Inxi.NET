@@ -16,28 +16,18 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class BIOS
+Imports Claunia.PropertyList
+Imports Newtonsoft.Json.Linq
 
-    ''' <summary>
-    ''' BIOS (American Megatrends, Award, etc.)
-    ''' </summary>
-    Public ReadOnly BIOS As String
-    ''' <summary>
-    ''' BIOS Date
-    ''' </summary>
-    Public ReadOnly [Date] As String
-    ''' <summary>
-    ''' BIOS Version
-    ''' </summary>
-    Public ReadOnly Version As String
+Public MustInherit Class HardwareParserBase
+    Implements IHardwareParser
 
-    ''' <summary>
-    ''' Installs specified values parsed by Inxi to the class
-    ''' </summary>
-    Friend Sub New(BIOS As String, [Date] As String, Version As String)
-        Me.BIOS = BIOS
-        Me.[Date] = [Date]
-        Me.Version = Version
-    End Sub
+    Public Overridable Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase Implements IHardwareParser.Parse
+        Throw New NotImplementedException("This hardware parser is not implemented yet!")
+    End Function
+
+    Public Overridable Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase) Implements IHardwareParser.ParseAll
+        Throw New NotImplementedException("This hardware parser is not implemented yet!")
+    End Function
 
 End Class

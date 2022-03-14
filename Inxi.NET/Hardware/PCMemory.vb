@@ -16,48 +16,34 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class HardDrive
+Public Class PCMemory
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' The udev ID of hard drive
+    ''' Memory indicators
     ''' </summary>
-    Public ReadOnly ID As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' The size of the drive
+    ''' Total memory installed
     ''' </summary>
-    Public ReadOnly Size As String
+    Public ReadOnly TotalMemory As String
     ''' <summary>
-    ''' The model of the drive
+    ''' Used memory
     ''' </summary>
-    Public ReadOnly Model As String
+    Public ReadOnly UsedMemory As String
     ''' <summary>
-    ''' The make of the drive
+    ''' Free memory
     ''' </summary>
-    Public ReadOnly Vendor As String
-    ''' <summary>
-    ''' The speed of the drive
-    ''' </summary>
-    Public ReadOnly Speed As String
-    ''' <summary>
-    ''' The serial number
-    ''' </summary>
-    Public ReadOnly Serial As String
-    ''' <summary>
-    ''' List of partitions
-    ''' </summary>
-    Public ReadOnly Partitions As New Dictionary(Of String, Partition)
+    Public ReadOnly FreeMemory As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(ID As String, Size As String, Model As String, Vendor As String, Speed As String, Serial As String, Partitions As Dictionary(Of String, Partition))
-        Me.ID = ID
-        Me.Size = Size
-        Me.Model = Model
-        Me.Vendor = Vendor
-        Me.Speed = Speed
-        Me.Serial = Serial
-        Me.Partitions = Partitions
+    Friend Sub New(TotalMemory As String, UsedMemory As String, FreeMemory As String)
+        Me.TotalMemory = TotalMemory
+        Me.UsedMemory = UsedMemory
+        Me.FreeMemory = FreeMemory
+        Name = $"{UsedMemory}/{TotalMemory} - {FreeMemory} free"
     End Sub
 
 End Class

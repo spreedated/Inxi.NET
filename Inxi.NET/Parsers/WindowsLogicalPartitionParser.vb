@@ -30,13 +30,14 @@ Module WindowsLogicalPartitionParser
             Try
                 'Get information of a logical partition
                 Dim LogicalID As String = Part("DeviceID")
+                Dim LogicalName As String = Part("VolumeName")
                 Dim LogicalFileSystem As String = Part("FileSystem")
                 Dim LogicalSize As String = Part("Size")
                 Dim LogicalUsed As String = CULng(Part("Size") - Part("FreeSpace"))
                 Debug("Got information. LogicalID: {0}, LogicalFileSystem: {1}, LogicalSize: {2}, LogicalUsed: {3}", LogicalID, LogicalFileSystem, LogicalSize, LogicalUsed)
 
                 'Create an instance of logical partition class
-                DrivePart = New WindowsLogicalPartition(LogicalID, LogicalFileSystem, LogicalSize, LogicalUsed)
+                DrivePart = New WindowsLogicalPartition(LogicalID, LogicalName, LogicalFileSystem, LogicalSize, LogicalUsed)
                 DriveParts.Add("Logical partition " & LogicalID, DrivePart)
             Catch ex As Exception
                 Debug("Error: {0}", ex.Message)

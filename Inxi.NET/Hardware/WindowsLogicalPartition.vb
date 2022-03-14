@@ -16,38 +16,39 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Graphics
+Public Class WindowsLogicalPartition
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' Name of graphics card
+    ''' The name of drive partition
     ''' </summary>
-    Public ReadOnly Name As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' Driver software used for graphics card
+    ''' The drive letter of drive partition
     ''' </summary>
-    Public ReadOnly Driver As String
+    Public ReadOnly Property Letter As String
     ''' <summary>
-    ''' Driver version
+    ''' The filesystem of partition
     ''' </summary>
-    Public ReadOnly DriverVersion As String
+    Public ReadOnly Property FileSystem As String
     ''' <summary>
-    ''' Device chip ID
+    ''' The size of partition
     ''' </summary>
-    Public ReadOnly ChipID As String
+    Public ReadOnly Property Size As String
     ''' <summary>
-    ''' Device bus ID
+    ''' The used size of partition
     ''' </summary>
-    Public ReadOnly BusID As String
+    Public ReadOnly Property Used As String
 
     ''' <summary>
-    ''' Installs specified values parsed by Inxi to the class
+    ''' Installs specified values parsed to the class
     ''' </summary>
-    Friend Sub New(Name As String, Driver As String, DriverVersion As String, ChipID As String, BusID As String)
+    Friend Sub New(Letter As String, Name As String, FileSystem As String, Size As String, Used As String)
+        Me.Letter = Letter
         Me.Name = Name
-        Me.Driver = Driver
-        Me.DriverVersion = DriverVersion
-        Me.ChipID = ChipID
-        Me.BusID = BusID
+        Me.FileSystem = FileSystem
+        Me.Size = Size
+        Me.Used = Used
     End Sub
 
 End Class

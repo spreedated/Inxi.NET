@@ -75,7 +75,7 @@ Public Class HardwareInfo
     ''' <summary>
     ''' Initializes a new instance of hardware info
     ''' </summary>
-    Sub New(ByVal InxiPath As String, ParseFlags As InxiHardwareType)
+    Sub New(InxiPath As String, ParseFlags As InxiHardwareType)
         If IsUnix() Then
             If IsMacOS() Then
                 'Start the SystemProfiler process
@@ -109,12 +109,12 @@ Public Class HardwareInfo
         End If
 
         'Ready variables
-        Dim HDDParsed As Dictionary(Of String, HardDrive)
-        Dim Logicals As Dictionary(Of String, WindowsLogicalPartition)
-        Dim CPUParsed As Dictionary(Of String, Processor)
-        Dim GPUParsed As Dictionary(Of String, Graphics)
-        Dim SoundParsed As Dictionary(Of String, Sound)
-        Dim NetParsed As Dictionary(Of String, Network)
+        Dim HDDParsed As New Dictionary(Of String, HardwareBase)
+        Dim Logicals As New Dictionary(Of String, WindowsLogicalPartition)
+        Dim CPUParsed As New Dictionary(Of String, HardwareBase)
+        Dim GPUParsed As New Dictionary(Of String, HardwareBase)
+        Dim SoundParsed As New Dictionary(Of String, HardwareBase)
+        Dim NetParsed As New Dictionary(Of String, HardwareBase)
         Dim RAMParsed As PCMemory
         Dim BIOSParsed As BIOS
         Dim SystemParsed As SystemInfo
@@ -123,7 +123,8 @@ Public Class HardwareInfo
         'Parse hardware starting from HDD
         If ParseFlags.HasFlag(InxiHardwareType.HardDrive) Then
             Debug("Parsing HDD...")
-            HDDParsed = ParseHardDrives(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New HardDriveParser
+            HDDParsed = BaseParser.ParseAll(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.HardDrive)
         End If
 
@@ -137,73 +138,118 @@ Public Class HardwareInfo
         'Processor
         If ParseFlags.HasFlag(InxiHardwareType.Processor) Then
             Debug("Parsing CPU...")
-            CPUParsed = ParseProcessors(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New ProcessorParser
+            CPUParsed = BaseParser.ParseAll(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.Processor)
         End If
 
         'Graphics
         If ParseFlags.HasFlag(InxiHardwareType.Graphics) Then
             Debug("Parsing GPU...")
-            GPUParsed = ParseGraphics(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New GraphicsParser
+            GPUParsed = BaseParser.ParseAll(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.Graphics)
         End If
 
         'Sound
         If ParseFlags.HasFlag(InxiHardwareType.Sound) Then
             Debug("Parsing sound...")
-            SoundParsed = ParseSound(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New SoundParser
+            SoundParsed = BaseParser.ParseAll(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.Sound)
         End If
 
         'Network
         If ParseFlags.HasFlag(InxiHardwareType.Network) Then
             Debug("Parsing network...")
-            NetParsed = ParseNetwork(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New NetworkParser
+            NetParsed = BaseParser.ParseAll(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.Network)
         End If
 
         'PC Memory
         If ParseFlags.HasFlag(InxiHardwareType.PCMemory) Then
             Debug("Parsing RAM...")
-            RAMParsed = ParsePCMemory(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New PCMemoryParser
+            RAMParsed = BaseParser.Parse(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.PCMemory)
         End If
 
         'BIOS
         If ParseFlags.HasFlag(InxiHardwareType.BIOS) Then
             Debug("Parsing BIOS...")
-            BIOSParsed = ParseBIOS(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New BIOSParser
+            BIOSParsed = BaseParser.Parse(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.BIOS)
         End If
 
         'System
         If ParseFlags.HasFlag(InxiHardwareType.System) Then
             Debug("Parsing system...")
-            SystemParsed = ParseSystem(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New SystemParser
+            SystemParsed = BaseParser.Parse(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.System)
         End If
 
         'Machine
         If ParseFlags.HasFlag(InxiHardwareType.Machine) Then
             Debug("Parsing machine...")
-            MachineParsed = ParseMachine(InxiToken, SystemProfilerToken)
+            Dim BaseParser As New MachineParser
+            MachineParsed = BaseParser.Parse(InxiToken, SystemProfilerToken)
             RaiseParsedEvent(InxiHardwareType.Machine)
         End If
 
+        'Add the base to the correct type
+        Dim HDDProcessed As New Dictionary(Of String, HardDrive)
+        Dim CPUProcessed As New Dictionary(Of String, Processor)
+        Dim GPUProcessed As New Dictionary(Of String, Graphics)
+        Dim SoundProcessed As New Dictionary(Of String, Sound)
+        Dim NetProcessed As New Dictionary(Of String, Network)
+
+        'Hard drive
+        For Each Parsed As String In HDDParsed.Keys
+            Dim FinalHardware As HardDrive = HDDParsed(Parsed)
+            HDDProcessed.Add(Parsed, FinalHardware)
+        Next
+
+        'Processor
+        For Each Parsed As String In CPUParsed.Keys
+            Dim FinalHardware As Processor = CPUParsed(Parsed)
+            CPUProcessed.Add(Parsed, FinalHardware)
+        Next
+
+        'Graphics
+        For Each Parsed As String In GPUParsed.Keys
+            Dim FinalHardware As Graphics = GPUParsed(Parsed)
+            GPUProcessed.Add(Parsed, FinalHardware)
+        Next
+
+        'Sound
+        For Each Parsed As String In SoundParsed.Keys
+            Dim FinalHardware As Sound = SoundParsed(Parsed)
+            SoundProcessed.Add(Parsed, FinalHardware)
+        Next
+
+        'Network
+        For Each Parsed As String In NetParsed.Keys
+            Dim FinalHardware As Network = NetParsed(Parsed)
+            NetProcessed.Add(Parsed, FinalHardware)
+        Next
+
         'Install parsed information to current instance
-#Disable Warning BC42104
-        HDD = HDDParsed
+        HDD = HDDProcessed
         If Not IsUnix() Then LogicalParts = Logicals
-        CPU = CPUParsed
-        GPU = GPUParsed
-        Sound = SoundParsed
-        Network = NetParsed
+        CPU = CPUProcessed
+        GPU = GPUProcessed
+        Sound = SoundProcessed
+        Network = NetProcessed
+#Disable Warning BC42104
         RAM = RAMParsed
         BIOS = BIOSParsed
         System = SystemParsed
         Machine = MachineParsed
-        Debug("Parsed information installed.")
 #Enable Warning BC42104
+        Debug("Parsed information installed.")
     End Sub
 
 End Class

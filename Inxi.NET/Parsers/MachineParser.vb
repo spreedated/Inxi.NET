@@ -21,14 +21,16 @@ Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 
-Module MachineParser
+Class MachineParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses machine info
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParseMachine(InxiToken As JToken, SystemProfilerToken As NSArray) As MachineInfo
-        Dim MachInfo As MachineInfo
+    Overrides Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
+        Dim MachInfo As HardwareBase
         If IsUnix() Then
             If IsMacOS() Then
                 'Check for data type
@@ -124,4 +126,4 @@ Module MachineParser
 #Enable Warning BC42104
     End Function
 
-End Module
+End Class

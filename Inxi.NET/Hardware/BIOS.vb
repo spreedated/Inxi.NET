@@ -16,43 +16,29 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class MachineInfo
+Public Class BIOS
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' Machine type
+    ''' BIOS (American Megatrends, Award, etc.)
     ''' </summary>
-    Public ReadOnly Type As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' Machine product name
+    ''' BIOS Date
     ''' </summary>
-    Public ReadOnly Product As String
+    Public ReadOnly Property [Date] As String
     ''' <summary>
-    ''' Machine system name
+    ''' BIOS Version
     ''' </summary>
-    Public ReadOnly System As String
-    ''' <summary>
-    ''' Machine chassis
-    ''' </summary>
-    Public ReadOnly Chassis As String
-    ''' <summary>
-    ''' Motherboard manufacturer
-    ''' </summary>
-    Public ReadOnly MoboManufacturer As String
-    ''' <summary>
-    ''' Motherboard model
-    ''' </summary>
-    Public ReadOnly MoboModel As String
+    Public ReadOnly Property Version As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Type As String, Product As String, System As String, Chassis As String, MoboManufacturer As String, MoboModel As String)
-        Me.Type = Type
-        Me.Product = Product
-        Me.System = System
-        Me.Chassis = Chassis
-        Me.MoboManufacturer = MoboManufacturer
-        Me.MoboModel = MoboModel
+    Friend Sub New(BIOS As String, [Date] As String, Version As String)
+        Name = BIOS
+        Me.[Date] = [Date]
+        Me.Version = Version
     End Sub
 
 End Class

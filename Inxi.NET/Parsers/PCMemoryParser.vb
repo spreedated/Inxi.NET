@@ -21,13 +21,15 @@ Imports Extensification.External.Newtonsoft.Json.JPropertyExts
 Imports Newtonsoft.Json.Linq
 Imports Claunia.PropertyList
 
-Module PCMemoryParser
+Class PCMemoryParser
+    Inherits HardwareParserBase
+    Implements IHardwareParser
 
     ''' <summary>
     ''' Parses processors
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
-    Function ParsePCMemory(InxiToken As JToken, SystemProfilerToken As NSArray) As PCMemory
+    Overrides Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
         Dim Mem As PCMemory
         If IsUnix() Then
             If IsMacOS() Then
@@ -91,4 +93,4 @@ Module PCMemoryParser
 #Enable Warning BC42104
     End Function
 
-End Module
+End Class

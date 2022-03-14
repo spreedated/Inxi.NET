@@ -17,51 +17,52 @@
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Public Class Processor
+    Inherits HardwareBase
 
     ''' <summary>
     ''' Name of processor
     ''' </summary>
-    Public ReadOnly Name As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
     ''' Core Topology
     ''' </summary>
-    Public ReadOnly Topology As String
+    Public ReadOnly Property Topology As String
     ''' <summary>
     ''' Processor type
     ''' </summary>
-    Public ReadOnly Type As String
+    Public ReadOnly Property Type As String
     ''' <summary>
     ''' Processor milestone (Kaby Lake, Coffee Lake, ...)
     ''' </summary>
-    Public ReadOnly Milestone As String
+    Public ReadOnly Property Milestone As String
     ''' <summary>
     ''' Processor features
     ''' </summary>
-    Public ReadOnly Flags() As String
+    Public ReadOnly Property Flags() As String()
     ''' <summary>
     ''' Processor bits
     ''' </summary>
-    Public ReadOnly Bits As Integer
+    Public ReadOnly Property Bits As Integer
     ''' <summary>
     ''' L2 Cache
     ''' </summary>
-    Public ReadOnly L2 As String
+    Public ReadOnly Property L2 As String
     ''' <summary>
     ''' L3 Cache
     ''' </summary>
-    Public ReadOnly L3 As Integer
+    Public ReadOnly Property L3 As Integer
     ''' <summary>
     ''' CPU Rev
     ''' </summary>
-    Public ReadOnly CPURev As String
+    Public ReadOnly Property CPURev As String
     ''' <summary>
     ''' CPU BogoMips
     ''' </summary>
-    Public ReadOnly CPUBogoMips As Integer
+    Public ReadOnly Property CPUBogoMips As Integer
     ''' <summary>
     ''' Processor speed
     ''' </summary>
-    Public ReadOnly Speed As String
+    Public ReadOnly Property Speed As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class

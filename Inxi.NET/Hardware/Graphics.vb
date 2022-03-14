@@ -16,61 +16,37 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Public Class Network
+Public Class Graphics
+    Inherits HardwareBase
 
     ''' <summary>
-    ''' Name of network card
+    ''' Name of graphics card
     ''' </summary>
-    Public ReadOnly Name As String
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' Driver software used for network card
+    ''' Driver software used for graphics card
     ''' </summary>
-    Public ReadOnly Driver As String
+    Public ReadOnly Property Driver As String
     ''' <summary>
     ''' Driver version
     ''' </summary>
-    Public ReadOnly DriverVersion As String
-    ''' <summary>
-    ''' Duplex type (usually full)
-    ''' </summary>
-    Public ReadOnly Duplex As String
-    ''' <summary>
-    ''' Maximum speed that the device can handle
-    ''' </summary>
-    Public ReadOnly Speed As String
-    ''' <summary>
-    ''' State of network card
-    ''' </summary>
-    Public ReadOnly State As String
-    ''' <summary>
-    ''' MAC Address
-    ''' </summary>
-    Public ReadOnly MacAddress As String
-    ''' <summary>
-    ''' Device identifier
-    ''' </summary>
-    Public ReadOnly DeviceID As String
+    Public ReadOnly Property DriverVersion As String
     ''' <summary>
     ''' Device chip ID
     ''' </summary>
-    Public ReadOnly ChipID As String
+    Public ReadOnly Property ChipID As String
     ''' <summary>
     ''' Device bus ID
     ''' </summary>
-    Public ReadOnly BusID As String
+    Public ReadOnly Property BusID As String
 
     ''' <summary>
     ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    Friend Sub New(Name As String, Driver As String, DriverVersion As String, Duplex As String, Speed As String, State As String, MacAddress As String, DeviceID As String, ChipID As String, BusID As String)
+    Friend Sub New(Name As String, Driver As String, DriverVersion As String, ChipID As String, BusID As String)
         Me.Name = Name
         Me.Driver = Driver
         Me.DriverVersion = DriverVersion
-        Me.Duplex = Duplex
-        Me.Speed = Speed
-        Me.State = State
-        Me.MacAddress = MacAddress
-        Me.DeviceID = DeviceID
         Me.ChipID = ChipID
         Me.BusID = BusID
     End Sub
