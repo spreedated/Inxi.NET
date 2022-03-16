@@ -31,6 +31,24 @@ Class SoundParser
     ''' </summary>
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
     Overrides Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim SPUParsed As Dictionary(Of String, HardwareBase)
+
+        If IsUnix() Then
+            If IsMacOS() Then
+                SPUParsed = ParseAllMacOS(SystemProfilerToken)
+            Else
+                SPUParsed = ParseAllLinux(InxiToken)
+            End If
+        Else
+            Debug("Selecting entries from Win32_SoundDevice...")
+            Dim SoundDevice As New ManagementObjectSearcher("SELECT * FROM Win32_SoundDevice")
+            SPUParsed = ParseAllWindows(SoundDevice)
+        End If
+
+        Return SPUParsed
+    End Function
+
+    Overrides Function ParseAllLinux(InxiToken As JToken) As Dictionary(Of String, HardwareBase)
         Dim SPUParsed As New Dictionary(Of String, HardwareBase)
         Dim SPU As Sound
 
@@ -41,56 +59,70 @@ Class SoundParser
         Dim SPUBusID As String
         Dim SPUChipID As String
 
-        If IsUnix() Then
-            If IsMacOS() Then
-                'TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
-                'Create an instance of sound class
-                Debug("TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use ""system_profiler SPAudioDataType -xml >> audio.plist"" and attach it to Issues.")
-                SPU = New Sound("Placeholder", "EoflaOE", "SoundParser", "", "")
-                SPUParsed.AddIfNotFound("Placeholder", SPU)
-                Debug("Added Placeholder to the list of parsed SPUs.")
-            Else
-                Debug("Selecting the Audio token...")
-                For Each InxiSPU In InxiToken.SelectTokenKeyEndingWith("Audio")
-                    If InxiSPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
-                        'Get information of a sound card
-                        SPUName = InxiSPU.SelectTokenKeyEndingWith("Device")
-                        SPUVendor = InxiSPU.SelectTokenKeyEndingWith("vendor")
-                        SPUDriver = InxiSPU.SelectTokenKeyEndingWith("driver")
-                        SPUBusID = InxiSPU.SelectTokenKeyEndingWith("bus ID")
-                        SPUChipID = InxiSPU.SelectTokenKeyEndingWith("chip ID")
-                        Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID)
-
-                        'Create an instance of sound class
-                        SPU = New Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID)
-                        SPUParsed.AddIfNotFound(SPUName, SPU)
-                        Debug("Added {0} to the list of parsed SPUs.", SPUName)
-                    End If
-                Next
-            End If
-        Else
-            Debug("Selecting entries from Win32_SoundDevice...")
-            Dim SoundDevice As New ManagementObjectSearcher("SELECT * FROM Win32_SoundDevice")
-
-            'TODO: Driver not implemented in Windows
-            'Get information of sound cards
-            Debug("Getting the base objects...")
-            Debug("TODO: Driver not implemented in Windows.")
-            For Each Device As ManagementBaseObject In SoundDevice.Get
+        Debug("Selecting the Audio token...")
+        For Each InxiSPU In InxiToken.SelectTokenKeyEndingWith("Audio")
+            If InxiSPU.SelectTokenKeyEndingWith("Device") IsNot Nothing Then
                 'Get information of a sound card
-                SPUName = Device("ProductName")
-                SPUVendor = Device("Manufacturer")
-                SPUDriver = ""
-                SPUChipID = Device("DeviceID")
-                SPUBusID = ""
+                SPUName = InxiSPU.SelectTokenKeyEndingWith("Device")
+                SPUVendor = InxiSPU.SelectTokenKeyEndingWith("vendor")
+                SPUDriver = InxiSPU.SelectTokenKeyEndingWith("driver")
+                SPUBusID = InxiSPU.SelectTokenKeyEndingWith("bus ID")
+                SPUChipID = InxiSPU.SelectTokenKeyEndingWith("chip ID")
                 Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID)
 
                 'Create an instance of sound class
                 SPU = New Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID)
                 SPUParsed.AddIfNotFound(SPUName, SPU)
                 Debug("Added {0} to the list of parsed SPUs.", SPUName)
-            Next
-        End If
+            End If
+        Next
+
+        Return SPUParsed
+    End Function
+
+    Overrides Function ParseAllMacOS(SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Dim SPUParsed As New Dictionary(Of String, HardwareBase)
+        Dim SPU As Sound
+
+        'TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
+        'Create an instance of sound class
+        Debug("TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use ""system_profiler SPAudioDataType -xml >> audio.plist"" and attach it to Issues.")
+        SPU = New Sound("Placeholder", "EoflaOE", "SoundParser", "", "")
+        SPUParsed.AddIfNotFound("Placeholder", SPU)
+        Debug("Added Placeholder to the list of parsed SPUs.")
+        Return SPUParsed
+    End Function
+
+    Overrides Function ParseAllWindows(WMISearcher As ManagementObjectSearcher) As Dictionary(Of String, HardwareBase)
+        Dim SoundDevice As ManagementObjectSearcher = WMISearcher
+        Dim SPUParsed As New Dictionary(Of String, HardwareBase)
+        Dim SPU As Sound
+
+        'SPU information fields
+        Dim SPUName As String
+        Dim SPUVendor As String
+        Dim SPUDriver As String
+        Dim SPUBusID As String
+        Dim SPUChipID As String
+
+        'TODO: Driver not implemented in Windows
+        'Get information of sound cards
+        Debug("Getting the base objects...")
+        Debug("TODO: Driver not implemented in Windows.")
+        For Each Device As ManagementBaseObject In SoundDevice.Get
+            'Get information of a sound card
+            SPUName = Device("ProductName")
+            SPUVendor = Device("Manufacturer")
+            SPUDriver = ""
+            SPUChipID = Device("DeviceID")
+            SPUBusID = ""
+            Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID)
+
+            'Create an instance of sound class
+            SPU = New Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID)
+            SPUParsed.AddIfNotFound(SPUName, SPU)
+            Debug("Added {0} to the list of parsed SPUs.", SPUName)
+        Next
 
         Return SPUParsed
     End Function

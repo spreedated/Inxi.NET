@@ -16,6 +16,7 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+Imports System.Management
 Imports Claunia.PropertyList
 Imports Newtonsoft.Json.Linq
 
@@ -28,6 +29,48 @@ Public MustInherit Class HardwareParserBase
 
     Public Overridable Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase) Implements IHardwareParser.ParseAll
         Throw New NotImplementedException("This hardware parser is not implemented yet!")
+    End Function
+
+    ''' <summary>
+    ''' The base Linux hardware parser
+    ''' </summary>
+    Public Overridable Function ParseLinux(InxiToken As JToken) As HardwareBase
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Linux!")
+    End Function
+
+    ''' <summary>
+    ''' The base macOS hardware parser
+    ''' </summary>
+    Public Overridable Function ParseMacOS(SystemProfilerToken As NSArray) As HardwareBase
+        Throw New NotImplementedException("This hardware parser is not implemented yet on macOS!")
+    End Function
+
+    ''' <summary>
+    ''' The base Windows hardware parser
+    ''' </summary>
+    Public Overridable Function ParseWindows(WMISearcher As ManagementObjectSearcher) As HardwareBase
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Windows!")
+    End Function
+
+    ''' <summary>
+    ''' The base Linux hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllLinux(InxiToken As JToken) As Dictionary(Of String, HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Linux!")
+    End Function
+
+    ''' <summary>
+    ''' The base macOS hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllMacOS(SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on macOS!")
+    End Function
+
+    ''' <summary>
+    ''' The base Windows hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllWindows(WMISearcher As ManagementObjectSearcher) As Dictionary(Of String, HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Windows!")
     End Function
 
 End Class

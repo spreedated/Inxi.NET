@@ -31,40 +31,66 @@ Class BIOSParser
     ''' <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
     Overrides Function Parse(InxiToken As JToken, SystemProfilerToken As NSArray) As HardwareBase
         Dim BIOSInfo As BIOS
+
         If IsUnix() Then
             If IsMacOS() Then
-                'TODO: Not implemented.
-                Debug("TODO: Not implemented")
-                BIOSInfo = New BIOS("Apple", "5/23/2018", "1.0")
+                BIOSInfo = ParseMacOS(SystemProfilerToken)
             Else
-                Debug("Selecting the Machine token...")
-                For Each InxiMachine In InxiToken.SelectTokenKeyEndingWith("Machine")
-                    'Get information of system
-                    Dim BIOS As String = InxiMachine.SelectTokenKeyEndingWith("BIOS")
-                    Dim [Date] As String = InxiMachine.SelectTokenKeyEndingWith("date")
-                    Dim Version As String = InxiMachine.SelectTokenKeyEndingWith("v")
-                    Debug("Got information. BIOS: {0}, Date: {1}, Version: {2}", BIOS, [Date], Version)
-
-                    'Create an instance of system class
-                    BIOSInfo = New BIOS(BIOS, [Date], Version)
-                Next
+                BIOSInfo = ParseLinux(InxiToken)
             End If
         Else
             Debug("Selecting entries from Win32_BIOS...")
             Dim WMIBIOS As New ManagementObjectSearcher("SELECT * FROM Win32_BIOS")
-
-            'Get information of system
-            Debug("Getting the base objects...")
-            For Each BIOSBase As ManagementBaseObject In WMIBIOS.Get
-                Dim BIOS As String = BIOSBase("Caption")
-                Dim [Date] As String = BIOSBase("ReleaseDate")
-                Dim Version As String = BIOSBase("Version")
-                Debug("Got information. BIOS: {0}, Date: {1}, Version: {2}", BIOS, [Date], Version)
-
-                'Create an instance of system class
-                BIOSInfo = New BIOS(BIOS, [Date], Version)
-            Next
+            BIOSInfo = ParseWindows(WMIBIOS)
         End If
+
+        Return BIOSInfo
+    End Function
+
+    Overrides Function ParseLinux(InxiToken As JToken) As HardwareBase
+        Dim BIOSInfo As BIOS
+
+        Debug("Selecting the Machine token...")
+        For Each InxiMachine In InxiToken.SelectTokenKeyEndingWith("Machine")
+            'Get information of system
+            Dim BIOS As String = InxiMachine.SelectTokenKeyEndingWith("BIOS")
+            Dim [Date] As String = InxiMachine.SelectTokenKeyEndingWith("date")
+            Dim Version As String = InxiMachine.SelectTokenKeyEndingWith("v")
+            Debug("Got information. BIOS: {0}, Date: {1}, Version: {2}", BIOS, [Date], Version)
+
+            'Create an instance of system class
+            BIOSInfo = New BIOS(BIOS, [Date], Version)
+        Next
+
+#Disable Warning BC42104
+        Return BIOSInfo
+#Enable Warning BC42104
+    End Function
+
+    Overrides Function ParseMacOS(SystemProfilerToken As NSArray) As HardwareBase
+        Dim BIOSInfo As BIOS
+
+        'TODO: Not implemented.
+        Debug("TODO: Not implemented")
+        BIOSInfo = New BIOS("Apple", "5/23/2018", "1.0")
+        Return BIOSInfo
+    End Function
+
+    Overrides Function ParseWindows(WMISearcher As ManagementObjectSearcher) As HardwareBase
+        Dim BIOSInfo As BIOS
+        Dim WMIBIOS As ManagementObjectSearcher = WMISearcher
+
+        'Get information of system
+        Debug("Getting the base objects...")
+        For Each BIOSBase As ManagementBaseObject In WMIBIOS.Get
+            Dim BIOS As String = BIOSBase("Caption")
+            Dim [Date] As String = BIOSBase("ReleaseDate")
+            Dim Version As String = BIOSBase("Version")
+            Debug("Got information. BIOS: {0}, Date: {1}, Version: {2}", BIOS, [Date], Version)
+
+            'Create an instance of system class
+            BIOSInfo = New BIOS(BIOS, [Date], Version)
+        Next
 
 #Disable Warning BC42104
         Return BIOSInfo
