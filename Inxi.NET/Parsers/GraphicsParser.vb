@@ -87,10 +87,10 @@ Class GraphicsParser
         Dim GPUName As String
         Dim GPUChipID As String
 
-        'TODO: GPU Driver, bus ID, and driver version not implemented (maybe kexts (kernel extensions) provide this information).
+        'TODO: GPU Driver, bus ID, and driver version not implemented in macOS (maybe kexts (kernel extensions) provide this information)
         'Check for data type
         Debug("Checking for data type...")
-        Debug("TODO: GPU Driver, bus ID, and driver version not implemented (maybe kexts (kernel extensions) provide this information).")
+        Debug("TODO: GPU Driver, bus ID, and driver version not implemented in macOS (maybe kexts (kernel extensions) provide this information).")
         For Each DataType As NSDictionary In SystemProfilerToken
             If DataType("_dataType").ToObject = "SPDisplaysDataType" Then
                 Debug("DataType found: SPDisplaysDataType...")

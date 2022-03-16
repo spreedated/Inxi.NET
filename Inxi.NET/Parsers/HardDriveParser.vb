@@ -124,10 +124,10 @@ Class HardDriveParser
         Dim DriveParts As New Dictionary(Of String, Partition)
         Dim Drive As HardDrive
 
-        'TODO: Drive vendor and speed not implemented
+        'TODO: Drive vendor and speed not implemented in macOS
         'Check for data type
         Debug("Checking for data type...")
-        Debug("TODO: Drive vendor and speed not implemented")
+        Debug("TODO: Drive vendor and speed not implemented in macOS")
         For Each DataType As NSDictionary In SystemProfilerToken
             If DataType("_dataType").ToObject = "SPStorageDataType" Then
                 Debug("DataType found: SPStorageDataType...")
