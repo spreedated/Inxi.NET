@@ -78,7 +78,7 @@ Class HardDriveParser
                 Dim DrivePartToken As JToken = InxiToken.SelectTokenKeyEndingWith("Partition")
                 If DrivePartToken IsNot Nothing Then
                     For Each DrivePartition In DrivePartToken
-                        If DrivePartition.SelectTokenKeyEndingWith("dev") Is Nothing Then
+                        If DrivePartition.SelectTokenKeyEndingWith("dev") IsNot Nothing Then
                             Dim DrvDevPath As String = DrivePartition.SelectTokenKeyEndingWith("dev").ToString
                             Dim TarDevPath As String = InxiDrive.SelectTokenKeyEndingWith("ID").ToString
                             Dim DrvDevChar As Char

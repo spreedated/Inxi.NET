@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <RootNamespace>InxiFrontend</RootNamespace>
-    <TargetFrameworks>net461;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2022.1.0</Version>
+    <Version>2022.1.0.1</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2022 EoflaOE and its companies</Copyright>
@@ -16,64 +16,14 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>2022.1.0:
-- 
+    <PackageReleaseNotes>The release notes will be ready on the wiki very soon, because it isn't updated here.
 
-2022.0.0:
-- Added support for libjson-xs-perl
-
-2021.4.0.1:
-- Updated libraries for use with KS 0.0.18.0
-
-2021.4:
-- Added new properties to modules
-
-2021.3:
-- Added debugging
-- Added selective parsing
-
-2021.2.1:
-- Fixed no code documentation
-
-2021.2:
-- New branding
-- Restored L2 cache for CPU
-- Finally implemented network driver version for Windows
-- Added new BIOS and Machine modules
-
-2021.1.1:
-- Fixed regression in Inxi versions 3.1.03+
-
-2021.1:
-- Added macOS support (experimental)
-- Added .NET 6.0 support
-
-2021.0:
-- Added BogoMips, L3, and Rev for CPU
-- Added speed and serial number of hard drive
-- Added System module
-
-2020.2.0.2:
-- To comply with breaking changes Extensification did. If you still use old Extensification, use 2020.2.0.1 or below.
-- Made flags lowercase on Windows
-
-2020.2.0.1:
-- Fixed overflow exception when parsing Windows logical partitions
-
-2020.2:
-- Added support for Windows
-
-2020.1:
-- Added few more CPU info
-- Added network information
-
-2020.0:
-- Initial release</PackageReleaseNotes>
+By the way, this release fixes a fatal crash when parsing hard drives.</PackageReleaseNotes>
     <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2022.1.0.0</AssemblyVersion>
-    <FileVersion>2022.1.0.0</FileVersion>
+    <AssemblyVersion>2022.1.0.1</AssemblyVersion>
+    <FileVersion>2022.1.0.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
