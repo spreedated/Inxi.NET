@@ -16,6 +16,8 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+Imports System.IO
+
 Module InxiInternalUtils
 
     ''' <summary>
@@ -30,8 +32,10 @@ Module InxiInternalUtils
     ''' </summary>
     Friend Function IsMacOS()
         If IsUnix() Then
+            Dim UnameExecutable As String = If(File.Exists("/usr/bin/uname"), "/usr/bin/uname", "/bin/uname")
+            UnameExecutable = If(File.Exists("/system/xbin/uname"), "/system/xbin/uname", UnameExecutable)
             Dim UnameS As New Process
-            Dim UnameSInfo As New ProcessStartInfo With {.FileName = "/usr/bin/uname", .Arguments = "-s",
+            Dim UnameSInfo As New ProcessStartInfo With {.FileName = UnameExecutable, .Arguments = "-s",
                                                          .CreateNoWindow = True,
                                                          .UseShellExecute = False,
                                                          .WindowStyle = ProcessWindowStyle.Hidden,
