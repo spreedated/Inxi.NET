@@ -7,7 +7,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2022.1.0.2</Version>
+    <Version>2022.2</Version>
     <Authors>EoflaOE</Authors>
     <Description>Inxi.NET is a hardware information frontend using Inxi, WMI, and system_profiler as its backend for getting system information.</Description>
     <Copyright>Copyright © 2020-2022 EoflaOE and its companies</Copyright>
@@ -16,14 +16,12 @@
     <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
-    <PackageReleaseNotes>The release notes will be ready on the wiki very soon, because it isn't updated here.
-
-By the way, this release fixes a crash on Linux systems that don't have /usr/bin/uname but /usr/uname.</PackageReleaseNotes>
+    <PackageReleaseNotes>The release notes will be ready on the wiki very soon, because it isn't updated here.</PackageReleaseNotes>
     <PackageIcon>OfficialAppIcon-InxiNET-512.png</PackageIcon>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <AssemblyVersion>2022.1.0.2</AssemblyVersion>
-    <FileVersion>2022.1.0.2</FileVersion>
+    <AssemblyVersion>2022.2.0.0</AssemblyVersion>
+    <FileVersion>2022.2.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
