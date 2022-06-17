@@ -28,6 +28,7 @@ bld/
 [Ll]og/
 Inxi.NET.Bin/
 Inxi.NET.Tests.Bin/
+Inxi.NET.ConsoleTest.Bin/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

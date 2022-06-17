@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>../Inxi.NET.Tests.Bin/</OutputPath>
+    <OutputPath>../Inxi.NET.ConsoleTest.Bin/</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>../Inxi.NET.Tests.Bin/</OutputPath>
+    <OutputPath>../Inxi.NET.ConsoleTest.Bin/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
