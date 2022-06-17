@@ -32,4 +32,9 @@ Public Interface IHardwareParser
     ''' </summary>
     Function ParseAll(InxiToken As JToken, SystemProfilerToken As NSArray) As Dictionary(Of String, HardwareBase)
 
+    ''' <summary>
+    ''' The base hardware parser
+    ''' </summary>
+    Function ParseAllToList(InxiToken As JToken, SystemProfilerToken As NSArray) As List(Of HardwareBase)
+
 End Interface

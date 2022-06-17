@@ -47,6 +47,10 @@ Public Class HardwareInfo
     ''' </summary>
     Public ReadOnly Network As New Dictionary(Of String, Network)
     ''' <summary>
+    ''' List of batteries detected
+    ''' </summary>
+    Public ReadOnly Battery As New List(Of Battery)
+    ''' <summary>
     ''' System information
     ''' </summary>
     Public ReadOnly System As SystemInfo
@@ -115,6 +119,7 @@ Public Class HardwareInfo
         Dim GPUParsed As New Dictionary(Of String, HardwareBase)
         Dim SoundParsed As New Dictionary(Of String, HardwareBase)
         Dim NetParsed As New Dictionary(Of String, HardwareBase)
+        Dim BatteryParsed As New List(Of HardwareBase)
         Dim RAMParsed As PCMemory
         Dim BIOSParsed As BIOS
         Dim SystemParsed As SystemInfo
@@ -199,12 +204,21 @@ Public Class HardwareInfo
             RaiseParsedEvent(InxiHardwareType.Machine)
         End If
 
+        'Battery
+        If ParseFlags.HasFlag(InxiHardwareType.Battery) Then
+            Debug("Parsing battery...")
+            Dim BaseParser As New BatteryParser
+            BatteryParsed = BaseParser.ParseAllToList(InxiToken, SystemProfilerToken)
+            RaiseParsedEvent(InxiHardwareType.Battery)
+        End If
+
         'Add the base to the correct type
         Dim HDDProcessed As New Dictionary(Of String, HardDrive)
         Dim CPUProcessed As New Dictionary(Of String, Processor)
         Dim GPUProcessed As New Dictionary(Of String, Graphics)
         Dim SoundProcessed As New Dictionary(Of String, Sound)
         Dim NetProcessed As New Dictionary(Of String, Network)
+        Dim BatteryProcessed As New List(Of Battery)
 
         'Hard drive
         For Each Parsed As String In HDDParsed.Keys
@@ -236,14 +250,20 @@ Public Class HardwareInfo
             NetProcessed.Add(Parsed, FinalHardware)
         Next
 
+        'Battery
+        For Each Parsed As Battery In BatteryParsed
+            BatteryProcessed.Add(Parsed)
+        Next
+
         'Install parsed information to current instance
+#Disable Warning BC42104
         HDD = HDDProcessed
         If Not IsUnix() Then LogicalParts = Logicals
         CPU = CPUProcessed
         GPU = GPUProcessed
         Sound = SoundProcessed
         Network = NetProcessed
-#Disable Warning BC42104
+        Battery = BatteryProcessed
         RAM = RAMParsed
         BIOS = BIOSParsed
         System = SystemParsed

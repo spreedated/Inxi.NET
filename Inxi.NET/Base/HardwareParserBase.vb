@@ -31,6 +31,10 @@ Public MustInherit Class HardwareParserBase
         Throw New NotImplementedException("This hardware parser is not implemented yet!")
     End Function
 
+    Public Overridable Function ParseAllToList(InxiToken As JToken, SystemProfilerToken As NSArray) As List(Of HardwareBase) Implements IHardwareParser.ParseAllToList
+        Throw New NotImplementedException("This hardware parser is not implemented yet!")
+    End Function
+
     ''' <summary>
     ''' The base Linux hardware parser
     ''' </summary>
@@ -70,6 +74,27 @@ Public MustInherit Class HardwareParserBase
     ''' The base Windows hardware parser
     ''' </summary>
     Public Overridable Function ParseAllWindows(WMISearcher As ManagementObjectSearcher) As Dictionary(Of String, HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Windows!")
+    End Function
+
+    ''' <summary>
+    ''' The base Linux hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllToListLinux(InxiToken As JToken) As List(Of HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on Linux!")
+    End Function
+
+    ''' <summary>
+    ''' The base macOS hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllToListMacOS(SystemProfilerToken As NSArray) As List(Of HardwareBase)
+        Throw New NotImplementedException("This hardware parser is not implemented yet on macOS!")
+    End Function
+
+    ''' <summary>
+    ''' The base Windows hardware parser
+    ''' </summary>
+    Public Overridable Function ParseAllToListWindows(WMISearcher As ManagementObjectSearcher) As List(Of HardwareBase)
         Throw New NotImplementedException("This hardware parser is not implemented yet on Windows!")
     End Function
 

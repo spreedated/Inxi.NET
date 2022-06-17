@@ -16,52 +16,44 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-''' <summary>
-''' Enumeration of hardware type
-''' </summary>
-Public Enum InxiHardwareType
+Public Class Battery
+    Inherits HardwareBase
+
     ''' <summary>
-    ''' BIOS
+    ''' Battery ID
     ''' </summary>
-    BIOS = 1
+    Public Overrides ReadOnly Property Name As String
     ''' <summary>
-    ''' Graphics card (GPU)
+    ''' The battery charge percentage
     ''' </summary>
-    Graphics = 2
+    Public ReadOnly Property Charge As Integer
     ''' <summary>
-    ''' Hard drive
+    ''' Battery condition
     ''' </summary>
-    HardDrive = 4
+    Public ReadOnly Property Condition As String
     ''' <summary>
-    ''' Hard drive partitions (Windows logical partitions)
+    ''' Battery voltage
     ''' </summary>
-    HardDriveLogical = 8
+    Public ReadOnly Property Volts As String
     ''' <summary>
-    ''' Machine
+    ''' Battery model
     ''' </summary>
-    Machine = 16
+    Public ReadOnly Property Model As String
     ''' <summary>
-    ''' Network
+    ''' Battery status
     ''' </summary>
-    Network = 32
+    Public ReadOnly Property Status As String
+
     ''' <summary>
-    ''' RAM
+    ''' Installs specified values parsed by Inxi to the class
     ''' </summary>
-    PCMemory = 64
-    ''' <summary>
-    ''' Processor (CPU)
-    ''' </summary>
-    Processor = 128
-    ''' <summary>
-    ''' Sound (SPU)
-    ''' </summary>
-    Sound = 256
-    ''' <summary>
-    ''' System
-    ''' </summary>
-    System = 512
-    ''' <summary>
-    ''' Battery
-    ''' </summary>
-    Battery = 1024
-End Enum
+    Friend Sub New(Name As String, Charge As Integer, Condition As String, Volts As String, Model As String, Status As String)
+        Me.Name = Name
+        Me.Charge = Charge
+        Me.Condition = Condition
+        Me.Volts = Volts
+        Me.Model = Model
+        Me.Status = Status
+    End Sub
+
+End Class
