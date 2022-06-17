@@ -16,7 +16,7 @@
 '    You should have received a copy of the GNU General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Imports System.IO
+Imports UnameNET
 
 Module InxiInternalUtils
 
@@ -32,18 +32,7 @@ Module InxiInternalUtils
     ''' </summary>
     Friend Function IsMacOS()
         If IsUnix() Then
-            Dim UnameExecutable As String = If(File.Exists("/usr/bin/uname"), "/usr/bin/uname", "/bin/uname")
-            UnameExecutable = If(File.Exists("/system/xbin/uname"), "/system/xbin/uname", UnameExecutable)
-            Dim UnameS As New Process
-            Dim UnameSInfo As New ProcessStartInfo With {.FileName = UnameExecutable, .Arguments = "-s",
-                                                         .CreateNoWindow = True,
-                                                         .UseShellExecute = False,
-                                                         .WindowStyle = ProcessWindowStyle.Hidden,
-                                                         .RedirectStandardOutput = True}
-            UnameS.StartInfo = UnameSInfo
-            UnameS.Start()
-            UnameS.WaitForExit()
-            Dim System As String = UnameS.StandardOutput.ReadToEnd
+            Dim System As String = UnameManager.GetUname(UnameTypes.KernelName)
             Debug("Searching {0} for ""Darwin""...", System.Replace(Environment.NewLine, ""))
             Return System.Contains("Darwin")
         Else

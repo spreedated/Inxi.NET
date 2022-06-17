@@ -106,6 +106,14 @@ Copyright (c) 2007, James Newton-King
 
 License (MIT): https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 
+### Uname.NET
+
+Source code: https://github.com/EoflaOE/Uname.NET
+
+Copyright (c) 2022, EoflaOE and its companies
+
+License (MIT): https://github.com/EoflaOE/Uname.NET/blob/master/LICENSE
+
 ## License
 
     Inxi.NET - .NET Frontend for Inxi
