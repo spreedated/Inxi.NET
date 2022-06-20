@@ -39,9 +39,9 @@ Class BatteryParser
                 Batteries = ParseAllToListLinux(InxiToken)
             End If
         Else
-            Debug("Selecting entries from Win32_OperatingSystem...")
-            Dim WMISystem As New ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem")
-            Batteries = ParseAllToListWindows(WMISystem)
+            Debug("Selecting entries from Win32_Battery...")
+            Dim WMIBattery As New ManagementObjectSearcher("SELECT * FROM Win32_Battery")
+            Batteries = ParseAllToListWindows(WMIBattery)
         End If
 
         Return Batteries
@@ -66,9 +66,7 @@ Class BatteryParser
             Batteries.Add(Battery)
         Next
 
-#Disable Warning BC42104
         Return Batteries
-#Enable Warning BC42104
     End Function
 
     Overrides Function ParseAllToListMacOS(SystemProfilerToken As NSArray) As List(Of HardwareBase)
@@ -81,24 +79,31 @@ Class BatteryParser
         Dim Battery As New Battery("Battery", 100, "", "", "", "Not charging")
         Batteries.Add(Battery)
 
-#Disable Warning BC42104
         Return Batteries
-#Enable Warning BC42104
     End Function
 
     Overrides Function ParseAllToListWindows(WMISearcher As ManagementObjectSearcher) As List(Of HardwareBase)
         Dim Batteries As New List(Of HardwareBase)
+        Dim WMIBatt As ManagementObjectSearcher = WMISearcher
 
-        'TODO: Battery not implemented in Windows.
-        Debug("TODO: Battery not implemented in Windows.")
+        'Get information of system
+        Debug("Getting the base objects...")
+        For Each BattBase As ManagementBaseObject In WMIBatt.Get
+            'Get information of battery
+            Dim Name As String = BattBase("Caption")
+            Dim Charge As Integer = BattBase("EstimatedChargeRemaining")
+            Dim Condition As String = BattBase("BatteryStatus")
+            Dim Volts As String = BattBase("DesignVoltage")
+            Dim Model As String = BattBase("Name")
+            Dim Status As String = BattBase("BatteryStatus")
+            Debug("Got information. Name: {0}, Charge: {1}, Condition: {2}, Volts: {3}, Model: {4}, Status: {5}", Name, Charge, Condition, Volts, Model, Status)
 
-        'Create an instance of battery class
-        Dim Battery As New Battery("Battery", 100, "", "", "", "Not charging")
-        Batteries.Add(Battery)
+            'Create an instance of battery class
+            Dim Battery As New Battery(Name, Charge, Condition, Volts, Model, Status)
+            Batteries.Add(Battery)
+        Next
 
-#Disable Warning BC42104
         Return Batteries
-#Enable Warning BC42104
     End Function
 
 End Class

@@ -87,6 +87,16 @@ Module InxiConsoleTest
                 Console.WriteLine(">> Network Duplex Type: {0}", NetInfo.Duplex)
             Next
 
+            Console.WriteLine("------ Battery Info:")
+            For Each BattInfo As Battery In HardwareInfo.Battery
+                Console.WriteLine(">> Battery Name: {0}", BattInfo.Name)
+                Console.WriteLine(">> Battery Charge: {0}%", BattInfo.Charge)
+                Console.WriteLine(">> Battery Condition: {0}", BattInfo.Condition)
+                Console.WriteLine(">> Battery Model: {0}", BattInfo.Model)
+                Console.WriteLine(">> Battery Status: {0}", BattInfo.Status)
+                Console.WriteLine(">> Battery Volts: {0}", BattInfo.Volts)
+            Next
+
             Console.WriteLine("------ System Memory Info:")
             Console.WriteLine(">> Memory: {0}", HardwareInfo.RAM.Name)
             Console.WriteLine(">> Free Memory: {0}", HardwareInfo.RAM.FreeMemory)
