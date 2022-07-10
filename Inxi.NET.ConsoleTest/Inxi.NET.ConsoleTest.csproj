@@ -5,6 +5,8 @@
     <RootNamespace>Inxi.NET.ConsoleTest</RootNamespace>
     <TargetFrameworks>net48;netcoreapp3.1;net6.0</TargetFrameworks>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
