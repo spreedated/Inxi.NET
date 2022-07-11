@@ -59,20 +59,23 @@ namespace InxiFrontend
             Battery Battery;
 
             InxiTrace.Debug("Selecting the Battery token...");
-            foreach (var InxiSys in InxiToken.SelectTokenKeyEndingWith("Battery"))
+            if (InxiToken.SelectTokenKeyEndingWith("Battery") != null)
             {
-                // Get information of battery
-                string Name = (string)InxiSys.SelectTokenKeyEndingWith("ID");
-                int Charge = Convert.ToInt32(InxiSys.SelectTokenKeyEndingWith("charge").ToString().Replace("%", ""));
-                string Condition = (string)InxiSys.SelectTokenKeyEndingWith("condition");
-                string Volts = (string)InxiSys.SelectTokenKeyEndingWith("volts");
-                string Model = (string)InxiSys.SelectTokenKeyEndingWith("model");
-                string Status = (string)InxiSys.SelectTokenKeyEndingWith("status");
-                InxiTrace.Debug("Got information. Name: {0}, Charge: {1}, Condition: {2}, Volts: {3}, Model: {4}, Status: {5}", Name, Charge, Condition, Volts, Model, Status);
+                foreach (var InxiSys in InxiToken.SelectTokenKeyEndingWith("Battery"))
+                {
+                    // Get information of battery
+                    string Name = (string)InxiSys.SelectTokenKeyEndingWith("ID");
+                    int Charge = Convert.ToInt32(InxiSys.SelectTokenKeyEndingWith("charge").ToString().Replace("%", ""));
+                    string Condition = (string)InxiSys.SelectTokenKeyEndingWith("condition");
+                    string Volts = (string)InxiSys.SelectTokenKeyEndingWith("volts");
+                    string Model = (string)InxiSys.SelectTokenKeyEndingWith("model");
+                    string Status = (string)InxiSys.SelectTokenKeyEndingWith("status");
+                    InxiTrace.Debug("Got information. Name: {0}, Charge: {1}, Condition: {2}, Volts: {3}, Model: {4}, Status: {5}", Name, Charge, Condition, Volts, Model, Status);
 
-                // Create an instance of battery class
-                Battery = new Battery(Name, Charge, Condition, Volts, Model, Status);
-                Batteries.Add(Battery);
+                    // Create an instance of battery class
+                    Battery = new Battery(Name, Charge, Condition, Volts, Model, Status);
+                    Batteries.Add(Battery);
+                }
             }
 
             return Batteries;
