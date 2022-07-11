@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -17,10 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Diagnostics;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -30,23 +30,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses system info
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses system info
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             HardwareBase SysInfo;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     SysInfo = ParseMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     SysInfo = ParseLinux(InxiToken);
-                }
             }
             else
             {
@@ -80,13 +76,7 @@ namespace InxiFrontend
                 SysInfo = new SystemInfo(Hostname, Version, Bits, Distro, DesktopMan, WindowMan, DisplayMan);
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return SysInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseMacOS(NSArray SystemProfilerToken)
@@ -99,7 +89,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Bits, DE, WM, and DM not implemented in macOS.");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPSoftwareDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPSoftwareDataType")
                 {
                     InxiTrace.Debug("DataType found: SPSoftwareDataType...");
 
@@ -109,9 +99,9 @@ namespace InxiFrontend
                     foreach (NSDictionary SoftwareDict in SoftwareEnum)
                     {
                         // Get information of memory
-                        string Hostname = Conversions.ToString(SoftwareDict["local_host_name"].ToObject());
-                        string Version = Conversions.ToString(SoftwareDict["kernel_version"].ToObject());
-                        string Distro = Conversions.ToString(SoftwareDict["os_version"].ToObject());
+                        string Hostname = (string)SoftwareDict["local_host_name"].ToObject();
+                        string Version = (string)SoftwareDict["kernel_version"].ToObject();
+                        string Distro = (string)SoftwareDict["os_version"].ToObject();
                         InxiTrace.Debug("Got information. Hostname: {0}, Version: {1}, Distro: {2}", Hostname, Version, Distro);
 
                         // Create an instance of system class
@@ -120,13 +110,7 @@ namespace InxiFrontend
                 }
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return SysInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
@@ -141,9 +125,9 @@ namespace InxiFrontend
             foreach (ManagementBaseObject SystemBase in WMISystem.Get())
             {
                 string Hostname = System.Net.Dns.GetHostName();
-                string Version = Conversions.ToString(SystemBase["Version"]);
-                int Bits = Conversions.ToInteger(SystemBase["OSArchitecture"].ToString().Replace("-bit", ""));
-                string Distro = Conversions.ToString(SystemBase["Caption"]);
+                string Version = (string)SystemBase["Version"];
+                int Bits = Convert.ToInt32(SystemBase["OSArchitecture"].ToString().Replace("-bit", ""));
+                string Distro = (string)SystemBase["Caption"];
                 string WM = Process.GetProcessesByName("dwm").Length > 0 ? "DWM" : "Basic Window Manager";
                 InxiTrace.Debug("Got information. Hostname: {0}, Version: {1}, Distro: {2}, Bits: {3}, WM: {4}", Hostname, Version, Distro, Bits, WM);
 
@@ -151,13 +135,7 @@ namespace InxiFrontend
                 SysInfo = new SystemInfo(Hostname, Version, Bits, Distro, "", WM, "");
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return SysInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
     }

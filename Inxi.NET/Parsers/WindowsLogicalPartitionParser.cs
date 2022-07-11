@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,8 +16,9 @@ using System.Collections.Generic;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using System.Management;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace InxiFrontend
 {
@@ -39,11 +38,11 @@ namespace InxiFrontend
                 try
                 {
                     // Get information of a logical partition
-                    string LogicalID = Conversions.ToString(Part["DeviceID"]);
-                    string LogicalName = Conversions.ToString(Part["VolumeName"]);
-                    string LogicalFileSystem = Conversions.ToString(Part["FileSystem"]);
-                    string LogicalSize = Conversions.ToString(Part["Size"]);
-                    string LogicalUsed = Conversions.ToULong(Operators.SubtractObject(Part["Size"], Part["FreeSpace"])).ToString();
+                    string LogicalID = (string)Part["DeviceID"];
+                    string LogicalName = (string)Part["VolumeName"];
+                    string LogicalFileSystem = (string)Part["FileSystem"];
+                    string LogicalSize = Convert.ToString(Part["Size"]);
+                    string LogicalUsed = Convert.ToString((ulong)Part["Size"] - (ulong)Part["FreeSpace"]);
                     InxiTrace.Debug("Got information. LogicalID: {0}, LogicalFileSystem: {1}, LogicalSize: {2}, LogicalUsed: {3}", LogicalID, LogicalFileSystem, LogicalSize, LogicalUsed);
 
                     // Create an instance of logical partition class

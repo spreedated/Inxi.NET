@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -17,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
 using System.IO;
 using System.Linq;
 using static System.Reflection.Assembly;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace InxiFrontend
 {
@@ -29,42 +28,42 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Hardware information
-    /// </summary>
+        /// Hardware information
+        /// </summary>
         public readonly HardwareInfo Hardware;
 
         /// <summary>
-    /// Intializes the new instance of Inxi class and parses hardware
-    /// </summary>
+        /// Intializes the new instance of Inxi class and parses hardware
+        /// </summary>
         public Inxi() : this("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", "/usr/bin/json_xs", (InxiHardwareType)Enum.GetValues(typeof(InxiHardwareType)).Cast<int>().Sum())
         {
         }
 
         /// <summary>
-    /// Intializes the new instance of Inxi class and parses hardware
-    /// </summary>
-    /// <param name="HardwareTypes">Hardware types to parse</param>
+        /// Intializes the new instance of Inxi class and parses hardware
+        /// </summary>
+        /// <param name="HardwareTypes">Hardware types to parse</param>
         public Inxi(InxiHardwareType HardwareTypes) : this("/usr/bin/inxi", "/usr/bin/cpanel_json_xs", "/usr/bin/json_xs", HardwareTypes)
         {
         }
 
         /// <summary>
-    /// Initializes the new instance of Inxi class with specified path and parses hardware
-    /// </summary>
-    /// <param name="InxiPath">Path to Inxi executable. It's usually /usr/bin/inxi. Ignored in Windows.</param>
-    /// <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs. Ignored in Windows.</param>
-    /// <param name="JsonXsPath">Path to JsonXS executable. It's usually /usr/bin/json_xs. Ignored in Windows.</param>
-    /// <param name="HardwareTypes">Hardware types to parse</param>
+        /// Initializes the new instance of Inxi class with specified path and parses hardware
+        /// </summary>
+        /// <param name="InxiPath">Path to Inxi executable. It's usually /usr/bin/inxi. Ignored in Windows.</param>
+        /// <param name="CpanelJsonXsPath">Path to CPanelJsonXS executable. It's usually /usr/bin/cpanel_json_xs. Ignored in Windows.</param>
+        /// <param name="JsonXsPath">Path to JsonXS executable. It's usually /usr/bin/json_xs. Ignored in Windows.</param>
+        /// <param name="HardwareTypes">Hardware types to parse</param>
         public Inxi(string InxiPath, string CpanelJsonXsPath, string JsonXsPath, InxiHardwareType HardwareTypes)
         {
             string FrontendVersion = GetExecutingAssembly().GetName().Version.ToString();
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
                 InxiTrace.Debug("Inxi.NET {0} running on Unix.", FrontendVersion);
                 InxiTrace.Debug("Inxi parse flags: {0}", HardwareTypes);
 
                 // Check to see if we're on macOS or on regular Unix
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
+                if (InxiInternalUtils.IsMacOS())
                 {
                     // Use System Profiler to get hardware information
                     InxiTrace.Debug("Type: macOS");

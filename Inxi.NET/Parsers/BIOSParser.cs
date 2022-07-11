@@ -1,5 +1,4 @@
 ﻿
-
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -17,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -30,23 +29,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses BIOS info
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses BIOS info
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             BIOS BIOSInfo;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     BIOSInfo = (BIOS)ParseMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     BIOSInfo = (BIOS)ParseLinux(InxiToken);
-                }
             }
             else
             {
@@ -75,13 +70,7 @@ namespace InxiFrontend
                 BIOSInfo = new BIOS(BIOS, Date, Version);
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return BIOSInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseMacOS(NSArray SystemProfilerToken)
@@ -103,22 +92,16 @@ namespace InxiFrontend
             InxiTrace.Debug("Getting the base objects...");
             foreach (ManagementBaseObject BIOSBase in WMIBIOS.Get())
             {
-                string BIOS = Conversions.ToString(BIOSBase["Caption"]);
-                string Date = Conversions.ToString(BIOSBase["ReleaseDate"]);
-                string Version = Conversions.ToString(BIOSBase["Version"]);
+                string BIOS = (string)BIOSBase["Caption"];
+                string Date = (string)BIOSBase["ReleaseDate"];
+                string Version = (string)BIOSBase["Version"];
                 InxiTrace.Debug("Got information. BIOS: {0}, Date: {1}, Version: {2}", BIOS, Date, Version);
 
                 // Create an instance of system class
                 BIOSInfo = new BIOS(BIOS, Date, Version);
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return BIOSInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
     }

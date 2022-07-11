@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,9 +16,11 @@ using System.Diagnostics;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Management;
+using System.Text;
 using Claunia.PropertyList;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -30,67 +30,67 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// List of hard drives detected
-    /// </summary>
-        public readonly Dictionary<string, HardDrive> HDD = new Dictionary<string, HardDrive>();
+        /// List of hard drives detected
+        /// </summary>
+        public readonly Dictionary<string, HardDrive> HDD = new();
         /// <summary>
-    /// List of logical hard drive partitions detected
-    /// </summary>
-        public readonly Dictionary<string, WindowsLogicalPartition> LogicalParts = new Dictionary<string, WindowsLogicalPartition>();
+        /// List of logical hard drive partitions detected
+        /// </summary>
+        public readonly Dictionary<string, WindowsLogicalPartition> LogicalParts = new();
         /// <summary>
-    /// List of processors detected
-    /// </summary>
-        public readonly Dictionary<string, Processor> CPU = new Dictionary<string, Processor>();
+        /// List of processors detected
+        /// </summary>
+        public readonly Dictionary<string, Processor> CPU = new();
         /// <summary>
-    /// List of graphics cards detected
-    /// </summary>
-        public readonly Dictionary<string, Graphics> GPU = new Dictionary<string, Graphics>();
+        /// List of graphics cards detected
+        /// </summary>
+        public readonly Dictionary<string, Graphics> GPU = new();
         /// <summary>
-    /// List of sound cards detected
-    /// </summary>
-        public readonly Dictionary<string, Sound> Sound = new Dictionary<string, Sound>();
+        /// List of sound cards detected
+        /// </summary>
+        public readonly Dictionary<string, Sound> Sound = new();
         /// <summary>
-    /// List of network cards detected
-    /// </summary>
-        public readonly Dictionary<string, Network> Network = new Dictionary<string, Network>();
+        /// List of network cards detected
+        /// </summary>
+        public readonly Dictionary<string, Network> Network = new();
         /// <summary>
-    /// List of batteries detected
-    /// </summary>
-        public readonly List<Battery> Battery = new List<Battery>();
+        /// List of batteries detected
+        /// </summary>
+        public readonly List<Battery> Battery = new();
         /// <summary>
-    /// System information
-    /// </summary>
+        /// System information
+        /// </summary>
         public readonly SystemInfo System;
         /// <summary>
-    /// Machine information
-    /// </summary>
+        /// Machine information
+        /// </summary>
         public readonly MachineInfo Machine;
         /// <summary>
-    /// BIOS information
-    /// </summary>
+        /// BIOS information
+        /// </summary>
         public readonly BIOS BIOS;
         /// <summary>
-    /// RAM information
-    /// </summary>
+        /// RAM information
+        /// </summary>
         public readonly PCMemory RAM;
 
         /// <summary>
-    /// Inxi token used for hardware probe
-    /// </summary>
+        /// Inxi token used for hardware probe
+        /// </summary>
         internal JToken InxiToken;
         /// <summary>
-    /// SystemProfiler token used for hardware probe
-    /// </summary>
+        /// SystemProfiler token used for hardware probe
+        /// </summary>
         internal NSArray SystemProfilerToken;
 
         /// <summary>
-    /// Initializes a new instance of hardware info
-    /// </summary>
+        /// Initializes a new instance of hardware info
+        /// </summary>
         public HardwareInfo(string InxiPath, InxiHardwareType ParseFlags)
         {
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
+                if (InxiInternalUtils.IsMacOS())
                 {
                     // Start the SystemProfiler process
                     var SystemProfilerProcess = new Process();
@@ -107,7 +107,7 @@ namespace InxiFrontend
                     InxiTrace.Debug("Starting system_profiler with \"SPSoftwareDataType SPAudioDataType SPHardwareDataType SPNetworkDataType SPStorageDataType SPDisplaysDataType -xml\"...");
                     SystemProfilerProcess.Start();
                     SystemProfilerProcess.WaitForExit(10000);
-                    SystemProfilerToken = (NSArray)PropertyListParser.Parse(global::System.Text.Encoding.Default.GetBytes(SystemProfilerProcess.StandardOutput.ReadToEnd()));
+                    SystemProfilerToken = (NSArray)PropertyListParser.Parse(Encoding.Default.GetBytes(SystemProfilerProcess.StandardOutput.ReadToEnd()));
                     InxiTrace.Debug("Token parsed.");
                 }
                 else
@@ -155,7 +155,7 @@ namespace InxiFrontend
             }
 
             // Logical partitions
-            if (Conversions.ToBoolean(Operators.AndObject(!InxiInternalUtils.IsUnix(), ParseFlags.HasFlag(InxiHardwareType.HardDriveLogical))))
+            if (!InxiInternalUtils.IsUnix() && ParseFlags.HasFlag(InxiHardwareType.HardDriveLogical))
             {
                 InxiTrace.Debug("Parsing logical partitions...");
                 Logicals = WindowsLogicalPartitionParser.ParsePartitions(new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"));
@@ -291,11 +291,8 @@ namespace InxiFrontend
                 BatteryProcessed.Add(Parsed);
 
             // Install parsed information to current instance
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             HDD = HDDProcessed;
-            if (Conversions.ToBoolean(!InxiInternalUtils.IsUnix()))
+            if (!InxiInternalUtils.IsUnix())
                 LogicalParts = Logicals;
             CPU = CPUProcessed;
             GPU = GPUProcessed;
@@ -306,9 +303,6 @@ namespace InxiFrontend
             BIOS = BIOSParsed;
             System = SystemParsed;
             Machine = MachineParsed;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
             InxiTrace.Debug("Parsed information installed.");
         }
 

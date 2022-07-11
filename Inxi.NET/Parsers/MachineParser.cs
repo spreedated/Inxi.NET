@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -17,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -30,23 +29,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses machine info
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses machine info
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             HardwareBase MachInfo;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     MachInfo = ParseMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     MachInfo = ParseLinux(InxiToken);
-                }
             }
             else
             {
@@ -78,13 +73,7 @@ namespace InxiFrontend
                 MachInfo = new MachineInfo(Type, Product, System, Chassis, MoboManufacturer, MoboModel);
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return MachInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseMacOS(NSArray SystemProfilerToken)
@@ -95,7 +84,7 @@ namespace InxiFrontend
             InxiTrace.Debug("Checking for data type...");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPHardwareDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPHardwareDataType")
                 {
                     InxiTrace.Debug("DataType found: SPHardwareDataType...");
 
@@ -106,11 +95,11 @@ namespace InxiFrontend
                     {
                         // Get information of machine
                         string Type = SoftwareDict["machine_name"].ToObject().ToString().Contains("MacBook") ? "Laptop" : "Desktop";
-                        string Product = Conversions.ToString(SoftwareDict["machine_name"].ToObject());
+                        string Product = (string)SoftwareDict["machine_name"].ToObject();
                         string System = "macOS";
                         string Chassis = "Apple";
                         string MoboManufacturer = "Apple";
-                        string MoboModel = Conversions.ToString(SoftwareDict["machine_model"].ToObject());
+                        string MoboModel = (string)SoftwareDict["machine_model"].ToObject();
                         InxiTrace.Debug("Got information. Type: {0}, Product: {1}, System: {2}, Chassis: {3}, MoboManufacturer: {4}, MoboModel: {5}", Type, Product, System, Chassis, MoboManufacturer, MoboModel);
 
                         // Create an instance of machine class
@@ -119,13 +108,7 @@ namespace InxiFrontend
                 }
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return MachInfo;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
@@ -150,11 +133,11 @@ namespace InxiFrontend
             InxiTrace.Debug("Getting the base objects...");
             foreach (ManagementBaseObject WMISystemBase in WMISystem.Get())
             {
-                if (Conversions.ToBoolean(Operators.AndObject(WMISystemBase["Version"].StartsWith("10"), Environment.OSVersion.Platform == PlatformID.Win32NT))) // If running on Windows 10
+                if (Convert.ToString(WMISystemBase["Version"]).StartsWith("10") && Environment.OSVersion.Platform == PlatformID.Win32NT) // If running on Windows 10
                 {
                     InxiTrace.Debug("Target is running Windows 10/11.");
                     foreach (ManagementBaseObject MachineBase in WMIMachine.Get())
-                        Type = Conversions.ToString(MachineBase["ChassisSKUNumber"]);
+                        Type = (string)MachineBase["ChassisSKUNumber"];
                 }
             }
 
@@ -164,16 +147,16 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Chassis not implemented in Windows");
             foreach (ManagementBaseObject MachineBase in WMIMachine.Get())
             {
-                Product = Conversions.ToString(MachineBase["Model"]);
-                System = Conversions.ToString(MachineBase["SystemFamily"]);
+                Product = (string)MachineBase["Model"];
+                System = (string)MachineBase["SystemFamily"];
             }
 
             // Get information for model and manufacturer
             InxiTrace.Debug("Getting the base objects...");
             foreach (ManagementBaseObject MoboBase in WMIBoard.Get())
             {
-                MoboModel = Conversions.ToString(MoboBase["Model"]);
-                MoboManufacturer = Conversions.ToString(MoboBase["Manufacturer"]);
+                MoboModel = (string)MoboBase["Model"];
+                MoboManufacturer = (string)MoboBase["Manufacturer"];
             }
             InxiTrace.Debug("Got information. Type: {0}, Product: {1}, System: {2}, Chassis: {3}, MoboManufacturer: {4}, MoboModel: {5}", Type, Product, System, Chassis, MoboManufacturer, MoboModel);
 

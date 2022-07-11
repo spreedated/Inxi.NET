@@ -1,5 +1,4 @@
 ﻿
-
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -27,8 +26,8 @@ namespace InxiFrontend.Tests
     {
 
         /// <summary>
-    /// Tests getting hardware information
-    /// </summary>
+        /// Tests getting hardware information
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformation()
         {
@@ -47,8 +46,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (BIOS)
-    /// </summary>
+        /// Tests getting hardware information selectively (BIOS)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveBIOS()
         {
@@ -60,8 +59,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (Graphics)
-    /// </summary>
+        /// Tests getting hardware information selectively (Graphics)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveGraphics()
         {
@@ -73,8 +72,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (HardDrive)
-    /// </summary>
+        /// Tests getting hardware information selectively (HardDrive)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveHardDrive()
         {
@@ -86,8 +85,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (Machine)
-    /// </summary>
+        /// Tests getting hardware information selectively (Machine)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveMachine()
         {
@@ -99,8 +98,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (Network)
-    /// </summary>
+        /// Tests getting hardware information selectively (Network)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveNetwork()
         {
@@ -112,8 +111,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (PCMemory)
-    /// </summary>
+        /// Tests getting hardware information selectively (PCMemory)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectivePCMemory()
         {
@@ -125,8 +124,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (Processor)
-    /// </summary>
+        /// Tests getting hardware information selectively (Processor)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveProcessor()
         {
@@ -138,8 +137,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (Sound)
-    /// </summary>
+        /// Tests getting hardware information selectively (Sound)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveSound()
         {
@@ -151,8 +150,8 @@ namespace InxiFrontend.Tests
         }
 
         /// <summary>
-    /// Tests getting hardware information selectively (System)
-    /// </summary>
+        /// Tests getting hardware information selectively (System)
+        /// </summary>
         [TestMethod]
         public void TestGetHardwareInformationSelectiveSystem()
         {

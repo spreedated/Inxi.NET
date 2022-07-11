@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Management;
-using Claunia.PropertyList;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -19,9 +16,12 @@ using Claunia.PropertyList;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+using System.Management;
+using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -31,23 +31,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses network cards
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses network cards
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             Dictionary<string, HardwareBase> NetworkParsed;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     NetworkParsed = ParseAllMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     NetworkParsed = ParseAllLinux(InxiToken);
-                }
             }
             else
             {
@@ -157,7 +153,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Name, Driver, DriverVersion, Bus ID, Chip ID, and State not implemented in macOS.");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPNetworkDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPNetworkDataType")
                 {
                     InxiTrace.Debug("DataType found: SPNetworkDataType...");
 
@@ -169,10 +165,10 @@ namespace InxiFrontend
                         NSDictionary EthernetDict = (NSDictionary)NetDict["Ethernet"];
                         NSArray EthernetMediaOptions = (NSArray)EthernetDict["MediaOptions"];
                         foreach (NSObject MediaOption in EthernetMediaOptions)
-                            NetDuplex = Conversions.ToString(NetDuplex + MediaOption.ToObject());
-                        NetSpeed = Conversions.ToString(EthernetDict["MediaSubType"].ToObject());
-                        NetMacAddress = Conversions.ToString(EthernetDict["MAC Address"].ToObject());
-                        NetDeviceID = Conversions.ToString(NetDict["interface"].ToObject());
+                            NetDuplex += MediaOption.ToObject();
+                        NetSpeed = (string)EthernetDict["MediaSubType"].ToObject();
+                        NetMacAddress = (string)EthernetDict["MAC Address"].ToObject();
+                        NetDeviceID = (string)NetDict["interface"].ToObject();
                         InxiTrace.Debug("Got information. NetName: {0}, NetDriver: {1}, NetDriverVersion: {2}, NetDuplex: {3}, NetSpeed: {4}, NetState: {5}, NetDeviceID: {6}, NetChipID: {7}, NetBusID: {8}", NetName, NetDriver, NetDriverVersion, NetDuplex, NetSpeed, NetState, NetDeviceID, NetChipID, NetBusID);
 
                         // Create instance of network class
@@ -221,18 +217,18 @@ namespace InxiFrontend
             foreach (ManagementBaseObject Networking in Networks.Get())
             {
                 // Get information of a network card
-                NetName = Conversions.ToString(Networking["Name"]);
-                NetDriver = Conversions.ToString(Networking["ServiceName"]);
-                NetSpeed = Conversions.ToString(Networking["Speed"]);
-                NetState = Conversions.ToString(Networking["NetConnectionStatus"]);
-                NetMacAddress = Conversions.ToString(Networking["MACAddress"]);
-                NetDeviceID = Conversions.ToString(Networking["DeviceID"]);
-                NetChipID = Conversions.ToString(Networking["PNPDeviceID"]);
+                NetName = (string)Networking["Name"];
+                NetDriver = (string)Networking["ServiceName"];
+                NetSpeed = Convert.ToString(Networking["Speed"]);
+                NetState = Convert.ToString(Networking["NetConnectionStatus"]);
+                NetMacAddress = (string)Networking["MACAddress"];
+                NetDeviceID = (string)Networking["DeviceID"];
+                NetChipID = (string)Networking["PNPDeviceID"];
                 foreach (ManagementBaseObject NetworkDriver in NetworkDrivers.Get())
                 {
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(NetworkDriver["Description"], NetName, false)))
+                    if ((string)NetworkDriver["Description"] == NetName)
                     {
-                        NetDriverVersion = Conversions.ToString(NetworkDriver["DriverVersion"]);
+                        NetDriverVersion = (string)NetworkDriver["DriverVersion"];
                         break;
                     }
                 }

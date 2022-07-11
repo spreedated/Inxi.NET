@@ -1,11 +1,28 @@
-﻿using System;
+﻿
+// Inxi.NET  Copyright (C) 2020-2021  EoflaOE
+// 
+// This file is part of Inxi.NET
+// 
+// Inxi.NET is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Inxi.NET is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Runtime.InteropServices;
 using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -15,23 +32,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses processors
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses processors
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             Dictionary<string, HardwareBase> CPUParsed;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     CPUParsed = ParseAllMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     CPUParsed = ParseAllLinux(InxiToken);
-                }
             }
             else
             {
@@ -55,17 +68,7 @@ namespace InxiFrontend
             string CPUType = "";
             var CPUBits = default(int);
             string CPUMilestone = "";
-            /* TODO ERROR: Skipped IfDirectiveTrivia
-            #If Not NET45 Then
-            */
             var CPUFlags = Array.Empty<string>();
-            /* TODO ERROR: Skipped ElseDirectiveTrivia
-            #Else
-            *//* TODO ERROR: Skipped DisabledTextTrivia
-                    Dim CPUFlags As String() = {}
-            *//* TODO ERROR: Skipped EndIfDirectiveTrivia
-            #End If
-            */
             string CPUL2Size = "";
             int CPUL3Size = 0;
             string CPUSpeed = "";
@@ -97,9 +100,7 @@ namespace InxiFrontend
                     CPUBogoMips = (int)InxiCPU.SelectTokenKeyEndingWith("bogomips");
                 }
                 else
-                {
                     CPUSpeed = (string)InxiCPU.SelectTokenKeyEndingWith("Speed");
-                }
                 InxiTrace.Debug("Got information. CPUName: {0}, CPUTopology: {1}, CPUType: {2}, CPUBits: {3}, CPUMilestone: {4}, CPUL2Size: {5}, CPURev: {6}, CPUFlags: {7}, CPUBogoMips: {8}, CPUSpeed: {9}", CPUName, CPUTopology, CPUType, CPUBits, CPUMilestone, CPUL2Size, CPURev, CPUFlags.Length, CPUBogoMips, CPUSpeed);
             }
 
@@ -121,17 +122,7 @@ namespace InxiFrontend
             string CPUType = "";
             var CPUBits = default(int);
             string CPUMilestone = "";
-            /* TODO ERROR: Skipped IfDirectiveTrivia
-            #If Not NET45 Then
-            */
             var CPUFlags = Array.Empty<string>();
-            /* TODO ERROR: Skipped ElseDirectiveTrivia
-            #Else
-            *//* TODO ERROR: Skipped DisabledTextTrivia
-                    Dim CPUFlags As String() = {}
-            *//* TODO ERROR: Skipped EndIfDirectiveTrivia
-            #End If
-            */
             string CPUL2Size = "";
             int CPUL3Size = 0;
             string CPUSpeed = "";
@@ -144,7 +135,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: L2, L3, and speed only done in macOS.");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPHardwareDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPHardwareDataType")
                 {
                     InxiTrace.Debug("DataType found: SPHardwareDataType...");
 
@@ -152,9 +143,9 @@ namespace InxiFrontend
                     NSArray HardwareEnum = (NSArray)DataType["_items"];
                     foreach (NSDictionary HardwareDict in HardwareEnum)
                     {
-                        CPUL2Size = Conversions.ToString(HardwareDict["l2_cache"].ToObject());
-                        CPUL3Size = Conversions.ToInteger(HardwareDict["l3_cache"].ToObject().ToString().Replace(" MB", ""));
-                        CPUSpeed = Conversions.ToString(HardwareDict["current_processor_speed"].ToObject());
+                        CPUL2Size = (string)HardwareDict["l2_cache"].ToObject();
+                        CPUL3Size = Convert.ToInt32(HardwareDict["l3_cache"].ToObject().ToString().Replace(" MB", ""));
+                        CPUSpeed = (string)HardwareDict["current_processor_speed"].ToObject();
                         InxiTrace.Debug("Got information. CPUL2Size: {0}, CPUL3Size: {1}, CPUSpeed: {2}", CPUL2Size, CPUL3Size, CPUSpeed);
                     }
                 }
@@ -171,7 +162,6 @@ namespace InxiFrontend
         {
             var CPUParsed = new Dictionary<string, HardwareBase>();
             InxiTrace.Debug("Selecting entries from Win32_OperatingSystem...");
-            var System = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
             var CPUClass = WMISearcher;
             Processor CPU;
 
@@ -181,17 +171,7 @@ namespace InxiFrontend
             string CPUType = "";
             var CPUBits = default(int);
             string CPUMilestone = "";
-            /* TODO ERROR: Skipped IfDirectiveTrivia
-            #If Not NET45 Then
-            */
             var CPUFlags = Array.Empty<string>();
-            /* TODO ERROR: Skipped ElseDirectiveTrivia
-            #Else
-            *//* TODO ERROR: Skipped DisabledTextTrivia
-                    Dim CPUFlags As String() = {}
-            *//* TODO ERROR: Skipped EndIfDirectiveTrivia
-            #End If
-            */
             string CPUL2Size = "";
             int CPUL3Size = 0;
             string CPUSpeed = "";
@@ -204,18 +184,16 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Topology, Rev, BogoMips, and Milestone not implemented in Windows.");
             foreach (ManagementBaseObject CPUManagement in CPUClass.Get())
             {
-                CPUName = Conversions.ToString(CPUManagement["Name"]);
-                CPUType = Conversions.ToString(CPUManagement["ProcessorType"]);
-                CPUBits = Conversions.ToInteger(CPUManagement["DataWidth"]);
-                CPUL2Size = Conversions.ToString(CPUManagement["L2CacheSize"]);
-                CPUL3Size = Conversions.ToInteger(CPUManagement["L3CacheSize"]);
-                CPUSpeed = Conversions.ToString(CPUManagement["CurrentClockSpeed"]);
+                CPUName = (string)CPUManagement["Name"];
+                CPUType = Convert.ToString(CPUManagement["ProcessorType"]);
+                CPUBits = Convert.ToInt32(CPUManagement["DataWidth"]);
+                CPUL2Size = Convert.ToString(CPUManagement["L2CacheSize"]);
+                CPUL3Size = Convert.ToInt32(CPUManagement["L3CacheSize"]);
+                CPUSpeed = Convert.ToString(CPUManagement["CurrentClockSpeed"]);
                 foreach (CPUFeatures.SSEnum CPUFeature in Enum.GetValues(typeof(CPUFeatures.SSEnum)))
                 {
                     if (CPUFeatures.IsProcessorFeaturePresent(CPUFeature))
-                    {
                         Extensification.ArrayExts.Addition.Add(ref CPUFlags, CPUFeature.ToString().ToLower());
-                    }
                 }
                 InxiTrace.Debug("Got information. CPUName: {0}, CPUType: {1}, CPUBits: {2}, CPUL2Size: {3}, CPUFlags: {4}, CPUL3Size: {5}, CPUSpeed: {6}", CPUName, CPUType, CPUBits, CPUL2Size, CPUFlags.Length, CPUL3Size, CPUSpeed);
             }
@@ -233,29 +211,29 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// [Windows] Check for specific processor feature. More info: https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-isprocessorfeaturepresent
-    /// </summary>
-    /// <param name="processorFeature">An SSE version</param>
-    /// <returns>True if supported, false if not supported</returns>
+        /// [Windows] Check for specific processor feature. More info: https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-isprocessorfeaturepresent
+        /// </summary>
+        /// <param name="processorFeature">An SSE version</param>
+        /// <returns>True if supported, false if not supported</returns>
         [DllImport("kernel32.dll")]
         internal static extern bool IsProcessorFeaturePresent(SSEnum processorFeature);
 
         /// <summary>
-    /// [Windows] Collection of SSE versions
-    /// </summary>
+        /// [Windows] Collection of SSE versions
+        /// </summary>
         internal enum SSEnum : uint
         {
             /// <summary>
-        /// [Windows] The SSE instruction set is available.
-        /// </summary>
+            /// [Windows] The SSE instruction set is available.
+            /// </summary>
             SSE = 6U,
             /// <summary>
-        /// [Windows] The SSE2 instruction set is available. (This is used in most apps nowadays, since recent processors have this capability.)
-        /// </summary>
+            /// [Windows] The SSE2 instruction set is available. (This is used in most apps nowadays, since recent processors have this capability.)
+            /// </summary>
             SSE2 = 10U,
             /// <summary>
-        /// [Windows] The SSE3 instruction set is available.
-        /// </summary>
+            /// [Windows] The SSE3 instruction set is available.
+            /// </summary>
             SSE3 = 13U
         }
 

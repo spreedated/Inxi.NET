@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualBasic.CompilerServices;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,6 +16,7 @@ using Microsoft.VisualBasic.CompilerServices;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
 using UnameNET;
 
 namespace InxiFrontend
@@ -27,19 +26,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Is the platform Unix?
-    /// </summary>
-        internal static object IsUnix()
+        /// Is the platform Unix?
+        /// </summary>
+        internal static bool IsUnix()
         {
             return Environment.OSVersion.Platform == PlatformID.Unix;
         }
 
         /// <summary>
-    /// Is the Unix platform macOS?
-    /// </summary>
-        internal static object IsMacOS()
+        /// Is the Unix platform macOS?
+        /// </summary>
+        internal static bool IsMacOS()
         {
-            if (Conversions.ToBoolean(IsUnix()))
+            if (IsUnix())
             {
                 string System = UnameManager.GetUname(UnameTypes.KernelName);
                 InxiTrace.Debug("Searching {0} for \"Darwin\"...", System.Replace(Environment.NewLine, ""));

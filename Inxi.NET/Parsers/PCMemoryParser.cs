@@ -1,5 +1,4 @@
 ﻿
-
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -17,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -30,22 +29,18 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses processors
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses processors
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             PCMemory Mem;
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     Mem = (PCMemory)ParseMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     Mem = (PCMemory)ParseLinux(InxiToken);
-                }
             }
             else
             {
@@ -75,13 +70,7 @@ namespace InxiFrontend
                 Mem = new PCMemory(TotalMem, UsedMem, "");
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return Mem;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseMacOS(NSArray SystemProfilerToken)
@@ -94,7 +83,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Used memory and free memory not implemented in macOS.");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPHardwareDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPHardwareDataType")
                 {
                     InxiTrace.Debug("DataType found: SPHardwareDataType...");
 
@@ -104,7 +93,7 @@ namespace InxiFrontend
                     foreach (NSDictionary HardwareDict in HardwareEnum)
                     {
                         // Get information of memory
-                        string TotalMem = Conversions.ToString(HardwareDict["physical_memory"].ToObject());
+                        string TotalMem = (string)HardwareDict["physical_memory"].ToObject();
                         InxiTrace.Debug("Got information. TotalMem: {0}", TotalMem);
 
                         // Create an instance of memory class
@@ -113,13 +102,7 @@ namespace InxiFrontend
                 }
             }
 
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42104
-            */
             return Mem;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42104
-            */
         }
 
         public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
@@ -134,9 +117,9 @@ namespace InxiFrontend
             InxiTrace.Debug("Getting the base objects...");
             foreach (ManagementBaseObject OS in System.Get())
             {
-                TotalMem = Conversions.ToLong(OS["TotalVisibleMemorySize"]);
-                UsedMem = Conversions.ToLong(Operators.SubtractObject(TotalMem, OS["FreePhysicalMemory"]));
-                FreeMem = Conversions.ToLong(OS["FreePhysicalMemory"]);
+                TotalMem = Convert.ToInt64(OS["TotalVisibleMemorySize"]);
+                UsedMem = TotalMem - Convert.ToInt64(OS["FreePhysicalMemory"]);
+                FreeMem = Convert.ToInt64(OS["FreePhysicalMemory"]);
                 InxiTrace.Debug("Got information. TotalMem: {0}, UsedMem: {1}, FreeMem: {2}", TotalMem, UsedMem, FreeMem);
             }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,6 +16,8 @@ using System.Linq;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Linq;
 using InxiFrontend;
 
 namespace Inxi.NET.ConsoleTest
@@ -32,6 +32,7 @@ namespace Inxi.NET.ConsoleTest
             {
                 if (args.Contains("-debug"))
                     InxiTrace.DebugDataReceived += HandleDebugData;
+
                 var InxiInstance = new InxiFrontend.Inxi();
                 var HardwareInfo = InxiInstance.Hardware;
 
@@ -153,10 +154,7 @@ namespace Inxi.NET.ConsoleTest
             }
         }
 
-        private static void HandleDebugData(string Message, string PlainMessage)
-        {
-            Console.WriteLine(Message);
-        }
+        private static void HandleDebugData(string Message, string PlainMessage) => Console.WriteLine(Message);
 
     }
 }

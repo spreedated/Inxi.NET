@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,10 +16,11 @@ using System.Collections.Generic;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -31,23 +30,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses battery info
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses battery info
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override List<HardwareBase> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken)
         {
             List<HardwareBase> Batteries;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     Batteries = ParseAllToListMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     Batteries = ParseAllToListLinux(InxiToken);
-                }
             }
             else
             {
@@ -107,12 +102,12 @@ namespace InxiFrontend
             foreach (ManagementBaseObject BattBase in WMIBatt.Get())
             {
                 // Get information of battery
-                string Name = Conversions.ToString(BattBase["Caption"]);
-                int Charge = Conversions.ToInteger(BattBase["EstimatedChargeRemaining"]);
-                string Condition = Conversions.ToString(BattBase["BatteryStatus"]);
-                string Volts = Conversions.ToString(BattBase["DesignVoltage"]);
-                string Model = Conversions.ToString(BattBase["Name"]);
-                string Status = Conversions.ToString(BattBase["BatteryStatus"]);
+                string Name = (string)BattBase["Caption"];
+                int Charge = (int)BattBase["EstimatedChargeRemaining"];
+                string Condition = (string)BattBase["BatteryStatus"];
+                string Volts = (string)BattBase["DesignVoltage"];
+                string Model = (string)BattBase["Name"];
+                string Status = (string)BattBase["BatteryStatus"];
                 InxiTrace.Debug("Got information. Name: {0}, Charge: {1}, Condition: {2}, Volts: {3}, Model: {4}, Status: {5}", Name, Charge, Condition, Volts, Model, Status);
 
                 // Create an instance of battery class

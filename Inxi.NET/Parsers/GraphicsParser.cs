@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Management;
-using Claunia.PropertyList;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -20,9 +16,12 @@ using Claunia.PropertyList;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+using System.Management;
+using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -32,23 +31,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses graphics cards
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses graphics cards
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             Dictionary<string, HardwareBase> GPUParsed;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     GPUParsed = ParseAllMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     GPUParsed = ParseAllLinux(InxiToken);
-                }
             }
             else
             {
@@ -109,7 +104,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: GPU Driver, bus ID, and driver version not implemented in macOS (maybe kexts (kernel extensions) provide this information).");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPDisplaysDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPDisplaysDataType")
                 {
                     InxiTrace.Debug("DataType found: SPDisplaysDataType...");
 
@@ -118,8 +113,8 @@ namespace InxiFrontend
                     InxiTrace.Debug("Enumerating graphics cards...");
                     foreach (NSDictionary GraphicsDict in GraphicsEnum)
                     {
-                        GPUName = Conversions.ToString(GraphicsDict["spdisplays_device-id"].ToObject());
-                        GPUChipID = Conversions.ToString(GraphicsDict["spdisplays_vendor-id"].ToObject());
+                        GPUName = (string)GraphicsDict["spdisplays_device-id"].ToObject();
+                        GPUChipID = (string)GraphicsDict["spdisplays_vendor-id"].ToObject();
                         InxiTrace.Debug("Got information. GPUName: {0}, GPUChipID: {1}", GPUName);
 
                         // Create an instance of graphics class
@@ -154,10 +149,10 @@ namespace InxiFrontend
                 try
                 {
                     // Get information of a graphics card
-                    GPUName = Conversions.ToString(Graphics["Caption"]);
-                    GPUDriver = Conversions.ToString(Graphics["InstalledDisplayDrivers"]);
-                    GPUDriverVersion = Conversions.ToString(Graphics["DriverVersion"]);
-                    GPUChipID = Conversions.ToString(Graphics["PNPDeviceID"]);
+                    GPUName = (string)Graphics["Caption"];
+                    GPUDriver = (string)Graphics["InstalledDisplayDrivers"];
+                    GPUDriverVersion = (string)Graphics["DriverVersion"];
+                    GPUChipID = (string)Graphics["PNPDeviceID"];
                     GPUBusID = "";
                     InxiTrace.Debug("Got information. GPUName: {0}, GPUDriver: {1}, GPUDriverVersion: {2}, GPUChipID: {3}, GPUBusID: {4}", GPUName, GPUDriver, GPUDriverVersion, GPUChipID, GPUBusID);
 

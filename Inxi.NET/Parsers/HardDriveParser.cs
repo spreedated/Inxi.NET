@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -18,10 +16,11 @@ using System.Collections.Generic;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -31,25 +30,21 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses hard drives
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses hard drives
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             // Variables
             Dictionary<string, HardwareBase> HDDParsed;
 
             // If the system is Unix, use Inxi. If on Windows, use WMI. If on macOS, use system_profiler.
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     HDDParsed = ParseAllMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     HDDParsed = ParseAllLinux(InxiToken);
-                }
             }
             else // on Windows
             {
@@ -139,9 +134,7 @@ namespace InxiFrontend
                     InxiTrace.Debug("Added {0} to the list of parsed drives.", DriveID);
                 }
                 else
-                {
                     InxiDriveReady = true;
-                }
             }
             return HDDParsed;
         }
@@ -158,7 +151,7 @@ namespace InxiFrontend
             InxiTrace.Debug("TODO: Drive vendor and speed not implemented in macOS");
             foreach (NSDictionary DataType in SystemProfilerToken)
             {
-                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(DataType["_dataType"].ToObject(), "SPStorageDataType", false)))
+                if ((string)DataType["_dataType"].ToObject() == "SPStorageDataType")
                 {
                     InxiTrace.Debug("DataType found: SPStorageDataType...");
 
@@ -167,10 +160,10 @@ namespace InxiFrontend
                     InxiTrace.Debug("Enumerating drives...");
                     foreach (NSDictionary DriveDict in DriveEnum)
                     {
-                        string DriveSize = Conversions.ToString(DriveDict["size_in_bytes"].ToObject());
-                        string DriveModel = Conversions.ToString((DriveDict["physical_drive"] as NSDictionary)["device_name"].ToObject());
-                        string DriveSerial = Conversions.ToString(DriveDict["volume_uuid"].ToObject());
-                        string DriveBsdName = Conversions.ToString(DriveDict["bsd_name"].ToObject());
+                        string DriveSize = (string)DriveDict["size_in_bytes"].ToObject();
+                        string DriveModel = (string)(DriveDict["physical_drive"] as NSDictionary)["device_name"].ToObject();
+                        string DriveSerial = (string)DriveDict["volume_uuid"].ToObject();
+                        string DriveBsdName = (string)DriveDict["bsd_name"].ToObject();
                         InxiTrace.Debug("Got information. DriveSize: {0}, DriveModel: {1}, DriveSerial: {2}, DriveBsdName: {3}", DriveSize, DriveModel, DriveSerial, DriveBsdName);
 
                         // Create an instance of hard drive class
@@ -204,29 +197,29 @@ namespace InxiFrontend
             {
                 try
                 {
-                    int DiskIndexHdd = Conversions.ToInteger(Hdd["Index"]);
-                    string DeviceID = Conversions.ToString(Hdd["DeviceID"]);
-                    string DeviceSize = Conversions.ToString(Hdd["Size"]);
-                    string DeviceModel = Conversions.ToString(Hdd["Model"]);
-                    string DeviceManufacturer = Conversions.ToString(Hdd["Manufacturer"]);
-                    string DeviceSerialNumber = Conversions.ToString(Hdd["SerialNumber"]);
+                    int DiskIndexHdd = Convert.ToInt32(Hdd["Index"]);
+                    string DeviceID = (string)Hdd["DeviceID"];
+                    string DeviceSize = Convert.ToString(Hdd["Size"]);
+                    string DeviceModel = (string)Hdd["Model"];
+                    string DeviceManufacturer = (string)Hdd["Manufacturer"];
+                    string DeviceSerialNumber = (string)Hdd["SerialNumber"];
                     InxiTrace.Debug("Got information. DiskIndexHdd: {0}, DeviceID: {1}, DeviceSize: {2}, DeviceModel: {3}, DeviceManufacturer: {4}", DiskIndexHdd, DeviceID, DeviceSize, DeviceModel, DeviceManufacturer);
                     InxiTrace.Debug("Getting the partiton base objects...");
                     foreach (ManagementBaseObject Manage in DiskPartitions.Get())
                     {
                         try
                         {
-                            string PartitionDeviceID = Conversions.ToString(Manage["DeviceID"]);
-                            string PartitionFilesystem = Conversions.ToString(Manage["Type"]);
-                            string PartitionSize = Conversions.ToString(Manage["Size"]);
-                            string PartitionIndex = Conversions.ToString(Manage["Index"]);
-                            ph14cde2ed6f9d41d9a2fca69d47771dfd = Conversions.ToInteger(Manage["DiskIndex"]);
-                            InxiTrace.Debug("Got information. PartitionDeviceID: {0}, PartitionFilesystem: {1}, PartitionSize: {2}, PartitionIndex: {3}, DriveNo: {4}", PartitionDeviceID, PartitionFilesystem, PartitionSize, PartitionIndex, (object)ph14cde2ed6f9d41d9a2fca69d47771dfd);
+                            string PartitionDeviceID = (string)Manage["DeviceID"];
+                            string PartitionFilesystem = (string)Manage["Type"];
+                            string PartitionSize = Convert.ToString(Manage["Size"]);
+                            string PartitionIndex = Convert.ToString(Manage["Index"]);
+                            DriveNo = Convert.ToInt32(Manage["DiskIndex"]);
+                            InxiTrace.Debug("Got information. PartitionDeviceID: {0}, PartitionFilesystem: {1}, PartitionSize: {2}, PartitionIndex: {3}, DriveNo: {4}", PartitionDeviceID, PartitionFilesystem, PartitionSize, PartitionIndex, (object)DriveNo);
 
-                            if (DiskIndexHdd == ph14cde2ed6f9d41d9a2fca69d47771dfd)
+                            if (DiskIndexHdd == DriveNo)
                             {
                                 DrivePart = new Partition(PartitionDeviceID, PartitionFilesystem, PartitionSize, "0");
-                                DriveParts.Add(Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("Physical partition in ", Hdd["Model"]), " ("), DiskIndexHdd), ") : "), PartitionIndex)), DrivePart);
+                                DriveParts.Add($"Physical partition in {Hdd["Model"]} ({DiskIndexHdd}) : {PartitionIndex}", DrivePart);
                                 InxiTrace.Debug("Added partition {0} to the list of drive {1}'s partitions.", PartitionIndex, DiskIndexHdd);
                             }
                         }

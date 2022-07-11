@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Management;
-using Claunia.PropertyList;
-
+﻿
 // Inxi.NET  Copyright (C) 2020-2021  EoflaOE
 // 
 // This file is part of Inxi.NET
@@ -19,9 +16,11 @@ using Claunia.PropertyList;
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Management;
+using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -31,23 +30,19 @@ namespace InxiFrontend
     {
 
         /// <summary>
-    /// Parses sound cards
-    /// </summary>
-    /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// Parses sound cards
+        /// </summary>
+        /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             Dictionary<string, HardwareBase> SPUParsed;
 
-            if (Conversions.ToBoolean(InxiInternalUtils.IsUnix()))
+            if (InxiInternalUtils.IsUnix())
             {
-                if (Conversions.ToBoolean(InxiInternalUtils.IsMacOS()))
-                {
+                if (InxiInternalUtils.IsMacOS())
                     SPUParsed = ParseAllMacOS(SystemProfilerToken);
-                }
                 else
-                {
                     SPUParsed = ParseAllLinux(InxiToken);
-                }
             }
             else
             {
@@ -128,10 +123,10 @@ namespace InxiFrontend
             foreach (ManagementBaseObject Device in SoundDevice.Get())
             {
                 // Get information of a sound card
-                SPUName = Conversions.ToString(Device["ProductName"]);
-                SPUVendor = Conversions.ToString(Device["Manufacturer"]);
+                SPUName = (string)Device["ProductName"];
+                SPUVendor = (string)Device["Manufacturer"];
                 SPUDriver = "";
-                SPUChipID = Conversions.ToString(Device["DeviceID"]);
+                SPUChipID = (string)Device["DeviceID"];
                 SPUBusID = "";
                 InxiTrace.Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID);
 
