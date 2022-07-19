@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Management;
 using System.Runtime.InteropServices;
 using Claunia.PropertyList;
+using Extensification.ArrayExts;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
@@ -193,7 +194,7 @@ namespace InxiFrontend
                 foreach (CPUFeatures.SSEnum CPUFeature in Enum.GetValues(typeof(CPUFeatures.SSEnum)))
                 {
                     if (CPUFeatures.IsProcessorFeaturePresent(CPUFeature))
-                        Extensification.ArrayExts.Addition.Add(ref CPUFlags, CPUFeature.ToString().ToLower());
+                        CPUFlags = CPUFlags.Add(CPUFeature.ToString().ToLower());
                 }
                 InxiTrace.Debug("Got information. CPUName: {0}, CPUType: {1}, CPUBits: {2}, CPUL2Size: {3}, CPUFlags: {4}, CPUL3Size: {5}, CPUSpeed: {6}", CPUName, CPUType, CPUBits, CPUL2Size, CPUFlags.Length, CPUL3Size, CPUSpeed);
             }
