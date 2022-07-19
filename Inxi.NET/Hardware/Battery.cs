@@ -18,7 +18,9 @@
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Battery class
+    /// </summary>
     public class Battery : HardwareBase
     {
 

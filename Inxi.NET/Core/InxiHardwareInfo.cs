@@ -25,7 +25,9 @@ using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Hardware information class
+    /// </summary>
     public class HardwareInfo
     {
 

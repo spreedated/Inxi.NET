@@ -18,7 +18,9 @@
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Windows logical partition class
+    /// </summary>
     public class WindowsLogicalPartition : HardwareBase
     {
 

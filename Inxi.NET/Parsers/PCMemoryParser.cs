@@ -32,6 +32,7 @@ namespace InxiFrontend
         /// Parses processors
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// <param name="SystemProfilerToken">system_profiler token</param>
         public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             PCMemory Mem;

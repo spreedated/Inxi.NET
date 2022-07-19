@@ -33,6 +33,7 @@ namespace InxiFrontend
         /// Parses battery info
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// <param name="SystemProfilerToken">system_profiler token</param>
         public override List<HardwareBase> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken)
         {
             List<HardwareBase> Batteries;

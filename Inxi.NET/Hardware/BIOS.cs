@@ -18,7 +18,9 @@
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// BIOS class
+    /// </summary>
     public class BIOS : HardwareBase
     {
 

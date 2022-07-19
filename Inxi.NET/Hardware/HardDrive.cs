@@ -20,6 +20,9 @@ using System.Collections.Generic;
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Hard drive class
+    /// </summary>
     public class HardDrive : HardwareBase
     {
 

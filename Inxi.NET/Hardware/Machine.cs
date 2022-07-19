@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Machine class
+    /// </summary>
     public class MachineInfo : HardwareBase
     {
 

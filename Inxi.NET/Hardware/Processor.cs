@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Processor class
+    /// </summary>
     public class Processor : HardwareBase
     {
 

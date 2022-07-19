@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Sound class
+    /// </summary>
     public class Sound : HardwareBase
     {
 

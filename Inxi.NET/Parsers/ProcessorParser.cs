@@ -36,6 +36,7 @@ namespace InxiFrontend
         /// Parses processors
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
+        /// <param name="SystemProfilerToken">system_profiler token</param>
         public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             Dictionary<string, HardwareBase> CPUParsed;

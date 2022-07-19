@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// RAM class
+    /// </summary>
     public class PCMemory : HardwareBase
     {
 

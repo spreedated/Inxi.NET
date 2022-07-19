@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Partition class
+    /// </summary>
     public class Partition : HardwareBase
     {
 

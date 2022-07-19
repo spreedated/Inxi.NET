@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// System information class
+    /// </summary>
     public class SystemInfo : HardwareBase
     {
 

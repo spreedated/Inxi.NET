@@ -23,7 +23,9 @@ using static System.Reflection.Assembly;
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Inxi frontend class
+    /// </summary>
     public class Inxi
     {
 

@@ -22,7 +22,9 @@ using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Interface for hardware parser
+    /// </summary>
     public interface IHardwareParser
     {
 

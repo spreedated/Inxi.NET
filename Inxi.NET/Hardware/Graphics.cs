@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Graphics class
+    /// </summary>
     public class Graphics : HardwareBase
     {
 

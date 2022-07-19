@@ -23,23 +23,32 @@ using Extensification.StringExts;
 
 namespace InxiFrontend
 {
-
+    /// <summary>
+    /// Inxi trace class
+    /// </summary>
     public static class InxiTrace
     {
+        /// <summary>
+        /// Indicates whether the debug data is received or not. It can be used to write debug data to debugger.
+        /// </summary>
+        public static event DebugDataReceivedEventHandler DebugDataReceived;
 
         /// <summary>
         /// Indicates whether the debug data is received or not. It can be used to write debug data to debugger.
         /// </summary>
         /// <param name="Message">A message</param>
-        public static event DebugDataReceivedEventHandler DebugDataReceived;
-
+        /// <param name="PlainMessage">A message without special formats</param>
         public delegate void DebugDataReceivedEventHandler(string Message, string PlainMessage);
+
+        /// <summary>
+        /// Event when specific hardware was parsed
+        /// </summary>
+        public static event HardwareParsedEventHandler HardwareParsed;
+
         /// <summary>
         /// Event when specific hardware was parsed
         /// </summary>
         /// <param name="Hardware">Specific hardware type parsed</param>
-        public static event HardwareParsedEventHandler HardwareParsed;
-
         public delegate void HardwareParsedEventHandler(InxiHardwareType Hardware);
 
         /// <summary>
@@ -77,6 +86,7 @@ namespace InxiFrontend
         /// Write a debug message
         /// </summary>
         /// <param name="Message">A message</param>
+        /// <param name="Values">Values to evaluate</param>
         internal static void Debug(string Message, params object[] Values)
         {
             // Get trace information

@@ -18,6 +18,9 @@
 
 namespace InxiFrontend
 {
+    /// <summary>
+    /// Network class
+    /// </summary>
     public class Network : HardwareBase
     {
 
