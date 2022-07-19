@@ -42,7 +42,7 @@ namespace InxiFrontend
                     string LogicalName = (string)Part["VolumeName"];
                     string LogicalFileSystem = (string)Part["FileSystem"];
                     string LogicalSize = Convert.ToString(Part["Size"]);
-                    string LogicalUsed = Convert.ToString((ulong)Part["Size"] - (ulong)Part["FreeSpace"]);
+                    string LogicalUsed = Convert.ToString((ulong?)Part["Size"] - (ulong?)Part["FreeSpace"]);
                     InxiTrace.Debug("Got information. LogicalID: {0}, LogicalFileSystem: {1}, LogicalSize: {2}, LogicalUsed: {3}", LogicalID, LogicalFileSystem, LogicalSize, LogicalUsed);
 
                     // Create an instance of logical partition class
