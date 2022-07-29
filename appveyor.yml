@@ -1,4 +1,4 @@
-version: 'v2021-{build}-{branch}'
+version: 'v2022-{build}-{branch}'
 image: Visual Studio 2022
 dotnet_csproj:
   patch: true
