@@ -1,5 +1,5 @@
 ﻿
-// Inxi.NET  Copyright (C) 2020-2021  EoflaOE
+// Inxi.NET  Copyright (C) 2020-2021  Aptivi
 // 
 // This file is part of Inxi.NET
 // 

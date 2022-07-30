@@ -1,6 +1,6 @@
 # Inxi.NET
 
-![GitHub repo size](https://img.shields.io/github/repo-size/EoflaOE/Inxi.NET?color=purple&label=size) [![GitHub All Releases](https://img.shields.io/github/downloads/EoflaOE/Inxi.NET/total?color=purple&label=d/l)](https://github.com/EoflaOE/Inxi.NET/releases) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/EoflaOE/Inxi.NET?color=purple&include_prereleases&label=github)](https://github.com/EoflaOE/Inxi.NET/releases/latest) [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Inxi.NET?color=purple)](https://www.nuget.org/packages/Inxi.NET/)
+![GitHub repo size](https://img.shields.io/github/repo-size/Aptivi/Inxi.NET?color=purple&label=size) [![GitHub All Releases](https://img.shields.io/github/downloads/Aptivi/Inxi.NET/total?color=purple&label=d/l)](https://github.com/Aptivi/Inxi.NET/releases) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Aptivi/Inxi.NET?color=purple&include_prereleases&label=github)](https://github.com/Aptivi/Inxi.NET/releases/latest) [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Inxi.NET?color=purple)](https://www.nuget.org/packages/Inxi.NET/)
 
 Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.
 
@@ -12,17 +12,17 @@ Here are all the CI build status for all Inxi.NET branches.
 
 | Branch                | AppVeyor 
 |-----------------------|----------
-| master                | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/master?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/master)
-| v2022.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.1.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2022.1.x-servicing)
-| v2022.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.0.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2022.0.x-servicing)
-| v2021.4.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.4.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2021.4.x-servicing)
-| v2021.3.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.3.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2021.3.x-servicing)
-| v2021.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.2.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2021.2.x-servicing)
-| v2021.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.1.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2021.1.x-servicing)
-| v2021.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.0.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2021.0.x-servicing)
-| v2020.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.2.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2020.2.x-servicing)
-| v2020.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.1.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2020.1.x-servicing)
-| v2020.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.0.x-servicing?svg=true)](https://ci.appveyor.com/project/EoflaOE/inxi-net/branch/v2020.0.x-servicing)
+| master                | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/master?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/master)
+| v2022.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2022.1.x-servicing)
+| v2022.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2022.0.x-servicing)
+| v2021.4.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.4.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.4.x-servicing)
+| v2021.3.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.3.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.3.x-servicing)
+| v2021.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.2.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.2.x-servicing)
+| v2021.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.1.x-servicing)
+| v2021.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.0.x-servicing)
+| v2020.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.2.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.2.x-servicing)
+| v2020.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.1.x-servicing)
+| v2020.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.0.x-servicing)
 
 ## System Requirements
 
@@ -50,7 +50,7 @@ This section covers how to install Inxi.NET on your project. Please scroll down 
 
 ### Windows systems (Alternative)
 
-1. Download the Inxi.NET library files [here](https://github.com/EoflaOE/Inxi.NET/releases).
+1. Download the Inxi.NET library files [here](https://github.com/Aptivi/Inxi.NET/releases).
 2. Unzip the file to any directory
 3. Open Visual Studio to any project, and add a reference to Inxi.NET
 
@@ -62,7 +62,7 @@ This section covers how to build Inxi.NET on your system. Please scroll down to 
 
 1. Open Visual Studio
 2. Press `Clone a repository`
-3. In Repository Location, enter `https://github.com/EoflaOE/Inxi.NET.git`
+3. In Repository Location, enter `https://github.com/Aptivi/Inxi.NET.git`
 4. Wait until it clones. It might take a few minutes depending on your Internet connection.
 5. Press `Solution Explorer`, then press `Switch Views`
 6. Click on `Inxi.NET.sln`
@@ -74,7 +74,7 @@ This section covers how to build Inxi.NET on your system. Please scroll down to 
 2. Install JetBrains Rider.
 3. After installation, open JetBrains Rider, and follow the configuration steps.
 4. When the main menu opens, choose `Check out from Version Control` and then `Git`.
-5. Write on the URL `https://github.com/EoflaOE/Inxi.NET.git` and press `Test` to verify your connectivity.
+5. Write on the URL `https://github.com/Aptivi/Inxi.NET.git` and press `Test` to verify your connectivity.
 6. Press Clone, and git will download the repo, then Rider will open up. It might take a few minutes depending on your Internet connection.
 7. Click on the hammer button to build.
 
@@ -86,7 +86,7 @@ This section covers how to build Inxi.NET on your system. Please scroll down to 
 
 ## Credits
 
-**EoflaOE:** Owner of Inxi.NET
+**Aptivi:** Owner of Inxi.NET
 
 ## Open Source Software
 
@@ -110,16 +110,16 @@ License (MIT): https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 
 ### Uname.NET
 
-Source code: https://github.com/EoflaOE/Uname.NET
+Source code: https://github.com/Aptivi/Uname.NET
 
-Copyright (c) 2022, EoflaOE and its companies
+Copyright (c) 2022, Aptivi
 
-License (MIT): https://github.com/EoflaOE/Uname.NET/blob/master/LICENSE
+License (MIT): https://github.com/Aptivi/Uname.NET/blob/master/LICENSE
 
 ## License
 
     Inxi.NET - .NET Frontend for Inxi
-    Copyright (C) 2020-2021  EoflaOE
+    Copyright (C) 2020-2021  Aptivi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

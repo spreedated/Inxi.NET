@@ -1,5 +1,5 @@
 ﻿
-// Inxi.NET  Copyright (C) 2020-2021  EoflaOE
+// Inxi.NET  Copyright (C) 2020-2021  Aptivi
 // 
 // This file is part of Inxi.NET
 // 
@@ -98,7 +98,7 @@ namespace InxiFrontend
             // TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use "system_profiler SPAudioDataType -xml >> audio.plist" and attach it to Issues
             // Create an instance of sound class
             InxiTrace.Debug("TODO: Currently, Inxi.NET adds a dumb device to parsed device. We need actual data. Use \"system_profiler SPAudioDataType -xml >> audio.plist\" and attach it to Issues.");
-            SPU = new Sound("Placeholder", "EoflaOE", "SoundParser", "", "");
+            SPU = new Sound("Placeholder", "Aptivi", "SoundParser", "", "");
             SPUParsed.AddIfNotFound("Placeholder", SPU);
             InxiTrace.Debug("Added Placeholder to the list of parsed SPUs.");
             return SPUParsed;

@@ -8,13 +8,13 @@
     <PackageOutputPath>../Inxi.NET.Bin</PackageOutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2022.3.1</Version>
-    <Authors>EoflaOE</Authors>
+    <Authors>Aptivi</Authors>
     <Description>Inxi.NET is a hardware information frontend using Inxi, WMI, and system_profiler as its backend for getting system information.</Description>
-    <Copyright>Copyright © 2020-2022 EoflaOE and its companies</Copyright>
+    <Copyright>Copyright © 2020-2022 Aptivi</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/EoflaOE/Inxi.NET</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Aptivi/Inxi.NET</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>git://github.com/EoflaOE/Inxi.NET.git</RepositoryUrl>
+    <RepositoryUrl>git://github.com/Aptivi/Inxi.NET.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>hardware, inxi, information</PackageTags>
     <PackageReleaseNotes>The release notes will be ready on the wiki very soon, because it isn't updated here.</PackageReleaseNotes>
@@ -34,14 +34,6 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>../Inxi.NET.Bin/</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Inxi.NET.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>Inxi.NET.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
