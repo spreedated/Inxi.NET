@@ -3,7 +3,7 @@
         {
             "src": [
                 {
-                    "files": [ "Inxi.NET/**.vbproj" ],
+                    "files": [ "Inxi.NET/**.csproj" ],
                     "src": ".."
                 }
             ],
