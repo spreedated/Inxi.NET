@@ -2,27 +2,7 @@
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/Aptivi/Inxi.NET?color=purple&label=size) [![GitHub All Releases](https://img.shields.io/github/downloads/Aptivi/Inxi.NET/total?color=purple&label=d/l)](https://github.com/Aptivi/Inxi.NET/releases) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Aptivi/Inxi.NET?color=purple&include_prereleases&label=github)](https://github.com/Aptivi/Inxi.NET/releases/latest) [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Inxi.NET?color=purple)](https://www.nuget.org/packages/Inxi.NET/)
 
-Inxi.NET is the Linux-only hardware information frontend using Inxi as its backend for getting system information.
-
-Please note that macOS support is very experimental, and a lot of features are not available.
-
-## Build Status
-
-Here are all the CI build status for all Inxi.NET branches.
-
-| Branch                | AppVeyor 
-|-----------------------|----------
-| master                | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/master?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/master)
-| v2022.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2022.1.x-servicing)
-| v2022.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2022.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2022.0.x-servicing)
-| v2021.4.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.4.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.4.x-servicing)
-| v2021.3.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.3.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.3.x-servicing)
-| v2021.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.2.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.2.x-servicing)
-| v2021.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.1.x-servicing)
-| v2021.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2021.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2021.0.x-servicing)
-| v2020.2.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.2.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.2.x-servicing)
-| v2020.1.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.1.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.1.x-servicing)
-| v2020.0.x-servicing   | [![Build status](https://ci.appveyor.com/api/projects/status/gnomligr10r5xm44/branch/v2020.0.x-servicing?svg=true)](https://ci.appveyor.com/project/Aptivi/inxi-net/branch/v2020.0.x-servicing)
+Inxi.NET is the Linux and Windows hardware information frontend using Inxi and Windows Management Instrumentation (WMI) as its backend for getting system information.
 
 ## System Requirements
 
@@ -70,7 +50,7 @@ This section covers how to build Inxi.NET on your system. Please scroll down to 
 
 ### JetBrains Rider (64-bit)
 
-1. Install Mono Runtime, Git, and `libmono-microsoft-visualbasic10.0-cil`.
+1. Install Mono Runtime and Git.
 2. Install JetBrains Rider.
 3. After installation, open JetBrains Rider, and follow the configuration steps.
 4. When the main menu opens, choose `Check out from Version Control` and then `Git`.
@@ -80,7 +60,7 @@ This section covers how to build Inxi.NET on your system. Please scroll down to 
 
 ### MonoDevelop
 
-1. Install Mono Runtime, `libmono-microsoft-visualbasic10.0-cil`, and MonoDevelop.
+1. Install Mono Runtime and MonoDevelop.
 2. After installation, extract the source code, open MonoDevelop, and click on `Open...`
 3. Click on the `Build` menu bar, and click on build button to compile.
 
