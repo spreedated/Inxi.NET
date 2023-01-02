@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Text;
 using Claunia.PropertyList;
+using Extensification.StringExts;
 using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
@@ -129,7 +130,8 @@ namespace InxiFrontend
                     InxiTrace.Debug("Starting inxi with \"-Fxx --output json --output-file print\"...");
                     InxiProcess.Start();
                     InxiProcess.WaitForExit();
-                    InxiToken = JToken.Parse(InxiProcess.StandardOutput.ReadToEnd());
+                    var lines = InxiProcess.StandardOutput.ReadToEnd().SplitNewLines();
+                    InxiToken = JToken.Parse(lines[lines.Length - 1]);
                     InxiTrace.Debug("Token parsed.");
                 }
             }
