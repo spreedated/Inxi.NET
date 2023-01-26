@@ -26,6 +26,8 @@
     <PackageVersion>2022.3.1.2</PackageVersion>
     <LangVersion>latest</LangVersion>
     <PublishReadyToRun>true</PublishReadyToRun>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>inxihardware.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
