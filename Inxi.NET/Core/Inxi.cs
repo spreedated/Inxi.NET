@@ -39,6 +39,9 @@ namespace InxiFrontend
         public string CpanelJsonXsPath { get; private set; } = "/usr/bin/cpanel_json_xs";
         public string JsonXsPath { get; private set; } = "/usr/bin/json_xs";
 
+        /// <summary>
+        /// This event fires when a successfull RetrieveInformation run has finished
+        /// </summary>
         public event EventHandler RunFinished;
 
         #region Constructor

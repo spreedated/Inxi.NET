@@ -17,6 +17,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using NUnit.Framework;
+using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace InxiFrontend.Tests
 {
@@ -32,6 +36,45 @@ namespace InxiFrontend.Tests
             this.testInstance = new();
         }
 
+        [Test]
+        [Description("Async testrun, must finish within one minute.")]
+        public void TestRunOnAsyncTest()
+        {
+            Stopwatch s = new();
+            TimeSpan timeConstraint = new TimeSpan(0, 1, 0);
+            CancellationTokenSource ct = new(timeConstraint);
+            this.testInstance.RunFinished += (o, s) => { ct.Cancel(); };
+
+            Task.Factory.StartNew(async () =>
+            {
+                s.Start();
+                await this.testInstance.RetrieveInformationAsync();
+                s.Stop();
+            });
+
+            while (!ct.IsCancellationRequested)
+            {
+                Thread.Sleep(50);
+            }
+
+            s.Stop();
+            Assert.That(s.Elapsed, Is.LessThan(timeConstraint));
+
+            var HardwareInfo = this.testInstance.Hardware;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(HardwareInfo.CPU, Is.Not.Null);
+                Assert.That(HardwareInfo.GPU, Is.Not.Null);
+                Assert.That(HardwareInfo.RAM, Is.Not.Null);
+                Assert.That(HardwareInfo.HDD, Is.Not.Null);
+                Assert.That(HardwareInfo.Sound, Is.Not.Null);
+                Assert.That(HardwareInfo.System, Is.Not.Null);
+                Assert.That(HardwareInfo.BIOS, Is.Not.Null);
+                Assert.That(HardwareInfo.Machine, Is.Not.Null);
+            });
+        }
+
         /// <summary>
         /// Tests getting hardware information
         /// </summary>
@@ -40,16 +83,18 @@ namespace InxiFrontend.Tests
         {
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.CPU);
-            Assert.IsNotNull(HardwareInfo.GPU);
-            Assert.IsNotNull(HardwareInfo.RAM);
-            Assert.IsNotNull(HardwareInfo.HDD);
-            Assert.IsNotNull(HardwareInfo.Sound);
-            Assert.IsNotNull(HardwareInfo.System);
-            Assert.IsNotNull(HardwareInfo.BIOS);
-            Assert.IsNotNull(HardwareInfo.Machine);
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.CPU);
+                Assert.IsNotNull(HardwareInfo.GPU);
+                Assert.IsNotNull(HardwareInfo.RAM);
+                Assert.IsNotNull(HardwareInfo.HDD);
+                Assert.IsNotNull(HardwareInfo.Sound);
+                Assert.IsNotNull(HardwareInfo.System);
+                Assert.IsNotNull(HardwareInfo.BIOS);
+                Assert.IsNotNull(HardwareInfo.Machine);
+            });
         }
 
         /// <summary>
@@ -61,9 +106,11 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.BIOS;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.BIOS);
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.BIOS);
+            });
         }
 
         /// <summary>
@@ -75,9 +122,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.Graphics;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.GPU);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.GPU);
+            });
         }
 
         /// <summary>
@@ -89,9 +139,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.HardDrive;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.HDD);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.HDD);
+            });
         }
 
         /// <summary>
@@ -103,9 +156,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.Machine;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.Machine);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.Machine);
+            });
         }
 
         /// <summary>
@@ -117,9 +173,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.Network;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.Network);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.Network);
+            });
         }
 
         /// <summary>
@@ -131,9 +190,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.PCMemory;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.RAM);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.RAM);
+            });
         }
 
         /// <summary>
@@ -145,9 +207,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.Processor;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.CPU);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.CPU);
+            });
         }
 
         /// <summary>
@@ -159,9 +224,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.Sound;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.Sound);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.Sound);
+            });
         }
 
         /// <summary>
@@ -173,9 +241,12 @@ namespace InxiFrontend.Tests
             this.testInstance.SelectedHardwareTypes = InxiHardwareType.System;
             this.testInstance.RetrieveInformation();
             var HardwareInfo = this.testInstance.Hardware;
-            Assert.IsNotNull(this.testInstance);
-            Assert.IsNotNull(HardwareInfo);
-            Assert.IsNotNull(HardwareInfo.System);
+            Assert.Multiple(() =>
+            {
+
+                Assert.IsNotNull(HardwareInfo);
+                Assert.IsNotNull(HardwareInfo.System);
+            });
         }
 
     }
