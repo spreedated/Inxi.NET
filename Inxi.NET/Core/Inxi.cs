@@ -41,7 +41,7 @@ namespace InxiFrontend
 
         public event EventHandler RunFinished;
 
-#region Constructor
+        #region Constructor
         /// <summary>
         /// Intializes the new instance of Inxi class and parses hardware
         /// </summary>
@@ -61,7 +61,7 @@ namespace InxiFrontend
         {
             this.SelectedHardwareTypes = HardwareTypes;
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Async version of the capturing process
@@ -89,7 +89,7 @@ namespace InxiFrontend
                 return;
             }
             this.WindowsRun(FrontendVersion);
-            
+
             this.RunFinished?.Invoke(null, EventArgs.Empty);
         }
 

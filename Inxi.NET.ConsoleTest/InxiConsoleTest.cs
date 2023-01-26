@@ -16,16 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using InxiFrontend;
 using System;
 using System.Linq;
-using InxiFrontend;
 
 namespace Inxi.NET.ConsoleTest
 {
-
     static class InxiConsoleTest
     {
-
         public static void Main(string[] args)
         {
             try
@@ -34,6 +32,7 @@ namespace Inxi.NET.ConsoleTest
                     InxiTrace.DebugDataReceived += HandleDebugData;
 
                 var InxiInstance = new InxiFrontend.Inxi();
+                InxiInstance.RetrieveInformation();
                 var HardwareInfo = InxiInstance.Hardware;
 
                 Console.WriteLine("------ CPU Info:");

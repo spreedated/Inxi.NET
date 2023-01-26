@@ -16,11 +16,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
+
+/* Unmerged change from project 'Inxi.NET (netcoreapp3.1)'
+Before:
 using Newtonsoft.Json.Linq;
+After:
+using Newtonsoft.Json.Linq;
+using System;
+using System.Management;
+*/
+
+/* Unmerged change from project 'Inxi.NET (net6.0)'
+Before:
+using Newtonsoft.Json.Linq;
+After:
+using Newtonsoft.Json.Linq;
+using System;
+using System.Management;
+*/
+using Newtonsoft.Json.Linq;
+using System.Management;
 
 namespace InxiFrontend
 {

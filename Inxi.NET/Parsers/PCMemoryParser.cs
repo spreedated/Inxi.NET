@@ -16,11 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Management;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Management;
 
 namespace InxiFrontend
 {

@@ -16,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using Extensification.StringExts;
 using System;
 using System.Diagnostics;
 using System.IO;
-using Extensification.StringExts;
 
 namespace InxiFrontend
 {

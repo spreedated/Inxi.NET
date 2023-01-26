@@ -16,15 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using Claunia.PropertyList;
+using Extensification.StringExts;
+using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Text;
-using Claunia.PropertyList;
-using Extensification.StringExts;
-using Newtonsoft.Json.Linq;
 
 namespace InxiFrontend
 {
