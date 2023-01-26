@@ -16,24 +16,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace InxiFrontend.Tests
 {
 
-    [TestClass]
+    [TestFixture]
     public class InxiTest
     {
+        private Inxi testInstance = null;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.testInstance = new();
+        }
 
         /// <summary>
         /// Tests getting hardware information
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformation()
         {
-            var InxiInstance = new Inxi();
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.CPU);
             Assert.IsNotNull(HardwareInfo.GPU);
@@ -48,12 +55,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (BIOS)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveBIOS()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.BIOS);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.BIOS;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.BIOS);
         }
@@ -61,12 +69,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (Graphics)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveGraphics()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.Graphics);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.Graphics;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.GPU);
         }
@@ -74,12 +83,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (HardDrive)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveHardDrive()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.HardDrive);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.HardDrive;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.HDD);
         }
@@ -87,12 +97,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (Machine)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveMachine()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.Machine);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.Machine;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.Machine);
         }
@@ -100,12 +111,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (Network)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveNetwork()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.Network);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.Network;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.Network);
         }
@@ -113,12 +125,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (PCMemory)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectivePCMemory()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.PCMemory);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.PCMemory;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.RAM);
         }
@@ -126,12 +139,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (Processor)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveProcessor()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.Processor);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.Processor;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.CPU);
         }
@@ -139,12 +153,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (Sound)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveSound()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.Sound);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.Sound;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.Sound);
         }
@@ -152,12 +167,13 @@ namespace InxiFrontend.Tests
         /// <summary>
         /// Tests getting hardware information selectively (System)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestGetHardwareInformationSelectiveSystem()
         {
-            var InxiInstance = new Inxi(InxiHardwareType.System);
-            var HardwareInfo = InxiInstance.Hardware;
-            Assert.IsNotNull(InxiInstance);
+            this.testInstance.SelectedHardwareTypes = InxiHardwareType.System;
+            this.testInstance.RetrieveInformation();
+            var HardwareInfo = this.testInstance.Hardware;
+            Assert.IsNotNull(this.testInstance);
             Assert.IsNotNull(HardwareInfo);
             Assert.IsNotNull(HardwareInfo.System);
         }
