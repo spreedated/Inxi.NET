@@ -21,6 +21,7 @@ using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 
 namespace InxiFrontend
@@ -65,23 +66,20 @@ namespace InxiFrontend
             string SPUChipID;
 
             InxiTrace.Debug("Selecting the Audio token...");
-            foreach (var InxiSPU in InxiToken.SelectTokenKeyEndingWith("Audio"))
+            foreach (var InxiSPU in InxiToken.SelectTokenKeyEndingWith("Audio").Where(x => x.SelectTokenKeyEndingWith("Device") != null))
             {
-                if (InxiSPU.SelectTokenKeyEndingWith("Device") is not null)
-                {
-                    // Get information of a sound card
-                    SPUName = (string)InxiSPU.SelectTokenKeyEndingWith("Device");
-                    SPUVendor = (string)InxiSPU.SelectTokenKeyEndingWith("vendor");
-                    SPUDriver = (string)InxiSPU.SelectTokenKeyEndingWith("driver");
-                    SPUBusID = (string)InxiSPU.SelectTokenKeyEndingWith("bus ID");
-                    SPUChipID = (string)InxiSPU.SelectTokenKeyEndingWith("chip ID");
-                    InxiTrace.Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID);
+                // Get information of a sound card
+                SPUName = (string)InxiSPU.SelectTokenKeyEndingWith("Device");
+                SPUVendor = (string)InxiSPU.SelectTokenKeyEndingWith("vendor");
+                SPUDriver = (string)InxiSPU.SelectTokenKeyEndingWith("driver");
+                SPUBusID = (string)InxiSPU.SelectTokenKeyEndingWith("bus ID");
+                SPUChipID = (string)InxiSPU.SelectTokenKeyEndingWith("chip ID");
+                InxiTrace.Debug("Got information. SPUName: {0}, SPUDriver: {1}, SPUVendor: {2}, SPUBusID: {3}, SPUChipID: {4}", SPUName, SPUDriver, SPUVendor, SPUBusID, SPUChipID);
 
-                    // Create an instance of sound class
-                    SPU = new Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID);
-                    SPUParsed.AddIfNotFound(SPUName, SPU);
-                    InxiTrace.Debug("Added {0} to the list of parsed SPUs.", SPUName);
-                }
+                // Create an instance of sound class
+                SPU = new Sound(SPUName, SPUVendor, SPUDriver, SPUChipID, SPUBusID);
+                SPUParsed.AddIfNotFound(SPUName, SPU);
+                InxiTrace.Debug("Added {0} to the list of parsed SPUs.", SPUName);
             }
 
             return SPUParsed;

@@ -52,7 +52,6 @@ namespace InxiFrontend
                 catch (Exception ex)
                 {
                     InxiTrace.Debug("Error: {0}", ex.Message);
-                    continue;
                 }
             }
 

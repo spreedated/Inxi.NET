@@ -18,24 +18,6 @@
 
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
-
-/* Unmerged change from project 'Inxi.NET (netcoreapp3.1)'
-Before:
-using Newtonsoft.Json.Linq;
-After:
-using Newtonsoft.Json.Linq;
-using System;
-using System.Management;
-*/
-
-/* Unmerged change from project 'Inxi.NET (net6.0)'
-Before:
-using Newtonsoft.Json.Linq;
-After:
-using Newtonsoft.Json.Linq;
-using System;
-using System.Management;
-*/
 using Newtonsoft.Json.Linq;
 using System.Management;
 

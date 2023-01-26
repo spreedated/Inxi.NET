@@ -23,12 +23,12 @@ using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 
 namespace InxiFrontend
 {
-
     class ProcessorParser : HardwareParserBase, IHardwareParser
     {
 
@@ -142,10 +142,9 @@ namespace InxiFrontend
                 CPUL2Size = Convert.ToString(CPUManagement["L2CacheSize"]);
                 CPUL3Size = Convert.ToInt32(CPUManagement["L3CacheSize"]);
                 CPUSpeed = Convert.ToString(CPUManagement["CurrentClockSpeed"]);
-                foreach (CPUFeatures.SSEnum CPUFeature in Enum.GetValues(typeof(CPUFeatures.SSEnum)))
+                foreach (CPUFeatures.SSE CPUFeature in Enum.GetValues(typeof(CPUFeatures.SSE)).OfType<CPUFeatures.SSE>().Where(CPUFeatures.IsProcessorFeaturePresent))
                 {
-                    if (CPUFeatures.IsProcessorFeaturePresent(CPUFeature))
-                        CPUFlags = CPUFlags.Add(CPUFeature.ToString().ToLower());
+                    CPUFlags = CPUFlags.Add(CPUFeature.ToString().ToLower());
                 }
                 InxiTrace.Debug("Got information. CPUName: {0}, CPUType: {1}, CPUBits: {2}, CPUL2Size: {3}, CPUFlags: {4}, CPUL3Size: {5}, CPUSpeed: {6}", CPUName, CPUType, CPUBits, CPUL2Size, CPUFlags.Length, CPUL3Size, CPUSpeed);
             }
@@ -156,24 +155,22 @@ namespace InxiFrontend
             InxiTrace.Debug("Added {0} to the list of parsed processors.", CPUName);
             return CPUParsed;
         }
-
     }
 
     static class CPUFeatures
     {
-
         /// <summary>
         /// [Windows] Check for specific processor feature. More info: https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-isprocessorfeaturepresent
         /// </summary>
         /// <param name="processorFeature">An SSE version</param>
         /// <returns>True if supported, false if not supported</returns>
         [DllImport("kernel32.dll")]
-        internal static extern bool IsProcessorFeaturePresent(SSEnum processorFeature);
+        internal static extern bool IsProcessorFeaturePresent(SSE processorFeature);
 
         /// <summary>
         /// [Windows] Collection of SSE versions
         /// </summary>
-        internal enum SSEnum : uint
+        internal enum SSE : uint
         {
             /// <summary>
             /// [Windows] The SSE instruction set is available.
@@ -188,6 +185,5 @@ namespace InxiFrontend
             /// </summary>
             SSE3 = 13U
         }
-
     }
 }

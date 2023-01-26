@@ -57,7 +57,7 @@ namespace InxiFrontend
         /// <summary>
         /// List of partitions
         /// </summary>
-        public Dictionary<string, Partition> Partitions { get; private set; } = new Dictionary<string, Partition>();
+        public Dictionary<string, Partition> Partitions { get; private set; }
 
         /// <summary>
         /// Installs specified values parsed by Inxi to the class

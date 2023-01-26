@@ -79,7 +79,7 @@ namespace InxiFrontend
                 if (InxiNetwork.SelectTokenKeyEndingWith("Device") is not null)
                 {
                     NetName = (string)InxiNetwork.SelectTokenKeyEndingWith("Device");
-                    if (InxiNetwork.SelectTokenKeyEndingWith("type") is not null & (string)InxiNetwork.SelectTokenKeyEndingWith("type") == "network bridge")
+                    if (InxiNetwork.SelectTokenKeyEndingWith("type") is not null && (string)InxiNetwork.SelectTokenKeyEndingWith("type") == "network bridge")
                     {
                         NetDriver = (string)InxiNetwork.SelectTokenKeyEndingWith("driver");
                         NetDriverVersion = (string)InxiNetwork.SelectTokenKeyEndingWith("v");

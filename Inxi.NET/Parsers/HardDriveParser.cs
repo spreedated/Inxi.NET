@@ -99,7 +99,7 @@ namespace InxiFrontend
                                 string PartitionSize = (string)DrivePartition.SelectTokenKeyEndingWith("size");
                                 string PartitionUsed = (string)DrivePartition.SelectTokenKeyEndingWith("used");
 
-                                if (DrvDevPath.Contains("hd") | DrvDevPath.Contains("sd") | DrvDevPath.Contains("vd")) // /dev/hdX, /dev/sdX, /dev/vdX
+                                if (DrvDevPath.Contains("hd") || DrvDevPath.Contains("sd") || DrvDevPath.Contains("vd")) // /dev/hdX, /dev/sdX, /dev/vdX
                                 {
                                     CurrDrvChar1 = DrvDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "")[0];
                                     DrvDevChar1 = TarDevPath.Replace("/dev/sd", "").Replace("/dev/hd", "").Replace("/dev/vd", "")[0];
