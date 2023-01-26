@@ -16,8 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Management;
 using System.Text;
 using Claunia.PropertyList;
@@ -31,51 +33,50 @@ namespace InxiFrontend
     /// </summary>
     public class HardwareInfo
     {
-
         /// <summary>
         /// List of hard drives detected
         /// </summary>
-        public readonly Dictionary<string, HardDrive> HDD = new();
+        public ConcurrentDictionary<string, HardDrive> HDD { get; private set; }
         /// <summary>
         /// List of logical hard drive partitions detected
         /// </summary>
-        public readonly Dictionary<string, WindowsLogicalPartition> LogicalParts = new();
+        public ConcurrentDictionary<string, WindowsLogicalPartition> LogicalParts { get; private set; }
         /// <summary>
         /// List of processors detected
         /// </summary>
-        public readonly Dictionary<string, Processor> CPU = new();
+        public ConcurrentDictionary<string, Processor> CPU { get; private set; }
         /// <summary>
         /// List of graphics cards detected
         /// </summary>
-        public readonly Dictionary<string, Graphics> GPU = new();
+        public ConcurrentDictionary<string, Graphics> GPU { get; private set; }
         /// <summary>
         /// List of sound cards detected
         /// </summary>
-        public readonly Dictionary<string, Sound> Sound = new();
+        public ConcurrentDictionary<string, Sound> Sound { get; private set; }
         /// <summary>
         /// List of network cards detected
         /// </summary>
-        public readonly Dictionary<string, Network> Network = new();
+        public ConcurrentDictionary<string, Network> Network { get; private set; }
         /// <summary>
         /// List of batteries detected
         /// </summary>
-        public readonly List<Battery> Battery = new();
+        public HashSet<Battery> Battery { get; private set; }
         /// <summary>
         /// System information
         /// </summary>
-        public readonly SystemInfo System;
+        public SystemInfo System { get; private set; }
         /// <summary>
         /// Machine information
         /// </summary>
-        public readonly MachineInfo Machine;
+        public MachineInfo Machine { get; private set; }
         /// <summary>
         /// BIOS information
         /// </summary>
-        public readonly BIOS BIOS;
+        public BIOS BIOS { get; private set; }
         /// <summary>
         /// RAM information
         /// </summary>
-        public readonly PCMemory RAM;
+        public PCMemory RAM { get; private set; }
 
         /// <summary>
         /// Inxi token used for hardware probe
@@ -291,18 +292,18 @@ namespace InxiFrontend
             }
 
             // Battery
-            foreach (Battery Parsed in BatteryParsed)
+            foreach (Battery Parsed in BatteryParsed.Cast<Battery>())
                 BatteryProcessed.Add(Parsed);
 
             // Install parsed information to current instance
-            HDD = HDDProcessed;
+            HDD = new(HDDProcessed);
             if (!InxiInternalUtils.IsUnix())
-                LogicalParts = Logicals;
-            CPU = CPUProcessed;
-            GPU = GPUProcessed;
-            Sound = SoundProcessed;
-            Network = NetProcessed;
-            Battery = BatteryProcessed;
+                LogicalParts = new(Logicals);
+            CPU = new(CPUProcessed);
+            GPU = new(GPUProcessed);
+            Sound = new(SoundProcessed);
+            Network = new(NetProcessed);
+            Battery = new(BatteryProcessed);
             RAM = RAMParsed;
             BIOS = BIOSParsed;
             System = SystemParsed;

@@ -33,12 +33,13 @@ namespace InxiFrontend
         /// <summary>
         /// Hardware information
         /// </summary>
-        public HardwareInfo Hardware;
-
+        public HardwareInfo Hardware { get; private set; }
         public InxiHardwareType SelectedHardwareTypes { get; set; }
         public string InxiPath { get; private set; } = "/usr/bin/inxi";
         public string CpanelJsonXsPath { get; private set; } = "/usr/bin/cpanel_json_xs";
         public string JsonXsPath { get; private set; } = "/usr/bin/json_xs";
+
+        public event EventHandler RunFinished;
 
 #region Constructor
         /// <summary>
@@ -88,6 +89,8 @@ namespace InxiFrontend
                 return;
             }
             this.WindowsRun(FrontendVersion);
+            
+            this.RunFinished?.Invoke(null, EventArgs.Empty);
         }
 
         public void SetPaths(string inxiPath, string jsonXsPath, string cpanelJsonXsPath)
