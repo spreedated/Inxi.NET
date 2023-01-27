@@ -1,6 +1,7 @@
 ﻿using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
+using InxiFrontend.Base;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Management;
 namespace InxiFrontend
 {
 
-    class SoundParser : HardwareParserBase, IHardwareParser
+    class SoundParser : HardwareParserBase
     {
 
         /// <summary>
@@ -17,9 +18,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
+        public override Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            Dictionary<string, HardwareBase> SPUParsed;
+            Dictionary<string, IHardware> SPUParsed;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -35,9 +36,9 @@ namespace InxiFrontend
             return SPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllLinux(JToken InxiToken)
+        public override Dictionary<string, IHardware> ParseAllLinux(JToken InxiToken)
         {
-            var SPUParsed = new Dictionary<string, HardwareBase>();
+            var SPUParsed = new Dictionary<string, IHardware>();
             Sound SPU;
 
             // SPU information fields
@@ -67,10 +68,10 @@ namespace InxiFrontend
             return SPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllWindows(ManagementObjectSearcher WMISearcher)
+        public override Dictionary<string, IHardware> ParseAllWindows(ManagementObjectSearcher WMISearcher)
         {
             var SoundDevice = WMISearcher;
-            var SPUParsed = new Dictionary<string, HardwareBase>();
+            var SPUParsed = new Dictionary<string, IHardware>();
             Sound SPU;
 
             // SPU information fields

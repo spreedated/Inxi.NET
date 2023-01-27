@@ -1,29 +1,34 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Graphics class
     /// </summary>
-    public class Graphics : HardwareBase
+    public class Graphics : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// Name of graphics card
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// Driver software used for graphics card
         /// </summary>
         public string Driver { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Driver version
         /// </summary>
         public string DriverVersion { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Device chip ID
         /// </summary>
         public string ChipID { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Device bus ID
         /// </summary>
@@ -40,6 +45,10 @@ namespace InxiFrontend
             this.ChipID = ChipID;
             this.BusID = BusID;
         }
+        [JsonConstructor()]
+        public Graphics()
+        {
 
+        }
     }
 }

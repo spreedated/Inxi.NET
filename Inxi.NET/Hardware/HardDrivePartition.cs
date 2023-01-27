@@ -1,29 +1,34 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Partition class
     /// </summary>
-    public class Partition : HardwareBase
+    public class Partition : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// The name of drive partition (usually udev ID)
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// The udev ID of drive partition (compatibility)
         /// </summary>
         public string ID { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The filesystem of partition
         /// </summary>
         public string FileSystem { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The size of partition
         /// </summary>
         public string Size { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The used size of partition
         /// </summary>
@@ -40,6 +45,10 @@ namespace InxiFrontend
             this.Size = Size;
             this.Used = Used;
         }
+        [JsonConstructor()]
+        public Partition()
+        {
 
+        }
     }
 }

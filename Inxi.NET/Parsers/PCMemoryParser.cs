@@ -1,5 +1,4 @@
-﻿
-
+﻿using InxiFrontend.Base;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
@@ -9,7 +8,7 @@ using System.Management;
 namespace InxiFrontend
 {
 
-    class PCMemoryParser : HardwareParserBase, IHardwareParser
+    class PCMemoryParser : HardwareParserBase
     {
 
         /// <summary>
@@ -17,7 +16,7 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
+        public override IHardware Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             PCMemory Mem;
             if (InxiInternalUtils.IsUnix())
@@ -34,7 +33,7 @@ namespace InxiFrontend
             return Mem;
         }
 
-        public override HardwareBase ParseLinux(JToken InxiToken)
+        public override IHardware ParseLinux(JToken InxiToken)
         {
             var Mem = default(PCMemory);
 
@@ -55,7 +54,7 @@ namespace InxiFrontend
             return Mem;
         }
 
-        public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
+        public override IHardware ParseWindows(ManagementObjectSearcher WMISearcher)
         {
             PCMemory Mem;
             var System = WMISearcher;

@@ -1,5 +1,4 @@
-﻿
-
+﻿using InxiFrontend.Base;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
@@ -9,7 +8,7 @@ using System.Management;
 namespace InxiFrontend
 {
 
-    class MachineParser : HardwareParserBase, IHardwareParser
+    class MachineParser : HardwareParserBase
     {
 
         /// <summary>
@@ -17,9 +16,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
+        public override IHardware Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            HardwareBase MachInfo;
+            IHardware MachInfo;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -35,9 +34,9 @@ namespace InxiFrontend
             return MachInfo;
         }
 
-        public override HardwareBase ParseLinux(JToken InxiToken)
+        public override IHardware ParseLinux(JToken InxiToken)
         {
-            var MachInfo = default(HardwareBase);
+            var MachInfo = default(IHardware);
 
             InxiTrace.Debug("Selecting the Machine token...");
             foreach (var InxiSys in InxiToken.SelectTokenKeyEndingWith("Machine"))
@@ -58,9 +57,9 @@ namespace InxiFrontend
             return MachInfo;
         }
 
-        public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
+        public override IHardware ParseWindows(ManagementObjectSearcher WMISearcher)
         {
-            HardwareBase MachInfo;
+            IHardware MachInfo;
             var WMIMachine = WMISearcher;
 
             InxiTrace.Debug("Selecting entries from Win32_BaseBoard...");

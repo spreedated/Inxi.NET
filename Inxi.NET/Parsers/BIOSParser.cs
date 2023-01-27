@@ -2,11 +2,12 @@
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
 using System.Management;
+using InxiFrontend.Base;
 
 namespace InxiFrontend
 {
 
-    class BIOSParser : HardwareParserBase, IHardwareParser
+    class BIOSParser : HardwareParserBase
     {
 
         /// <summary>
@@ -14,7 +15,7 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
+        public override IHardware Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
             BIOS BIOSInfo;
 
@@ -32,7 +33,7 @@ namespace InxiFrontend
             return BIOSInfo;
         }
 
-        public override HardwareBase ParseLinux(JToken InxiToken)
+        public override IHardware ParseLinux(JToken InxiToken)
         {
             var BIOSInfo = default(BIOS);
 
@@ -52,7 +53,7 @@ namespace InxiFrontend
             return BIOSInfo;
         }
 
-        public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
+        public override IHardware ParseWindows(ManagementObjectSearcher WMISearcher)
         {
             var BIOSInfo = default(BIOS);
             var WMIBIOS = WMISearcher;

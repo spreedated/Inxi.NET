@@ -1,5 +1,4 @@
-﻿
-
+﻿using InxiFrontend.Base;
 using Claunia.PropertyList;
 using Extensification.ArrayExts;
 using Extensification.DictionaryExts;
@@ -13,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace InxiFrontend
 {
-    class ProcessorParser : HardwareParserBase, IHardwareParser
+    class ProcessorParser : HardwareParserBase
     {
 
         /// <summary>
@@ -21,9 +20,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
+        public override Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            Dictionary<string, HardwareBase> CPUParsed;
+            Dictionary<string, IHardware> CPUParsed;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -39,9 +38,9 @@ namespace InxiFrontend
             return CPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllLinux(JToken InxiToken)
+        public override Dictionary<string, IHardware> ParseAllLinux(JToken InxiToken)
         {
-            var CPUParsed = new Dictionary<string, HardwareBase>();
+            var CPUParsed = new Dictionary<string, IHardware>();
             Processor CPU;
             var CPUSpeedReady = default(bool);
 
@@ -94,9 +93,9 @@ namespace InxiFrontend
             return CPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllWindows(ManagementObjectSearcher WMISearcher)
+        public override Dictionary<string, IHardware> ParseAllWindows(ManagementObjectSearcher WMISearcher)
         {
-            var CPUParsed = new Dictionary<string, HardwareBase>();
+            var CPUParsed = new Dictionary<string, IHardware>();
             InxiTrace.Debug("Selecting entries from Win32_OperatingSystem...");
             var CPUClass = WMISearcher;
             Processor CPU;

@@ -1,37 +1,44 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Machine class
     /// </summary>
-    public class MachineInfo : HardwareBase
+    public class MachineInfo : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// Machine name
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// Machine type
         /// </summary>
         public string Type { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Machine product name
         /// </summary>
         public string Product { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Machine system name
         /// </summary>
         public string System { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Machine chassis
         /// </summary>
         public string Chassis { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Motherboard manufacturer
         /// </summary>
         public string MoboManufacturer { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Motherboard model
         /// </summary>
@@ -50,6 +57,10 @@ namespace InxiFrontend
             this.MoboManufacturer = MoboManufacturer;
             this.MoboModel = MoboModel;
         }
+        [JsonConstructor()]
+        public MachineInfo()
+        {
 
+        }
     }
 }

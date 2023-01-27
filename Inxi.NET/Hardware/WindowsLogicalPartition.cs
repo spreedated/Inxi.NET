@@ -1,29 +1,34 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Windows logical partition class
     /// </summary>
-    public class WindowsLogicalPartition : HardwareBase
+    public class WindowsLogicalPartition : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// The name of drive partition
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// The drive letter of drive partition
         /// </summary>
         public string Letter { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The filesystem of partition
         /// </summary>
         public string FileSystem { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The size of partition
         /// </summary>
         public string Size { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The used size of partition
         /// </summary>
@@ -40,6 +45,10 @@ namespace InxiFrontend
             this.Size = Size;
             this.Used = Used;
         }
+        [JsonConstructor()]
+        public WindowsLogicalPartition()
+        {
 
+        }
     }
 }

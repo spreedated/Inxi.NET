@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
+using InxiFrontend.Base;
 
 namespace InxiFrontend
 {
 
-    class GraphicsParser : HardwareParserBase, IHardwareParser
+    class GraphicsParser : HardwareParserBase
     {
 
         /// <summary>
@@ -18,9 +19,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
+        public override Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            Dictionary<string, HardwareBase> GPUParsed;
+            Dictionary<string, IHardware> GPUParsed;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -36,9 +37,9 @@ namespace InxiFrontend
             return GPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllLinux(JToken InxiToken)
+        public override Dictionary<string, IHardware> ParseAllLinux(JToken InxiToken)
         {
-            var GPUParsed = new Dictionary<string, HardwareBase>();
+            var GPUParsed = new Dictionary<string, IHardware>();
             Graphics GPU;
 
             // GPU information fields
@@ -67,9 +68,9 @@ namespace InxiFrontend
             return GPUParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllWindows(ManagementObjectSearcher WMISearcher)
+        public override Dictionary<string, IHardware> ParseAllWindows(ManagementObjectSearcher WMISearcher)
         {
-            var GPUParsed = new Dictionary<string, HardwareBase>();
+            var GPUParsed = new Dictionary<string, IHardware>();
             Graphics GPU;
             var GraphicsCards = WMISearcher;
 

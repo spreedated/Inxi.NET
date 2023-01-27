@@ -5,11 +5,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Management;
+using InxiFrontend.Base;
 
 namespace InxiFrontend
 {
 
-    class NetworkParser : HardwareParserBase, IHardwareParser
+    class NetworkParser : HardwareParserBase
     {
 
         /// <summary>
@@ -17,9 +18,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
+        public override Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            Dictionary<string, HardwareBase> NetworkParsed;
+            Dictionary<string, IHardware> NetworkParsed;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -36,9 +37,9 @@ namespace InxiFrontend
             return NetworkParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllLinux(JToken InxiToken)
+        public override Dictionary<string, IHardware> ParseAllLinux(JToken InxiToken)
         {
-            var NetworkParsed = new Dictionary<string, HardwareBase>();
+            var NetworkParsed = new Dictionary<string, IHardware>();
             Network Network;
             var NetworkCycled = default(bool);
 
@@ -110,9 +111,9 @@ namespace InxiFrontend
             return NetworkParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllWindows(ManagementObjectSearcher WMISearcher)
+        public override Dictionary<string, IHardware> ParseAllWindows(ManagementObjectSearcher WMISearcher)
         {
-            var NetworkParsed = new Dictionary<string, HardwareBase>();
+            var NetworkParsed = new Dictionary<string, IHardware>();
             var Networks = WMISearcher;
             Network Network;
 

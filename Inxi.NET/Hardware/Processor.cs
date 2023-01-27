@@ -1,53 +1,66 @@
 ﻿
 
+using InxiFrontend.Base;
+using Newtonsoft.Json;
+
 namespace InxiFrontend
 {
     /// <summary>
     /// Processor class
     /// </summary>
-    public class Processor : HardwareBase
+    public class Processor : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// Name of processor
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// Core Topology
         /// </summary>
         public string Topology { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Processor type
         /// </summary>
         public string Type { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Processor milestone (Kaby Lake, Coffee Lake, ...)
         /// </summary>
         public string Milestone { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Processor features
         /// </summary>
         public string[] Flags { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Processor bits
         /// </summary>
         public int Bits { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// L2 Cache
         /// </summary>
         public string L2 { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// L3 Cache
         /// </summary>
         public int L3 { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// CPU Rev
         /// </summary>
         public string CPURev { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// CPU BogoMips
         /// </summary>
         public int CPUBogoMips { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Processor speed
         /// </summary>
@@ -70,6 +83,10 @@ namespace InxiFrontend
             this.CPUBogoMips = CPUBogoMips;
             this.Speed = Speed;
         }
+        [JsonConstructor()]
+        public Processor()
+        {
 
+        }
     }
 }

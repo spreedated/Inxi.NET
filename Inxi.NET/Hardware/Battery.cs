@@ -1,33 +1,39 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Battery class
     /// </summary>
-    public class Battery : HardwareBase
+    public class Battery : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// Battery ID
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// The battery charge percentage
         /// </summary>
         public int Charge { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Battery condition
         /// </summary>
         public string Condition { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Battery voltage
         /// </summary>
         public string Volts { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Battery model
         /// </summary>
         public string Model { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Battery status
         /// </summary>
@@ -45,6 +51,10 @@ namespace InxiFrontend
             this.Model = Model;
             this.Status = Status;
         }
+        [JsonConstructor()]
+        public Battery()
+        {
 
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-
+﻿using InxiFrontend.Base;
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
 using Newtonsoft.Json.Linq;
@@ -10,7 +9,7 @@ using System.Management;
 namespace InxiFrontend
 {
 
-    class SystemParser : HardwareParserBase, IHardwareParser
+    class SystemParser : HardwareParserBase
     {
 
         /// <summary>
@@ -18,9 +17,9 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken)
+        public override IHardware Parse(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            HardwareBase SysInfo;
+            IHardware SysInfo;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -35,9 +34,9 @@ namespace InxiFrontend
 
             return SysInfo;
         }
-        public override HardwareBase ParseLinux(JToken InxiToken)
+        public override IHardware ParseLinux(JToken InxiToken)
         {
-            var SysInfo = default(HardwareBase);
+            var SysInfo = default(IHardware);
 
             InxiTrace.Debug("Selecting the System token...");
             foreach (var InxiSys in InxiToken.SelectTokenKeyEndingWith("System"))
@@ -61,10 +60,10 @@ namespace InxiFrontend
             return SysInfo;
         }
 
-        public override HardwareBase ParseWindows(ManagementObjectSearcher WMISearcher)
+        public override IHardware ParseWindows(ManagementObjectSearcher WMISearcher)
         {
             var WMISystem = WMISearcher;
-            var SysInfo = default(HardwareBase);
+            var SysInfo = default(IHardware);
 
             // Get information of system
             // TODO: Desktop Manager and Display Manager are not implemented on Windows.

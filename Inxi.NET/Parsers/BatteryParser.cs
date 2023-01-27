@@ -2,6 +2,7 @@
 
 using Claunia.PropertyList;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
+using InxiFrontend.Base;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,16 @@ using System.Management;
 namespace InxiFrontend
 {
 
-    class BatteryParser : HardwareParserBase, IHardwareParser
+    class BatteryParser : HardwareParserBase
     {
-
         /// <summary>
         /// Parses battery info
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override List<HardwareBase> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken)
+        public override List<IHardware> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken)
         {
-            List<HardwareBase> Batteries;
+            List<IHardware> Batteries;
 
             if (InxiInternalUtils.IsUnix())
             {
@@ -35,9 +35,9 @@ namespace InxiFrontend
 
             return Batteries;
         }
-        public override List<HardwareBase> ParseAllToListLinux(JToken InxiToken)
+        public override List<IHardware> ParseAllToListLinux(JToken InxiToken)
         {
-            var Batteries = new List<HardwareBase>();
+            var Batteries = new List<IHardware>();
             Battery Battery;
 
             InxiTrace.Debug("Selecting the Battery token...");
@@ -63,9 +63,9 @@ namespace InxiFrontend
             return Batteries;
         }
 
-        public override List<HardwareBase> ParseAllToListWindows(ManagementObjectSearcher WMISearcher)
+        public override List<IHardware> ParseAllToListWindows(ManagementObjectSearcher WMISearcher)
         {
-            var Batteries = new List<HardwareBase>();
+            var Batteries = new List<IHardware>();
             var WMIBatt = WMISearcher;
 
             // Get information of system

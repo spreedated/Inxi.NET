@@ -1,6 +1,5 @@
-﻿
-
-using Claunia.PropertyList;
+﻿using Claunia.PropertyList;
+using InxiFrontend.Base;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -15,17 +14,17 @@ namespace InxiFrontend
         /// <summary>
         /// The base hardware parser
         /// </summary>
-        HardwareBase Parse(JToken InxiToken, NSArray SystemProfilerToken);
+        IHardware Parse(JToken InxiToken, NSArray SystemProfilerToken);
 
         /// <summary>
         /// The base hardware parser
         /// </summary>
-        Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken);
+        Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken);
 
         /// <summary>
         /// The base hardware parser
         /// </summary>
-        List<HardwareBase> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken);
+        List<IHardware> ParseAllToList(JToken InxiToken, NSArray SystemProfilerToken);
 
     }
 }

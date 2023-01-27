@@ -1,49 +1,59 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Network class
     /// </summary>
-    public class Network : HardwareBase
+    public class Network : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// Name of network card
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// Driver software used for network card
         /// </summary>
         public string Driver { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Driver version
         /// </summary>
         public string DriverVersion { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Duplex type (usually full)
         /// </summary>
         public string Duplex { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Maximum speed that the device can handle
         /// </summary>
         public string Speed { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// State of network card
         /// </summary>
         public string State { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// MAC Address
         /// </summary>
         public string MacAddress { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Device identifier
         /// </summary>
         public string DeviceID { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Device chip ID
         /// </summary>
         public string ChipID { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Device bus ID
         /// </summary>
@@ -65,6 +75,10 @@ namespace InxiFrontend
             this.ChipID = ChipID;
             this.BusID = BusID;
         }
+        [JsonConstructor()]
+        public Network()
+        {
 
+        }
     }
 }

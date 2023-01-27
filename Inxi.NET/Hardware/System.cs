@@ -1,41 +1,49 @@
-﻿
+﻿using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// System information class
     /// </summary>
-    public class SystemInfo : HardwareBase
+    public class SystemInfo : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// System name
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// Host name
         /// </summary>
         public string Hostname { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Linux kernel version or Windows NT kernel version
         /// </summary>
         public string SystemVersion { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// System bits
         /// </summary>
         public int SystemBits { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// System name
         /// </summary>
         public string SystemDistro { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Desktop manager
         /// </summary>
         public string DesktopManager { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Window manager
         /// </summary>
         public string WindowManager { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Display manager
         /// </summary>
@@ -55,6 +63,10 @@ namespace InxiFrontend
             this.WindowManager = WindowManager;
             this.DisplayManager = DisplayManager;
         }
+        [JsonConstructor()]
+        public SystemInfo()
+        {
 
+        }
     }
 }

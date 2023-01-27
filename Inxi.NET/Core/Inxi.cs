@@ -126,7 +126,7 @@ namespace InxiFrontend
             {
                 InxiTrace.Debug("Looking for Json XS perl module binary at {0} or {1}...", this.CpanelJsonXsPath, this.JsonXsPath);
 
-                if (File.Exists(this.CpanelJsonXsPath) | File.Exists(this.JsonXsPath))
+                if (File.Exists(this.CpanelJsonXsPath) || File.Exists(this.JsonXsPath))
                 {
                     return true;
                 }

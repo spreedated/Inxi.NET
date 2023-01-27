@@ -1,5 +1,6 @@
 ﻿using Claunia.PropertyList;
 using Extensification.StringExts;
+using InxiFrontend.Base;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -120,13 +121,13 @@ namespace InxiFrontend
             }
 
             // Ready variables
-            var HDDParsed = new Dictionary<string, HardwareBase>();
+            var HDDParsed = new Dictionary<string, IHardware>();
             var Logicals = new Dictionary<string, WindowsLogicalPartition>();
-            var CPUParsed = new Dictionary<string, HardwareBase>();
-            var GPUParsed = new Dictionary<string, HardwareBase>();
-            var SoundParsed = new Dictionary<string, HardwareBase>();
-            var NetParsed = new Dictionary<string, HardwareBase>();
-            var BatteryParsed = new List<HardwareBase>();
+            var CPUParsed = new Dictionary<string, IHardware>();
+            var GPUParsed = new Dictionary<string, IHardware>();
+            var SoundParsed = new Dictionary<string, IHardware>();
+            var NetParsed = new Dictionary<string, IHardware>();
+            var BatteryParsed = new List<IHardware>();
             var RAMParsed = default(PCMemory);
             var BIOSParsed = default(BIOS);
             var SystemParsed = default(SystemInfo);

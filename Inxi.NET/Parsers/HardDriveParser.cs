@@ -4,11 +4,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Management;
+using InxiFrontend.Base;
 
 namespace InxiFrontend
 {
 
-    class HardDriveParser : HardwareParserBase, IHardwareParser
+    class HardDriveParser : HardwareParserBase
     {
 
         /// <summary>
@@ -16,10 +17,10 @@ namespace InxiFrontend
         /// </summary>
         /// <param name="InxiToken">Inxi JSON token. Ignored in Windows.</param>
         /// <param name="SystemProfilerToken">system_profiler token</param>
-        public override Dictionary<string, HardwareBase> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
+        public override Dictionary<string, IHardware> ParseAll(JToken InxiToken, NSArray SystemProfilerToken)
         {
             // Variables
-            Dictionary<string, HardwareBase> HDDParsed;
+            Dictionary<string, IHardware> HDDParsed;
 
             // If the system is Unix, use Inxi. If on Windows, use WMI. If on macOS, use system_profiler.
             if (InxiInternalUtils.IsUnix())
@@ -35,10 +36,10 @@ namespace InxiFrontend
             return HDDParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllLinux(JToken InxiToken)
+        public override Dictionary<string, IHardware> ParseAllLinux(JToken InxiToken)
         {
             // Variables
-            var HDDParsed = new Dictionary<string, HardwareBase>();
+            var HDDParsed = new Dictionary<string, IHardware>();
             var DriveParts = new Dictionary<string, Partition>();
             HardDrive Drive;
             Partition DrivePart;
@@ -119,10 +120,10 @@ namespace InxiFrontend
             return HDDParsed;
         }
 
-        public override Dictionary<string, HardwareBase> ParseAllWindows(ManagementObjectSearcher WMISearcher)
+        public override Dictionary<string, IHardware> ParseAllWindows(ManagementObjectSearcher WMISearcher)
         {
             // Variables
-            var HDDParsed = new Dictionary<string, HardwareBase>();
+            var HDDParsed = new Dictionary<string, IHardware>();
             var DriveParts = new Dictionary<string, Partition>();
             HardDrive Drive;
             Partition DrivePart;

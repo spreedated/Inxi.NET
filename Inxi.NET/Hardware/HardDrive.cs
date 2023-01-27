@@ -1,46 +1,55 @@
 ﻿using System.Collections.Generic;
+using InxiFrontend.Base;
+using Newtonsoft.Json;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Hard drive class
     /// </summary>
-    public class HardDrive : HardwareBase
+    public class HardDrive : IHardware
     {
-
+        [JsonProperty()]
         /// <summary>
         /// The name of hard drive
         /// </summary>
-        public override string Name { get; }
+        public string Name { get; set; }
+        [JsonProperty()]
         /// <summary>
         /// The udev ID of hard drive
         /// </summary>
         public string ID { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The size of the drive
         /// </summary>
         public string Size { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The model of the drive
         /// </summary>
         public string Model { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The make of the drive
         /// </summary>
         public string Vendor { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The speed of the drive
         /// </summary>
         public string Speed { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// The serial number
         /// </summary>
         public string Serial { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of partitions
         /// </summary>
         public Dictionary<string, Partition> Partitions { get; private set; }
-
+        
         /// <summary>
         /// Installs specified values parsed by Inxi to the class
         /// </summary>
@@ -55,6 +64,9 @@ namespace InxiFrontend
             this.Serial = Serial;
             this.Partitions = Partitions;
         }
-
+        [JsonConstructor()]
+        public HardDrive()
+        {
+        }
     }
 }
