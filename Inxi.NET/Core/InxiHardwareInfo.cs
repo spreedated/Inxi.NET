@@ -1,6 +1,7 @@
 ﻿using Claunia.PropertyList;
 using Extensification.StringExts;
 using InxiFrontend.Base;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,55 +17,67 @@ namespace InxiFrontend
     /// </summary>
     public class HardwareInfo
     {
+        [JsonProperty()]
         /// <summary>
         /// List of hard drives detected
         /// </summary>
         public ConcurrentDictionary<string, HardDrive> HDD { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of logical hard drive partitions detected
         /// </summary>
         public ConcurrentDictionary<string, WindowsLogicalPartition> LogicalParts { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of processors detected
         /// </summary>
         public ConcurrentDictionary<string, Processor> CPU { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of graphics cards detected
         /// </summary>
         public ConcurrentDictionary<string, Graphics> GPU { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of sound cards detected
         /// </summary>
         public ConcurrentDictionary<string, Sound> Sound { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of network cards detected
         /// </summary>
         public ConcurrentDictionary<string, Network> Network { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// List of batteries detected
         /// </summary>
         public HashSet<Battery> Battery { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// System information
         /// </summary>
         public SystemInfo System { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// Machine information
         /// </summary>
         public MachineInfo Machine { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// BIOS information
         /// </summary>
         public BIOS BIOS { get; private set; }
+        [JsonProperty()]
         /// <summary>
         /// RAM information
         /// </summary>
         public PCMemory RAM { get; private set; }
-
+        [JsonIgnore()]
         /// <summary>
         /// Inxi token used for hardware probe
         /// </summary>
         internal JToken InxiToken;
+        [JsonIgnore()]
         /// <summary>
         /// SystemProfiler token used for hardware probe
         /// </summary>
@@ -293,6 +306,9 @@ namespace InxiFrontend
             Machine = MachineParsed;
             InxiTrace.Debug("Parsed information installed.");
         }
-
+        [JsonConstructor()]
+        public HardwareInfo()
+        {
+        }
     }
 }

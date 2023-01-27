@@ -35,7 +35,6 @@ namespace InxiFrontend
         [JsonConstructor()]
         public BIOS()
         {
-
         }
     }
 }
