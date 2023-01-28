@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Windows logical partition class
     /// </summary>
-    public class WindowsLogicalPartition : IHardware
+    public sealed class WindowsLogicalPartition : IHardware, IEquatable<WindowsLogicalPartition>
     {
         [JsonProperty()]
         /// <summary>
@@ -49,6 +52,11 @@ namespace InxiFrontend
         public WindowsLogicalPartition()
         {
 
+        }
+
+        public bool Equals(WindowsLogicalPartition other)
+        {
+            return HelperFunctions.AreObjectsEqual<WindowsLogicalPartition>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

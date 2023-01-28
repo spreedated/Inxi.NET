@@ -25,6 +25,8 @@
     <PublishReadyToRun>true</PublishReadyToRun>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>inxihardware.snk</AssemblyOriginatorKeyFile>
+    <ImplicitUsings>false</ImplicitUsings>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

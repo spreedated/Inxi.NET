@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// System information class
     /// </summary>
-    public class SystemInfo : IHardware
+    public sealed class SystemInfo : IHardware, IEquatable<SystemInfo>
     {
         [JsonProperty()]
         /// <summary>
@@ -67,6 +70,11 @@ namespace InxiFrontend
         public SystemInfo()
         {
 
+        }
+
+        public bool Equals(SystemInfo other)
+        {
+            return HelperFunctions.AreObjectsEqual<SystemInfo>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
     }
 }

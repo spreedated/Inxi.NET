@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// RAM class
     /// </summary>
-    public sealed class PCMemory : IHardware
+    public sealed class PCMemory : IHardware, IEquatable<PCMemory>
     {
         [JsonProperty()]
         /// <summary>
@@ -17,17 +20,17 @@ namespace InxiFrontend
         /// <summary>
         /// Total memory installed
         /// </summary>
-        public readonly string TotalMemory;
+        public string TotalMemory { get; private set; }
         [JsonProperty()]
         /// <summary>
         /// Used memory
         /// </summary>
-        public readonly string UsedMemory;
+        public string UsedMemory { get; private set; }
         [JsonProperty()]
         /// <summary>
         /// Free memory
         /// </summary>
-        public readonly string FreeMemory;
+        public string FreeMemory { get; private set; }
 
         /// <summary>
         /// Installs specified values parsed by Inxi to the class
@@ -43,6 +46,11 @@ namespace InxiFrontend
         public PCMemory()
         {
 
+        }
+
+        public bool Equals(PCMemory other)
+        {
+            return HelperFunctions.AreObjectsEqual<PCMemory>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
     }
 }

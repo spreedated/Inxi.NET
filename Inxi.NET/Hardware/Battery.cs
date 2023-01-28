@@ -1,12 +1,16 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Battery class
     /// </summary>
-    public class Battery : IHardware
+    public sealed class Battery : IHardware, IEquatable<Battery>
     {
         [JsonProperty()]
         /// <summary>
@@ -51,10 +55,16 @@ namespace InxiFrontend
             this.Model = Model;
             this.Status = Status;
         }
+
         [JsonConstructor()]
         public Battery()
         {
 
+        }
+
+        public bool Equals(Battery other)
+        {
+            return HelperFunctions.AreObjectsEqual<Battery>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

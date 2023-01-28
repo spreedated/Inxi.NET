@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Machine class
     /// </summary>
-    public class MachineInfo : IHardware
+    public sealed class MachineInfo : IHardware, IEquatable<MachineInfo>
     {
         [JsonProperty()]
         /// <summary>
@@ -61,6 +64,11 @@ namespace InxiFrontend
         public MachineInfo()
         {
 
+        }
+
+        public bool Equals(MachineInfo other)
+        {
+            return HelperFunctions.AreObjectsEqual<MachineInfo>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

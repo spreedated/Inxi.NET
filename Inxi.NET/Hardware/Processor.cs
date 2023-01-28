@@ -1,14 +1,15 @@
-﻿
-
-using InxiFrontend.Base;
+﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Processor class
     /// </summary>
-    public class Processor : IHardware
+    public sealed class Processor : IHardware, IEquatable<Processor>
     {
         [JsonProperty()]
         /// <summary>
@@ -87,6 +88,11 @@ namespace InxiFrontend
         public Processor()
         {
 
+        }
+
+        public bool Equals(Processor other)
+        {
+            return HelperFunctions.AreObjectsEqual<Processor>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

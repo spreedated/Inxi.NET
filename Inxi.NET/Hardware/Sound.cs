@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Sound class
     /// </summary>
-    public class Sound : IHardware
+    public sealed class Sound : IHardware, IEquatable<Sound>
     {
         [JsonProperty()]
         /// <summary>
@@ -49,6 +52,11 @@ namespace InxiFrontend
         public Sound()
         {
 
+        }
+
+        public bool Equals(Sound other)
+        {
+            return HelperFunctions.AreObjectsEqual<Sound>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

@@ -306,6 +306,7 @@ namespace InxiFrontend
             Machine = MachineParsed;
             InxiTrace.Debug("Parsed information installed.");
         }
+
         [JsonConstructor()]
         public HardwareInfo()
         {

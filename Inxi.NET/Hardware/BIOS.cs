@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// BIOS class
     /// </summary>
-    public class BIOS : IHardware
+    public sealed class BIOS : IHardware, IEquatable<BIOS>
     {
         [JsonProperty()]
         /// <summary>
@@ -35,6 +38,10 @@ namespace InxiFrontend
         [JsonConstructor()]
         public BIOS()
         {
+        }
+        public bool Equals(BIOS other)
+        {
+            return HelperFunctions.AreObjectsEqual<BIOS>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

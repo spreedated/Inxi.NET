@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
 
 namespace InxiFrontend
@@ -7,7 +10,7 @@ namespace InxiFrontend
     /// <summary>
     /// Hard drive class
     /// </summary>
-    public class HardDrive : IHardware
+    public sealed class HardDrive : IHardware, IEquatable<HardDrive>
     {
         [JsonProperty()]
         /// <summary>
@@ -67,6 +70,11 @@ namespace InxiFrontend
         [JsonConstructor()]
         public HardDrive()
         {
+        }
+
+        public bool Equals(HardDrive other)
+        {
+            return HelperFunctions.AreObjectsEqual<HardDrive>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
     }
 }

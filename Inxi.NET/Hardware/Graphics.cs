@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Graphics class
     /// </summary>
-    public class Graphics : IHardware
+    public sealed class Graphics : IHardware, IEquatable<Graphics>
     {
         [JsonProperty()]
         /// <summary>
@@ -49,6 +52,10 @@ namespace InxiFrontend
         public Graphics()
         {
 
+        }
+        public bool Equals(Graphics other)
+        {
+            return HelperFunctions.AreObjectsEqual<Graphics>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }

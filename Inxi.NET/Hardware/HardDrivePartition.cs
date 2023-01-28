@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Partition class
     /// </summary>
-    public class Partition : IHardware
+    public sealed class Partition : IHardware, IEquatable<Partition>
     {
         [JsonProperty()]
         /// <summary>
@@ -49,6 +52,11 @@ namespace InxiFrontend
         public Partition()
         {
 
+        }
+
+        public bool Equals(Partition other)
+        {
+            return HelperFunctions.AreObjectsEqual<Partition>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
     }
 }

@@ -1,12 +1,15 @@
 ﻿using InxiFrontend.Base;
+using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace InxiFrontend
 {
     /// <summary>
     /// Network class
     /// </summary>
-    public class Network : IHardware
+    public sealed class Network : IHardware, IEquatable<Network>
     {
         [JsonProperty()]
         /// <summary>
@@ -79,6 +82,11 @@ namespace InxiFrontend
         public Network()
         {
 
+        }
+
+        public bool Equals(Network other)
+        {
+            return HelperFunctions.AreObjectsEqual<Network>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
     }
 }
