@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using InxiFrontend.Base;
+﻿using InxiFrontend.Base;
 using InxiFrontend.Core;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace InxiFrontend
 {
@@ -52,7 +52,7 @@ namespace InxiFrontend
         /// List of partitions
         /// </summary>
         public Dictionary<string, Partition> Partitions { get; private set; }
-        
+
         /// <summary>
         /// Installs specified values parsed by Inxi to the class
         /// </summary>

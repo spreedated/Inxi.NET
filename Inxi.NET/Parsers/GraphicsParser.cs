@@ -1,12 +1,12 @@
 ﻿using Claunia.PropertyList;
 using Extensification.DictionaryExts;
 using Extensification.External.Newtonsoft.Json.JPropertyExts;
+using InxiFrontend.Base;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using InxiFrontend.Base;
 
 namespace InxiFrontend
 {

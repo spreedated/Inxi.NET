@@ -88,7 +88,7 @@ namespace InxiFrontend
 
         public override int GetHashCode()
         {
-            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name" ));
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name"));
         }
     }
 }
