@@ -19,6 +19,11 @@ namespace InxiFrontend.Core
         /// <returns></returns>
         public static bool AreObjectsEqual<T>(T me, T other, Predicate<PropertyInfo> predicate = null) where T : class
         {
+            if (other == null || me.GetType() != other.GetType())
+            {
+                return false;
+            }
+
             foreach (PropertyInfo p in predicate == null ? typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance) : typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => predicate(x)))
             {
                 if (p.PropertyType == typeof(int))
@@ -42,6 +47,18 @@ namespace InxiFrontend.Core
             }
 
             return true;
+        }
+
+        public static int GetHashCodes<T>(T me, Predicate<PropertyInfo> predicate = null) where T : class
+        {
+            int computedHashcode = 0;
+
+            foreach (PropertyInfo p in predicate == null ? typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance) : typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => predicate(x)))
+            {
+                computedHashcode ^= p.GetValue(me).GetHashCode();
+            }
+
+            return computedHashcode;
         }
     }
 }

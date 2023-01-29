@@ -58,5 +58,19 @@ namespace InxiFrontend
         {
             return HelperFunctions.AreObjectsEqual<WindowsLogicalPartition>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not WindowsLogicalPartition)
+            {
+                return false;
+            }
+            return this.Equals((WindowsLogicalPartition)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
+        }
     }
 }

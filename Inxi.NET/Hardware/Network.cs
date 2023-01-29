@@ -88,5 +88,19 @@ namespace InxiFrontend
         {
             return HelperFunctions.AreObjectsEqual<Network>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not Network)
+            {
+                return false;
+            }
+            return this.Equals((Network)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
+        }
     }
 }

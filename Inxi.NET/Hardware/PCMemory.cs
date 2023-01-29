@@ -52,5 +52,19 @@ namespace InxiFrontend
         {
             return HelperFunctions.AreObjectsEqual<PCMemory>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not PCMemory)
+            {
+                return false;
+            }
+            return this.Equals((PCMemory)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name"));
+        }
     }
 }

@@ -41,7 +41,21 @@ namespace InxiFrontend
         }
         public bool Equals(BIOS other)
         {
-            return HelperFunctions.AreObjectsEqual<BIOS>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
+            return HelperFunctions.AreObjectsEqual<BIOS>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name"));
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not BIOS)
+            {
+                return false;
+            }
+            return this.Equals((BIOS)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name"));
         }
     }
 }

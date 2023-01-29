@@ -76,5 +76,19 @@ namespace InxiFrontend
         {
             return HelperFunctions.AreObjectsEqual<SystemInfo>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)) && x.Name != "Name");
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not SystemInfo)
+            {
+                return false;
+            }
+            return this.Equals((SystemInfo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute) && x.Name != "Name" ));
+        }
     }
 }

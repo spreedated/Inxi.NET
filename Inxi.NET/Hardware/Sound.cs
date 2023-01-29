@@ -58,5 +58,19 @@ namespace InxiFrontend
         {
             return HelperFunctions.AreObjectsEqual<Sound>(this, other, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not Sound)
+            {
+                return false;
+            }
+            return this.Equals((Sound)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HelperFunctions.GetHashCodes(this, (x) => x.CustomAttributes.Any(y => y.AttributeType == typeof(JsonPropertyAttribute)));
+        }
     }
 }

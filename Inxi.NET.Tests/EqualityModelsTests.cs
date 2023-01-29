@@ -20,6 +20,7 @@ namespace InxiFrontend.Tests
 
             Assert.That(b.Equals(c), Is.True);
             Assert.That(b.Equals(d), Is.False);
+            Assert.That(b.Equals(("foo", 13, "foo", "foo", "foo", "foo")), Is.False);
 
             c = new("fool", 12, "foo", "foo", "foo", "foo");
             Assert.That(b.Equals(c), Is.False);
